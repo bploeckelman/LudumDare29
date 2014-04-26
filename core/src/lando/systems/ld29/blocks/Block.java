@@ -1,4 +1,4 @@
-package lando.systems.ld29;
+package lando.systems.ld29.blocks;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
@@ -19,20 +19,28 @@ public class Block {
 	static final float BLOCK_WIDTH = 64;
 	
 	public Block(float x, float y) {
-		img.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		this.x = x;
 		this.y = y;
 		targetX = x;
 		targetY = y;
-		sprite = new Sprite(img);
-		sprite.setSize(BLOCK_WIDTH, BLOCK_WIDTH);
-		
+
+        sprite = new Sprite(img);
+        sprite.setSize(BLOCK_WIDTH, BLOCK_WIDTH);
 	}
+
+    public void setPosition(float x, float y){
+        this.x = x;
+        this.y = y;
+    }
 	
 	public void setNewPosition(float x, float y){
 		targetX = x;
 		targetY = y;
 	}
+
+    public void setSprite(Sprite sprite){
+        this.sprite =
+    }
 	
 	public void update(float dt){
 		float dist = BLOCK_SPEED * dt;
