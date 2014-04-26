@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Game;
 import lando.systems.ld29.core.Assets;
 import lando.systems.ld29.core.Input;
+import lando.systems.ld29.screens.GameScreen;
 import lando.systems.ld29.screens.TitleScreen;
 
 
@@ -11,7 +12,8 @@ public class LudumDare29 extends Game {
 
     public Input input;
 
-    public TitleScreen title;
+    public TitleScreen titleScreen;
+    public GameScreen gameScreen;
 
     @Override
     public void create () {
@@ -21,8 +23,9 @@ public class LudumDare29 extends Game {
         Gdx.input.setInputProcessor(input);
         Gdx.input.setCursorCatched(true);
 
-        title = new TitleScreen(this);
-        setScreen(title);
+        titleScreen = new TitleScreen(this);
+        gameScreen  = new GameScreen(this);
+        setScreen(titleScreen);
     }
 
     @Override

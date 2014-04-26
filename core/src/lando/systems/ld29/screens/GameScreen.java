@@ -12,14 +12,14 @@ import lando.systems.ld29.LudumDare29;
 import lando.systems.ld29.core.Assets;
 import lando.systems.ld29.util.Config;
 
-public class TitleScreen implements Screen {
+public class GameScreen implements Screen {
 
     private final OrthographicCamera camera;
     private final LudumDare29 game;
 
     private float accum = 0.f;
 
-    public TitleScreen(LudumDare29 game) {
+    public GameScreen(LudumDare29 game) {
         super();
 
         this.game = game;
@@ -32,7 +32,7 @@ public class TitleScreen implements Screen {
         if (game.input.isKeyDown(Keys.ESCAPE)) {
             Gdx.app.exit();
         } else if (Gdx.input.justTouched()) {
-            game.setScreen(game.gameScreen);
+            // do things
         }
 
         accum += dt;
@@ -44,11 +44,6 @@ public class TitleScreen implements Screen {
 
         Gdx.gl20.glClearColor(0.53f, 0.81f, 0.92f, 1);
         Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        Assets.batch.begin();
-        Assets.batch.draw(Assets.libgdx, 0, 0, Config.window_width,
-                Config.window_height);
-        Assets.batch.end();
 
         Assets.shapes.begin(ShapeType.Filled);
 
@@ -64,20 +59,20 @@ public class TitleScreen implements Screen {
         Rectangle r = new Rectangle(Config.window_half_width / 2, -40,
                 Config.window_half_width, Config.window_height + 80);
 
+        float boxWidth = 50;
+        float boxHeight = 50;
+        float x = r.x + (r.width/2);
+        float y = r.y + (r.height/2);
+        rot -= 15f;
+
         Assets.shapes.identity();
+
         Assets.shapes.setColor(bgcolor);
         Assets.shapes.rect(r.x, r.y, r.width, r.height);
 
-        float boxWidth = 100;
-        float boxHeight = 100;
-        float x = r.x + (r.width/2);
-        float y = r.y + (r.height/2);
-        rot += 5f;
-
+        Assets.shapes.setColor(Color.RED);
         Assets.shapes.translate(x, y, 0);
         Assets.shapes.rotate(0,0,1,rot);
-
-        Assets.shapes.setColor(Color.RED);
         Assets.shapes.rect(-boxWidth/2, -boxHeight/2, boxWidth, boxHeight);
     }
 
