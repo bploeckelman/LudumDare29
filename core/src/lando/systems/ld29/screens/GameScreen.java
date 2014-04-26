@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Rectangle;
+import lando.systems.ld29.Block;
 import lando.systems.ld29.LudumDare29;
 import lando.systems.ld29.World;
 import lando.systems.ld29.core.Assets;
@@ -57,6 +58,10 @@ public class GameScreen implements Screen {
         SpriteBatch batch = Assets.batch;
         batch.begin();
         world.render(batch);
+        float x = 32;
+        for(int i = 0; i < 20; ++i) {
+            batch.draw(Assets.scamps.get(i), x += 32 + 16, Block.BLOCK_WIDTH * 8 - 16, 32, 32);
+        }
         batch.end();
     }
 

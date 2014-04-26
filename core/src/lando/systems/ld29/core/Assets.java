@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Texture.*;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.utils.Array;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,6 +21,9 @@ public class Assets {
 
     public static Texture libgdx;
     public static Map<String,TextureRegion> resources;
+
+	public static Texture scamps_spritesheet;
+	public static Array<TextureRegion> scamps;
 
     //public static Sound sound;
     //public static Music music;
@@ -42,6 +46,13 @@ public class Assets {
         resources.put("stone" ,new TextureRegion(resourcesSpritesheet, 80   , 0, 16, 16));
         resources.put("lava"  ,new TextureRegion(resourcesSpritesheet, 96   , 0, 16, 16));
         resources.put("water" ,new TextureRegion(resourcesSpritesheet, 112  , 0, 16, 16));
+
+	    scamps_spritesheet = new Texture("art/scamps-spritesheet.png");
+	    scamps = new Array<TextureRegion>();
+	    TextureRegion[][] scamp_regions = TextureRegion.split(scamps_spritesheet, 16, 16);
+	    for(int i = 0; i < scamp_regions.length; ++i) {
+		    scamps.addAll(scamp_regions[i], 0, scamp_regions[i].length);
+	    }
 
 //        sound = Gdx.audio.newSound("audio/sound.wav");
 //        music = Gdx.audio.newMusic("audio/music.mp3");

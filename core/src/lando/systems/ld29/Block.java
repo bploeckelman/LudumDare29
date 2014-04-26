@@ -6,18 +6,18 @@ import com.badlogic.gdx.graphics.g2d.*;
 
 
 public class Block {
-	
+
 	static Texture img = new Texture("badlogic.jpg");
 	final Sprite sprite;
 	float x;
 	float y;
-	
+
 	float targetX;
 	float targetY;
-	
-	static final float BLOCK_SPEED = 3;
-	static final float BLOCK_WIDTH = 64;
-	
+
+	public static final float BLOCK_SPEED = 3;
+	public static final float BLOCK_WIDTH = 64;
+
 	public Block(float x, float y) {
 		img.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		this.x = x;
@@ -26,7 +26,6 @@ public class Block {
 		targetY = y;
 		sprite = new Sprite(img);
 		sprite.setSize(BLOCK_WIDTH, BLOCK_WIDTH);
-		
 	}
 	
 	public void setNewPosition(float x, float y){
