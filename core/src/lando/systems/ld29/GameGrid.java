@@ -5,18 +5,21 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public class GameGrid {
 
 	World parentWorld; // so we can access the world
-	int width = 30;
-	int height = 6;
-	Block[] blocks = new Block[width*height];
+	int width;
+	int height;
+	
+	Block[] blocks;
 	
 	public GameGrid(World world){
 		parentWorld = world;
-		
+		blocks = new Block[parentWorld.gameWidth * parentWorld.gameHeight];
+		width = world.gameWidth;
+		height = world.gameHeight;
 		// TODO: make this more awesome?
-		for (int y = 0; y < height ; y++){
-			for (int x =0; x < width; x++)
+		for (int y = 0; y < parentWorld.gameHeight ; y++){
+			for (int x =0; x < parentWorld.gameWidth; x++)
 			{
-				blocks[x +(width * y)] = new Block(x, y);
+				blocks[x +(parentWorld.gameWidth * y)] = new Block(x, y);
 			}
 		}
 	}
