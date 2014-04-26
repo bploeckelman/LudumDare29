@@ -21,7 +21,7 @@ public class LudumDare29 extends Game {
 
         input = new Input();
         Gdx.input.setInputProcessor(input);
-        Gdx.input.setCursorCatched(true);
+        Gdx.input.setCursorCatched(false);
 
         titleScreen = new TitleScreen(this);
         gameScreen  = new GameScreen(this);

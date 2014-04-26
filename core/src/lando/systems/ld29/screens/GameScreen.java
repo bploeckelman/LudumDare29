@@ -6,9 +6,11 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Rectangle;
 import lando.systems.ld29.LudumDare29;
+import lando.systems.ld29.World;
 import lando.systems.ld29.core.Assets;
 import lando.systems.ld29.util.Config;
 
@@ -16,14 +18,14 @@ public class GameScreen implements Screen {
 
     private final OrthographicCamera camera;
     private final LudumDare29 game;
-
+    private final World world;
     private float accum = 0.f;
 
     public GameScreen(LudumDare29 game) {
         super();
 
         this.game = game;
-
+        world = new World();
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Config.window_width, Config.window_height);
     }
@@ -34,7 +36,7 @@ public class GameScreen implements Screen {
         } else if (Gdx.input.justTouched()) {
             // do things
         }
-
+        world.update(dt);
         accum += dt;
     }
 
@@ -51,6 +53,11 @@ public class GameScreen implements Screen {
 
         Assets.shapes.identity();
         Assets.shapes.end();
+        
+        SpriteBatch batch = Assets.batch;
+        batch.begin();
+        world.render(batch);
+        batch.end();
     }
 
     private float rot = 0f;

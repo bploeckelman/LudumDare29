@@ -93,8 +93,8 @@ public class Input extends InputAdapter {
     public boolean mouseMoved(int screenX, int screenY) {
         prevMouse.set(currMouse);
         currMouse.set(screenX, screenY);
-        Gdx.input.setCursorPosition((int) Utils.clamp(screenX, 0, Config.window_width),
-                (int)Utils.clamp(Config.window_height - screenY, 0, Config.window_height));
+//        Gdx.input.setCursorPosition((int) Utils.clamp(screenX, 0, Config.window_width),
+//                (int)Utils.clamp(Config.window_height - screenY, 0, Config.window_height));
         return false;
     }
 
