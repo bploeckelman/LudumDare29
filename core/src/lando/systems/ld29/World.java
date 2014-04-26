@@ -6,8 +6,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class World {
 
-	GameGrid grid;
-	Player player;
+	public GameGrid grid;
+	public Player player;
 
 	DayCycle dayCycle;
 

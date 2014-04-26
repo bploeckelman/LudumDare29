@@ -13,6 +13,7 @@ import lando.systems.ld29.LudumDare29;
 import lando.systems.ld29.World;
 import lando.systems.ld29.core.Assets;
 import lando.systems.ld29.util.Config;
+import lando.systems.ld29.util.Utils;
 
 public class GameScreen implements Screen {
 
@@ -37,6 +38,11 @@ public class GameScreen implements Screen {
             // do things
         }
         world.update(dt);
+        
+        // Upate Camera
+        //camera.position.x = world.player.xPos * 64;
+        camera.position.x = Utils.clamp((world.player.xPos+.5f) * 64, Config.window_half_width, world.gameWidth * 64 - Config.window_half_width);
+        camera.update();
         accum += dt;
     }
 
@@ -55,7 +61,10 @@ public class GameScreen implements Screen {
         Assets.shapes.end();
         
         SpriteBatch batch = Assets.batch;
+        batch.setProjectionMatrix(camera.combined);
+        
         batch.begin();
+        
         world.render(batch);
         batch.end();
     }
