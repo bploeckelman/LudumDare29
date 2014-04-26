@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import lando.systems.ld29.core.Assets;
 
 import java.util.Random;
 
@@ -23,11 +24,13 @@ public class LudumDare29 extends ApplicationAdapter {
 
     @Override
     public void create () {
-        batch = new SpriteBatch();
-        img = new Texture("badlogic.jpg");
         x = y = 0;
         r = g = b = 0;
         accum = 0;
+
+        Assets.load();
+        batch = Assets.batch;
+        img = Assets.libgdx;
     }
 
     @Override
