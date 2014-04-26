@@ -26,7 +26,7 @@ public class Assets {
         shapes = new ShapeRenderer();
 
         libgdx = new Texture("badlogic.jpg");
-        libgdx.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
+        libgdx.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 
 //        sound = Gdx.audio.newSound("audio/sound.wav");
 //        music = Gdx.audio.newMusic("audio/music.mp3");
