@@ -10,6 +10,9 @@ public class GameGrid {
 	int height;
 	
 	Block[] blocks;
+	Block pushedOutBlock;
+	float pushedTimer;
+	float pushedDelay = .5f;
 	
 	public GameGrid(World world){
 		parentWorld = world;
@@ -29,11 +32,22 @@ public class GameGrid {
 		for (Block block : blocks){
 			block.update(dt);
 		}
+		
+		if (pushedTimer > 0){
+			pushedTimer = Math.max(0, pushedTimer - dt);
+			pushedOutBlock.update(dt);
+			
+		}
 	}
 	
 	public void render(SpriteBatch batch){
 		for (Block block : blocks){
 			block.render(batch);
+		}
+		if (pushedTimer > 0){
+			pushedOutBlock.setAlpha(pushedTimer/pushedDelay);
+			pushedOutBlock.render(batch);
+			
 		}
 	}
 	
@@ -43,7 +57,9 @@ public class GameGrid {
 	
 	public boolean pushUp(Block newBlock, int x){
 		// Pop up what was on the top
-		Block pushedOutBLock = blocks[x + (height -1) * width];
+		pushedOutBlock = blocks[x + (height -1) * width];
+		pushedTimer = pushedDelay;
+		pushedOutBlock.setNewPosition(x, height);
 		// TODO:  Do Magic on pushedOutBLock
 		
 		// Now we push everything up

@@ -47,6 +47,10 @@ public class Block {
 		
 	}
 	
+	public void setAlpha(float amount){
+		sprite.setAlpha(amount);
+	}
+	
 	public void render(SpriteBatch batch){
 		sprite.setPosition(x * BLOCK_WIDTH, 100 + y * BLOCK_WIDTH);
 		sprite.draw(batch);
