@@ -24,7 +24,7 @@ public class Player {
 		this.world = world;
 		sprite = new Sprite(img);
 		sprite.setSize(64,64);
-		xPos = 10;
+		xPos = 15;
 	}
 	
 	boolean justClicked = true;
@@ -48,7 +48,7 @@ public class Player {
 		}
 		
 		inputDelay = Math.max(0, inputDelay - dt);
-		xPos = Utils.clamp(xPos, 0, world.gameWidth);
+		xPos = Utils.clamp(xPos, 0, world.gameWidth-1);
 	}
 	
 	
