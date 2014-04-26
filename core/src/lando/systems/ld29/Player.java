@@ -1,5 +1,6 @@
 package lando.systems.ld29;
 
+import lando.systems.ld29.blocks.Block;
 import lando.systems.ld29.util.Utils;
 
 import com.badlogic.gdx.Gdx;

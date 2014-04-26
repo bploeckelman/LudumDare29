@@ -1,6 +1,7 @@
 package lando.systems.ld29;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import lando.systems.ld29.blocks.Block;
 
 public class GameGrid {
 
