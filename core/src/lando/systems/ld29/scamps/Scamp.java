@@ -6,16 +6,22 @@ package lando.systems.ld29.scamps;
  */
 public class Scamp {
 
-    public enum ScampStates {
-        HARVESTING,
-        EATING,
-        SLEEPING,
-        MURDERING
-    }
+	public enum ScampState {
+		IDLE,
+		HARVESTING,
+		EATING,
+		SLEEPING,
+		MURDERING
+	}
 
-    float position;
-    float targetPosition;
-    boolean isHarvesting = false;
+	float position;
+	float targetPosition;
+	ScampState currentState = ScampState.IDLE;
+	int skinID = 1;
+
+	public Scamp(float startingPosition) {
+		this.position = startingPosition;
+	}
 
 
 }
