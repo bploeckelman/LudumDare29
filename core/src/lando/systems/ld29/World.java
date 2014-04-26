@@ -5,7 +5,12 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public class World {
 
 	GameGrid grid;
+
 	DayCycle dayCycle;
+
+	public final int gameWidth = 30;
+	public final int gameHeight = 6;
+
 	
 	public World() {
 		grid = new GameGrid(this);
