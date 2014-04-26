@@ -1,8 +1,5 @@
 package lando.systems.ld29.core;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.*;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -20,6 +17,7 @@ public class Assets {
     public static ShapeRenderer shapes;
 
     public static Texture libgdx;
+    public static Map<String,TextureRegion> blocks;
     public static Map<String,TextureRegion> resources;
 
 	public static Texture scamps_spritesheet;
@@ -36,16 +34,16 @@ public class Assets {
         libgdx = new Texture("badlogic.jpg");
         libgdx.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 
-        Texture resourcesSpritesheet = new Texture("art/resources-spritesheet.png");
-        resources = new HashMap<String,TextureRegion>();
-        resources.put("dirt"  ,new TextureRegion(resourcesSpritesheet, 0    , 0, 16, 16));
-        resources.put("acorn" ,new TextureRegion(resourcesSpritesheet, 16   , 0, 16, 16));
-        resources.put("gold"  ,new TextureRegion(resourcesSpritesheet, 32   , 0, 16, 16));
-        resources.put("grapes",new TextureRegion(resourcesSpritesheet, 48   , 0, 16, 16));
-        resources.put("iron"  ,new TextureRegion(resourcesSpritesheet, 64   , 0, 16, 16));
-        resources.put("stone" ,new TextureRegion(resourcesSpritesheet, 80   , 0, 16, 16));
-        resources.put("lava"  ,new TextureRegion(resourcesSpritesheet, 96   , 0, 16, 16));
-        resources.put("water" ,new TextureRegion(resourcesSpritesheet, 112  , 0, 16, 16));
+        Texture blocksSpritesheet = new Texture("art/blocks-spritesheet.png");
+        blocks = new HashMap<String,TextureRegion>();
+        blocks.put("dirt",   new TextureRegion(blocksSpritesheet, 0, 0, 16, 16));
+        blocks.put("acorn",  new TextureRegion(blocksSpritesheet, 16, 0, 16, 16));
+        blocks.put("gold",   new TextureRegion(blocksSpritesheet, 32, 0, 16, 16));
+        blocks.put("grapes", new TextureRegion(blocksSpritesheet, 48, 0, 16, 16));
+        blocks.put("iron",   new TextureRegion(blocksSpritesheet, 64, 0, 16, 16));
+        blocks.put("stone",  new TextureRegion(blocksSpritesheet, 80, 0, 16, 16));
+        blocks.put("lava",   new TextureRegion(blocksSpritesheet, 96, 0, 16, 16));
+        blocks.put("water",  new TextureRegion(blocksSpritesheet, 112, 0, 16, 16));
 
 	    scamps_spritesheet = new Texture("art/scamps-spritesheet.png");
 	    scamps = new Array<TextureRegion>();

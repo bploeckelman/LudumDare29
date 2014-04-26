@@ -1,10 +1,13 @@
 package lando.systems.ld29;
 
+import lando.systems.ld29.core.Input;
+
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class World {
 
-	GameGrid grid;
+	public GameGrid grid;
+	public Player player;
 
 	DayCycle dayCycle;
 
@@ -15,12 +18,14 @@ public class World {
 	public World() {
 		grid = new GameGrid(this);
 		dayCycle = new DayCycle(this);
+		player = new Player(this);
 		dayCycle.Scale = 50;
 	}
 	
 	public void update(float dt){
 		grid.update(dt);
 		dayCycle.update(dt);
+		player.update(dt);
 	}
 	
 	public void render(SpriteBatch batch){
@@ -36,7 +41,7 @@ public class World {
 		grid.render(batch);
 		
 		// Draw Player
-		// TODO: Draw Vishnoob and shit below grid
+		player.render(batch);
 		
 	}
 	

@@ -1,45 +1,60 @@
 package lando.systems.ld29;
 
+import lando.systems.ld29.blocks.Block;
+import lando.systems.ld29.util.Utils;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 
 public class Player {
 	
+	static Texture img = new Texture("badlogic.jpg");
+	final Sprite sprite;
+	
 	public float xPos;
-	private float targetX;
 	private World world;
-	private final float SPEED = 10;
+	private final float SPEED = 5;
 	
 	public Player(World world) {
 		this.world = world;
+		sprite = new Sprite(img);
+		sprite.setSize(64,64);
+		xPos = 15;
 	}
 	
-	
-	public void MoveLeft(){
-		targetX = Math.max(0,  targetX - 1);
-		
-	}
-	
-	public void MoveRight(){
-		targetX++;
-		targetX = Math.min(world.gameWidth,  targetX + 1);
-	}
-	
+	boolean justClicked = true;
+	float inputDelay = 0;
 	public void update(float dt){
-		float dist = SPEED * dt;
-		if (dist > Math.abs(targetX - xPos)){
-			xPos = targetX;
-		} else {
-			float sign = 1;
-			if (xPos > targetX) {
-				sign = -1;
-			}
-			xPos = xPos + (sign * dist); // TODO: This can't get backwards
+		if (Gdx.input.isKeyPressed(Keys.A)){
+			xPos -= SPEED * dt;
 		}
+		if (Gdx.input.isKeyPressed(Keys.D)){
+			xPos += SPEED * dt;
+		}
+		if (Gdx.input.isButtonPressed(Input.Buttons.LEFT) && inputDelay <=0){
+			if (justClicked == false){
+				int x = (int)(xPos + .5f);
+				world.grid.pushUp(new Block(x, 0), x);
+				inputDelay = 1; // Seconds until we can act again.
+			}
+			justClicked = true;
+		} else {
+			justClicked = false;
+		}
+		
+		inputDelay = Math.max(0, inputDelay - dt);
+		xPos = Utils.clamp(xPos, 0, world.gameWidth-1);
 	}
 	
 	
 	public void render(SpriteBatch batch){
-		
+		sprite.setPosition(xPos * 64, 10);
+		sprite.draw(batch);
 	}
 	
 }
