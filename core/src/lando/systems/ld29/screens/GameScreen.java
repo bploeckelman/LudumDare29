@@ -9,11 +9,17 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Pool;
 import lando.systems.ld29.blocks.Block;
 import lando.systems.ld29.LudumDare29;
 import lando.systems.ld29.World;
 import lando.systems.ld29.core.Assets;
+<<<<<<< HEAD
 import lando.systems.ld29.scamps.ScampManager;
+=======
+import lando.systems.ld29.scamps.Scamp;
+>>>>>>> 8d2f961c190da0528fdbe5198060db9a0277b1ac
 import lando.systems.ld29.util.Config;
 import lando.systems.ld29.util.Utils;
 
@@ -25,6 +31,8 @@ public class GameScreen implements Screen {
     private final ScampManager scampManager;
     private float accum = 0.f;
 
+    private Array<Scamp> scamps;
+
     public GameScreen(LudumDare29 game) {
         super();
 
@@ -33,6 +41,11 @@ public class GameScreen implements Screen {
         scampManager = new ScampManager(world);
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Config.window_width, Config.window_height);
+
+        scamps = new Array<Scamp>();
+        for(int i = 0; i < 10; ++i) {
+            scamps.add(new Scamp(Assets.random.nextInt((int) (world.gameWidth * Block.BLOCK_WIDTH))));
+        }
     }
 
     public void update(float dt) {
@@ -42,8 +55,14 @@ public class GameScreen implements Screen {
             // do things
         }
         world.update(dt);
+<<<<<<< HEAD
         scampManager.update(dt);
         
+=======
+
+        for(Scamp scamp : scamps) { scamp.update(dt); }
+
+>>>>>>> 8d2f961c190da0528fdbe5198060db9a0277b1ac
         // Upate Camera
         //camera.position.x = world.player.xPos * 64;
         camera.position.x = Utils.clamp((world.player.xPos+.5f) * 64, Config.window_half_width, world.gameWidth * 64 - Config.window_half_width);
@@ -69,10 +88,7 @@ public class GameScreen implements Screen {
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
         world.render(batch);
-        float x = 32;
-        for(int i = 0; i < 20; ++i) {
-            batch.draw(Assets.scamps.get(i), x += 32 + 16, Block.BLOCK_WIDTH * 8 - 16, 32, 32);
-        }
+        for(Scamp scamp : scamps) { scamp.render(batch); }
         batch.end();
     }
 
