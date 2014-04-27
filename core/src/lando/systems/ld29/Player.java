@@ -35,6 +35,7 @@ public class Player {
 	Animation idleAnimation;
 	Animation walkLeftAnimation;
 	Animation walkRightAnimation;
+	Animation pickAnimation;
 	float animationTime = 0;
 	
 	public Player(World world) {
@@ -53,6 +54,7 @@ public class Player {
 		idleAnimation = skeletonData.findAnimation("idle");
 		walkLeftAnimation = skeletonData.findAnimation("walkLeft");
 		walkRightAnimation = skeletonData.findAnimation("walkRight");
+		pickAnimation = skeletonData.findAnimation("pick");
 		
 		skeleton = new Skeleton(skeletonData);
 		skeleton.updateWorldTransform();
@@ -71,29 +73,33 @@ public class Player {
 	
 	public void update(float dt){
 		if (xPos == xTarget){
-			if (Gdx.input.isKeyPressed(Keys.A)){
-				xTarget--;
-				animationTime = 0;
-			}
-			if (Gdx.input.isKeyPressed(Keys.D)){
-				xTarget++;
-				animationTime = 0;
-			}
-			xTarget = Math.min(world.gameWidth-1, Math.max(xTarget, 0));
-			if (Gdx.input.isButtonPressed(Input.Buttons.LEFT) && inputDelay <=0){
-				if (justClicked == false){
-					int x = (int)(xPos + .5f);
-					world.grid.pushUp(Block.getRandomBlock(x, 0), x);
-					inputDelay = .5f; // Seconds until we can act again.
+			if (inputDelay <= 0){
+				if (Gdx.input.isKeyPressed(Keys.A)){
+					xTarget--;
+					animationTime = 0;
 				}
-				justClicked = true;
-			} else {
-				justClicked = false;
+				if (Gdx.input.isKeyPressed(Keys.D)){
+					xTarget++;
+					animationTime = 0;
+				}
+				xTarget = Math.min(world.gameWidth-1, Math.max(xTarget, 0));
+				if (Gdx.input.isButtonPressed(Input.Buttons.LEFT) && inputDelay <=0){
+					if (justClicked == false){
+						int x = (int)(xPos + .5f);
+						world.grid.pushUp(Block.getRandomBlock(x, 0), x);
+						inputDelay = .5f; // Seconds until we can act again.
+						animationTime = 0;
+					}
+					justClicked = true;
+				} else {
+					justClicked = false;
+				}
 			}
 		} else {
 			float dist = SPEED * dt;
 			if (dist >= Math.abs(xTarget - xPos)){
 				xPos = xTarget;
+				animationTime = 0;
 			} else {
 				float sign = 1;
 				if (xTarget< xPos){
@@ -113,7 +119,7 @@ public class Player {
 //		sprite.setPosition(xPos * 64, 10);
 //		sprite.draw(batch);
 		if (inputDelay > 0){
-			
+			pickAnimation.apply(skeleton, animationTime, animationTime, true, events);
 		} else if (xTarget == xPos){
 			idleAnimation.apply(skeleton, animationTime, animationTime, true, events);
 		} else if (xTarget < xPos){
