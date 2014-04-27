@@ -9,7 +9,6 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Array;
 import com.esotericsoftware.spine.*;
@@ -21,7 +20,7 @@ public class Player {
 //	final Sprite sprite;
 	
 	public float xPos;
-	private int xTarget;
+	public int xTarget;
 	private World world;
 	private final float SPEED = 4;
 	

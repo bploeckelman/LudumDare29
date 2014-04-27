@@ -38,23 +38,24 @@ public class Hud {
     }
 
     boolean justClicked = true;
-    float inputDelay = 0;
+    
     public void update(float dt, Player player){
-        if (Gdx.input.isButtonPressed(Input.Buttons.LEFT) && inputDelay <=0){
+        if (Gdx.input.isButtonPressed(Input.Buttons.LEFT) && player.inputDelay <=0 && player.xPos == player.xTarget){
             if (justClicked == false){
                 int x = (int)(player.xPos + .5f);
                 Block block = getBlockForCoords(x);
                 if(null != block) {
+                	block.setNewPosition(x, 0);
                     world.grid.pushUp(block, x);
+                    player.inputDelay = .5f; // Seconds until we can act again.
                 }
-                inputDelay = 1; // Seconds until we can act again.
+                
             }
             justClicked = true;
         } else {
             justClicked = false;
         }
 
-        inputDelay = Math.max(0, inputDelay - dt);
     }
 
     public void render(SpriteBatch batch){
@@ -70,19 +71,19 @@ public class Hud {
         for(int i = 0; i < blocks.length; i++){
             if(blocks[i].getBoundingRectangle().contains(clickPoint.x, clickPoint.y)){
                 if (blockNames[i].equals("dirt")) {
-                    ret = new DirtBlock(column, 0);
+                    ret = new DirtBlock(column, -1);
 
                 } else if (blockNames[i].equals("stone")) {
-                    ret = new StoneBlock(column, 0);
+                    ret = new StoneBlock(column, -1);
 
                 } else if (blockNames[i].equals("iron")) {
-                    ret = new IronBlock(column, 0);
+                    ret = new IronBlock(column, -1);
 
                 } else if (blockNames[i].equals("acorn")) {
-                    ret = new AcornBlock(column, 0);
+                    ret = new AcornBlock(column, -1);
 
                 } else if (blockNames[i].equals("grapes")) {
-                    ret = new GrapesBlock(column, 0);
+                    ret = new GrapesBlock(column, -1);
 
                 }
             }

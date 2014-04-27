@@ -1,12 +1,8 @@
 package lando.systems.ld29.blocks;
 
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.Texture.TextureFilter;
+
 import com.badlogic.gdx.graphics.g2d.*;
 import lando.systems.ld29.core.Assets;
-
-import java.util.Random;
-
 
 public class Block {
 
@@ -77,6 +73,9 @@ public class Block {
 	}
 	
 	public void render(SpriteBatch batch){
+		if (y <= 0){
+			sprite.setAlpha(1+ y);
+		}
 		getSprite().setPosition(x * BLOCK_WIDTH, 100 + y * BLOCK_WIDTH);
 		getSprite().draw(batch);
 	}
