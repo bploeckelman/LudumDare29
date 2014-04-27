@@ -8,12 +8,12 @@ public class GameGrid {
 	World parentWorld; // so we can access the world
 	int width;
 	int height;
-	
+
 	Block[] blocks;
 	Block pushedOutBlock;
 	float pushedTimer;
 	float pushedDelay = .5f;
-	
+
 	public GameGrid(World world){
 		parentWorld = world;
 		blocks = new Block[parentWorld.gameWidth * parentWorld.gameHeight];
@@ -27,19 +27,19 @@ public class GameGrid {
 			}
 		}
 	}
-	
+
 	public void update(float dt){
 		for (Block block : blocks){
 			block.update(dt);
 		}
-		
+
 		if (pushedTimer > 0){
 			pushedTimer = Math.max(0, pushedTimer - dt);
 			pushedOutBlock.update(dt);
-			
+
 		}
 	}
-	
+
 	public void render(SpriteBatch batch){
 		for (Block block : blocks){
 			block.render(batch);
@@ -47,31 +47,31 @@ public class GameGrid {
 		if (pushedTimer > 0){
 			pushedOutBlock.setAlpha(pushedTimer/pushedDelay);
 			pushedOutBlock.render(batch);
-			
+
 		}
 	}
-	
+
 	public Block getBlock(int x, int y){
 		return blocks[x + (width * y)];
 	}
-	
+
 	public boolean pushUp(Block newBlock, int x){
 		// Pop up what was on the top
 		pushedOutBlock = blocks[x + (height -1) * width];
 		pushedTimer = pushedDelay;
 		pushedOutBlock.setNewPosition(x, height);
-		// TODO:  Do Magic on pushedOutBLock
-		
+		parentWorld.rManager.createResource(pushedOutBlock, x);
+
 		// Now we push everything up
 		for (int i = height -2; i >= 0; i--){
 			Block top = blocks[x+(width * i)];
 			top.setNewPosition(x, i + 1);
 			blocks[x+(width * (i + 1))] = top;
 		}
-		
+
 		// Now add it to the bottom
 		blocks[x] = newBlock;
-		
+
 		return true;
 	}
 }

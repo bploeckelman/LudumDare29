@@ -21,8 +21,9 @@ public class Player {
 //	final Sprite sprite;
 	
 	public float xPos;
+	private int xTarget;
 	private World world;
-	private final float SPEED = 5;
+	private final float SPEED = 4;
 	
 	Array<Event> events = new Array();
 
@@ -31,8 +32,9 @@ public class Player {
 
 	SkeletonData skeletonData;
 	Skeleton skeleton;
-	Animation walkAnimation;
-	Animation jumpAnimation;
+	Animation idleAnimation;
+	Animation walkLeftAnimation;
+	Animation walkRightAnimation;
 	float animationTime = 0;
 	
 	public Player(World world) {
@@ -48,9 +50,10 @@ public class Player {
 		 json.setScale(.2f);
 		skeletonData = json.readSkeletonData(Gdx.files.internal(name + ".json"));
 
-		walkAnimation = skeletonData.findAnimation("idle");
-		jumpAnimation = skeletonData.findAnimation("jump");
-
+		idleAnimation = skeletonData.findAnimation("idle");
+		walkLeftAnimation = skeletonData.findAnimation("walkLeft");
+		walkRightAnimation = skeletonData.findAnimation("walkRight");
+		
 		skeleton = new Skeleton(skeletonData);
 		skeleton.updateWorldTransform();
 		skeleton.setX(xPos);
@@ -60,26 +63,44 @@ public class Player {
 //		sprite = new Sprite(img);
 //		sprite.setSize(64,64);
 		xPos = 15;
+		xTarget = 15;
 	}
 	
 	boolean justClicked = true;
 	float inputDelay = 0;
+	
 	public void update(float dt){
-		if (Gdx.input.isKeyPressed(Keys.A)){
-			xPos -= SPEED * dt;
-		}
-		if (Gdx.input.isKeyPressed(Keys.D)){
-			xPos += SPEED * dt;
-		}
-		if (Gdx.input.isButtonPressed(Input.Buttons.LEFT) && inputDelay <=0){
-			if (justClicked == false){
-				int x = (int)(xPos + .5f);
-				world.grid.pushUp(Block.getRandomBlock(x, 0), x);
-				inputDelay = 1; // Seconds until we can act again.
+		if (xPos == xTarget){
+			if (Gdx.input.isKeyPressed(Keys.A)){
+				xTarget--;
+				animationTime = 0;
 			}
-			justClicked = true;
+			if (Gdx.input.isKeyPressed(Keys.D)){
+				xTarget++;
+				animationTime = 0;
+			}
+			xTarget = Math.min(world.gameWidth-1, Math.max(xTarget, 0));
+			if (Gdx.input.isButtonPressed(Input.Buttons.LEFT) && inputDelay <=0){
+				if (justClicked == false){
+					int x = (int)(xPos + .5f);
+					world.grid.pushUp(Block.getRandomBlock(x, 0), x);
+					inputDelay = .5f; // Seconds until we can act again.
+				}
+				justClicked = true;
+			} else {
+				justClicked = false;
+			}
 		} else {
-			justClicked = false;
+			float dist = SPEED * dt;
+			if (dist >= Math.abs(xTarget - xPos)){
+				xPos = xTarget;
+			} else {
+				float sign = 1;
+				if (xTarget< xPos){
+					sign = -1;
+				}
+				xPos += sign * dist;
+			}
 		}
 		
 		inputDelay = Math.max(0, inputDelay - dt);
@@ -91,7 +112,16 @@ public class Player {
 	public void render(SpriteBatch batch){
 //		sprite.setPosition(xPos * 64, 10);
 //		sprite.draw(batch);
-		walkAnimation.apply(skeleton, animationTime, animationTime, true, events);
+		if (inputDelay > 0){
+			
+		} else if (xTarget == xPos){
+			idleAnimation.apply(skeleton, animationTime, animationTime, true, events);
+		} else if (xTarget < xPos){
+			walkLeftAnimation.apply(skeleton, animationTime*3, animationTime*3, true, events);
+		} else {
+			walkRightAnimation.apply(skeleton, animationTime*3, animationTime*3, true, events);
+
+		}
 		skeleton.setX((xPos + .5f) * 64);
 		skeleton.updateWorldTransform();
 		skeleton.update(Gdx.graphics.getDeltaTime());

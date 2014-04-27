@@ -3,15 +3,15 @@ package lando.systems.ld29.blocks;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.*;
+import lando.systems.ld29.core.Assets;
 
 import java.util.Random;
 
 
 public class Block {
 
-    private static Random random = new Random();
     public static Block getRandomBlock(float x, float y){
-        switch (random.nextInt(4)) {
+        switch (Assets.random.nextInt(5)) {
             case 0:
                 return new DirtBlock(x, y);
             case 1:
@@ -35,6 +35,8 @@ public class Block {
 
 	public static final float BLOCK_SPEED = 3;
 	public static final float BLOCK_WIDTH = 64;
+
+    public String blockType;
 
 	public Block(float x, float y) {
 		this.x = x;
@@ -67,13 +69,13 @@ public class Block {
 		} else {
 			y = y + dist; // TODO: This can't get backwards
 		}
-		
+
 	}
-	
+
 	public void setAlpha(float amount){
 		sprite.setAlpha(amount);
 	}
-	
+
 	public void render(SpriteBatch batch){
 		getSprite().setPosition(x * BLOCK_WIDTH, 100 + y * BLOCK_WIDTH);
 		getSprite().draw(batch);

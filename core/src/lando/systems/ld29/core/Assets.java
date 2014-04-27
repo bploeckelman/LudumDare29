@@ -54,12 +54,21 @@ public class Assets {
         }
         num_scamps = 81; // 9 rows of unusable scamp images at the moment (9 images per row)
 
+        Texture resourceSpritesheet = new Texture("art/resources-spritesheet.png");
+        resources = new HashMap<String,TextureRegion>();
+        resources.put("field",   new TextureRegion(resourceSpritesheet, 0, 0, 32, 32));
+        resources.put("forrest",  new TextureRegion(resourceSpritesheet, 32, 0, 32, 32));
+        resources.put("mountain",   new TextureRegion(resourceSpritesheet, 64, 0, 32, 32));
+        resources.put("quarry", new TextureRegion(resourceSpritesheet, 96, 0, 32, 32));
+        resources.put("vinyard",   new TextureRegion(resourceSpritesheet, 128, 0, 32, 32));
+
 //        sound = Gdx.audio.newSound("audio/sound.wav");
 //        music = Gdx.audio.newMusic("audio/music.mp3");
     }
 
     public static void dispose() {
         libgdx.dispose();
+        // todo : dispose the rest of the things
 //        sound.dispose();
 //        music.dispose();
         batch.dispose();
