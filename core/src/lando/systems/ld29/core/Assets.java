@@ -36,6 +36,8 @@ public class Assets {
     public static BitmapFont gameFont;
     public static BitmapFont TooltipHeaderFont;
     public static BitmapFont TooltipTextFont;
+
+    public static String[] scampNames;
     
     //public static Sound sound;
     //public static Music music;
@@ -97,7 +99,8 @@ public class Assets {
 
         TooltipTextFont = new BitmapFont(Gdx.files.internal("fonts/ariel.fnt"),Gdx.files.internal("fonts/ariel.png"),false);
         TooltipTextFont.setScale(.7f);
-        
+
+        scampNames = Gdx.files.internal("text/scamp-names.txt").readString().split("\r\n|\r|\n");
     }
 
     public static void dispose() {
@@ -107,6 +110,10 @@ public class Assets {
 //        music.dispose();
         batch.dispose();
         hudBatch.dispose();
+    }
+
+    public static String randomName() {
+        return scampNames[random.nextInt(scampNames.length)];
     }
 
 }
