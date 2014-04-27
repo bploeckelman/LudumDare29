@@ -37,6 +37,8 @@ public class Player {
 	Animation pickAnimation;
 	float animationTime = 0;
 	
+	public float belief;
+	
 	public Player(World world) {
 		renderer = new SkeletonRenderer();
 		renderer.setPremultipliedAlpha(false);
@@ -80,7 +82,7 @@ public class Player {
 					xTarget++;
 					animationTime = 0;
 				}
-				xTarget = Math.min(world.gameWidth-1, Math.max(xTarget, 0));
+				xTarget = Math.min(World.gameWidth-1, Math.max(xTarget, 0));
 			}
 		} else {
 			float dist = SPEED * dt;
@@ -99,8 +101,14 @@ public class Player {
 		inputDelay = Math.max(0, inputDelay - dt);
 		xPos = Utils.clamp(xPos, 0, world.gameWidth-1);
 		animationTime += dt;
+		belief += 1 * dt;
+		belief = Utils.clamp(belief, 0, 100);
+		
 	}
 	
+	public void addBelief(float amount) {
+		belief = Math.min(100, belief + amount);
+	}
 	
 	public void render(SpriteBatch batch){
 //		sprite.setPosition(xPos * 64, 10);
