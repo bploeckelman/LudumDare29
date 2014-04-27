@@ -14,11 +14,12 @@ public class Resource {
     float y;
     static final float RESOURCE_WIDTH = 64;
     protected int resourceCount;
+    float alpha = 0;
 
     public Resource(float x, float y){
         this.x = x;
         this.y = y;
-
+        alpha = 0;
         // Generate resource count
         this.resourceCount = (int) Math.ceil(Math.random()*10);
     }
@@ -36,8 +37,14 @@ public class Resource {
         return this.sprite;
     }
 
+    public void update(float dt){
+    	alpha = Math.min(alpha + dt, 1);
+    	
+    }
+    
     public void render(SpriteBatch batch){
         getSprite().setPosition(x, y);
+        getSprite().setAlpha(alpha);
         getSprite().draw(batch);
     }
 

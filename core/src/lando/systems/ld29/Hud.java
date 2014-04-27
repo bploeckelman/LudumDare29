@@ -48,6 +48,7 @@ public class Hud {
                 	block.setNewPosition(x, 0);
                     world.grid.pushUp(block, x);
                     player.inputDelay = .5f; // Seconds until we can act again.
+                    player.animationTime = 0;
                 }
                 
             }
