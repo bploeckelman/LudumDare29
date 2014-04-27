@@ -20,8 +20,9 @@ public class Assets {
     public static Map<String,TextureRegion> blocks;
     public static Map<String,TextureRegion> resources;
 
-	public static Texture scamps_spritesheet;
-	public static Array<TextureRegion> scamps;
+    public static Texture scamps_spritesheet;
+    public static Array<TextureRegion> scamps;
+    public static int num_scamps;
 
     //public static Sound sound;
     //public static Music music;
@@ -45,12 +46,13 @@ public class Assets {
         blocks.put("lava",   new TextureRegion(blocksSpritesheet, 96, 0, 16, 16));
         blocks.put("water",  new TextureRegion(blocksSpritesheet, 112, 0, 16, 16));
 
-	    scamps_spritesheet = new Texture("art/scamps-spritesheet.png");
-	    scamps = new Array<TextureRegion>();
-	    TextureRegion[][] scamp_regions = TextureRegion.split(scamps_spritesheet, 16, 16);
-	    for(int i = 0; i < scamp_regions.length; ++i) {
-		    scamps.addAll(scamp_regions[i], 0, scamp_regions[i].length);
-	    }
+        scamps_spritesheet = new Texture("art/scamps-spritesheet.png");
+        scamps = new Array<TextureRegion>();
+        TextureRegion[][] scamp_regions = TextureRegion.split(scamps_spritesheet, 16, 16);
+        for(int i = 0; i < scamp_regions.length; ++i) {
+            scamps.addAll(scamp_regions[i], 0, scamp_regions[i].length);
+        }
+        num_scamps = 81; // 9 rows of unusable scamp images at the moment (9 images per row)
 
 //        sound = Gdx.audio.newSound("audio/sound.wav");
 //        music = Gdx.audio.newMusic("audio/music.mp3");
