@@ -37,8 +37,8 @@ public class ParticleSystem {
 		fireworks.add(new Firework(x, y));
 	}
 	
-	public void fuckingCrazy(float x, float y){
-		for (int i = 0; i < 50; i ++){
+	public void fuckingCrazy(float x, float y, int size){
+		for (int i = 0; i < size; i ++){
 			Particle item = particlePool.obtain();
 			float dir = (float) (Assets.random.nextFloat() * Math.PI * 2.0);
 			item.init(x, y, (float)Math.cos(dir) * Assets.random.nextFloat() * 50, (float)Math.sin(dir)*  Assets.random.nextFloat() *50, 1.0f + Assets.random.nextFloat(), new Color(Assets.random.nextFloat(),Assets.random.nextFloat(),Assets.random.nextFloat(),1), Color.CLEAR, true);
@@ -66,7 +66,7 @@ public class ParticleSystem {
         	firework.update(dt);
             if (firework.vY < 0) {
             	fireworks.removeIndex(i);
-            	fuckingCrazy(firework.x, firework.y);
+            	fuckingCrazy(firework.x, firework.y, 100);
             } else {
     			Particle trail = particlePool.obtain();
     			float dir = (float) (Assets.random.nextFloat() * Math.PI * 2.0);
