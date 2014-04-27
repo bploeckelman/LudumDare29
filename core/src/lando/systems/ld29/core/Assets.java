@@ -36,6 +36,7 @@ public class Assets {
     public static BitmapFont gameFont;
     public static BitmapFont TooltipHeaderFont;
     public static BitmapFont TooltipTextFont;
+    public static BitmapFont HUDFont;
     
     //public static Sound sound;
     //public static Music music;
@@ -97,6 +98,9 @@ public class Assets {
 
         TooltipTextFont = new BitmapFont(Gdx.files.internal("fonts/ariel.fnt"),Gdx.files.internal("fonts/ariel.png"),false);
         TooltipTextFont.setScale(.7f);
+        
+        HUDFont = new BitmapFont(Gdx.files.internal("fonts/ariel.fnt"),Gdx.files.internal("fonts/ariel.png"),false);
+        HUDFont.setScale(.5f);
         
     }
 
