@@ -29,6 +29,9 @@ public class DayCycle
 	private static Texture sunTex = new Texture("art/sky/sun.png");
 	private final Sprite sunSprite;
 	
+	static Texture skyTex = new Texture("art/white.png");
+	private final Sprite skySprite;
+	
 	private World _world;
 
 	public DayCycle(World world) {
@@ -36,6 +39,8 @@ public class DayCycle
 		setTime(60); // 7 am
 		sunSprite = new Sprite(sunTex);
 		sunSprite.setSize(64,64);
+		skySprite = new Sprite(skyTex);
+		skySprite.setSize(World.gameWidth * 64, Config.window_height);
 	}
 	
 	public void setTime(float time) {
@@ -72,16 +77,13 @@ public class DayCycle
 	
 	public void render(SpriteBatch batch) {
 
-		batch.end();
 		
-        Assets.shapes.begin(ShapeType.Filled);
+		
+       
 	 
-        Assets.shapes.setColor(_color);
-	    Assets.shapes.rect(0, Config.window_half_height, Config.window_width, Config.window_half_height);
-
-		Assets.shapes.end();
+		skySprite.setColor(_color);
+	    skySprite.draw(batch);
 		
-		batch.begin();
 		float sunX = ((_time - 120) / 640) * _world.gameWidth * 64;
 		sunSprite.setPosition(sunX, 600);
 		sunSprite.draw(batch);

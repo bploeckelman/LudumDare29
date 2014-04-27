@@ -34,6 +34,7 @@ public class World {
 		dayCycle.update(dt);
 		player.update(dt);
         scampManager.update(dt);
+        rManager.update(dt);
         hud.update(dt, player);
         particleSystem.update(dt);
 	}

@@ -46,6 +46,15 @@ public class ResourceManager {
             return resourcesAsked;
         }
     }
+    
+    public void update(float dt){
+        for (Resource resource : resources){
+            if(resource == null){
+                continue;
+            }
+            resource.update(dt);
+        }
+    }
 
     public void render(SpriteBatch batch){
         for (Resource resource : resources){
