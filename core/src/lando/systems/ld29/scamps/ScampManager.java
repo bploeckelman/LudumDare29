@@ -53,7 +53,7 @@ public class ScampManager {
         this.scamps = null;
         this.scamps = new Scamp[INITIAL_SCAMP_COUNT];
         for (i = 0; i < this.scamps.length; i++) {
-            thisPosition = r.nextFloat() * (this.world.gameWidth - 1) * Block.BLOCK_WIDTH;
+            thisPosition = r.nextInt(this.world.gameWidth);
             this.scamps[i] = new Scamp( thisPosition );
         }
 

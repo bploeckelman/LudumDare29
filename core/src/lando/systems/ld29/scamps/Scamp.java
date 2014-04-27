@@ -3,6 +3,7 @@ package lando.systems.ld29.scamps;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
+import lando.systems.ld29.Global;
 import lando.systems.ld29.World;
 import lando.systems.ld29.blocks.Block;
 import lando.systems.ld29.core.Assets;
@@ -13,9 +14,8 @@ import lando.systems.ld29.core.Assets;
  */
 public class Scamp {
 
-    public static final float GROUND_LEVEL = 100 + Block.BLOCK_WIDTH * 6;
     public static final int SCAMP_SIZE = 32;
-    public static final float SCAMP_SPEED = 32f;
+    public static final float SCAMP_SPEED = 1.0f;
 
     public enum ScampState {
         IDLE,
@@ -36,7 +36,7 @@ public class Scamp {
 
     public Scamp(float startingPosition) {
         this.position = startingPosition;
-        this.targetPosition = Assets.random.nextInt((int) (World.gameWidth * Block.BLOCK_WIDTH));
+        this.targetPosition = Assets.random.nextInt(World.gameWidth);
         this.skinID = Assets.random.nextInt(Assets.num_scamps);
         this.walkRight = (targetPosition - position) >= 0;
         this.texture = Assets.scamps.get(skinID);
@@ -47,7 +47,7 @@ public class Scamp {
         // If we've reached the target, acquire a new target
         if((walkRight && position >= targetPosition) || (!walkRight && position <= targetPosition)) {
             // todo : base this on available resources
-            targetPosition = Assets.random.nextInt((int) (World.gameWidth * Block.BLOCK_WIDTH));
+            targetPosition = Assets.random.nextInt(World.gameWidth);
 
             // todo : won't always be turning around
             texture.flip(true, false);
@@ -61,7 +61,34 @@ public class Scamp {
     }
 
     public void render(SpriteBatch batch) {
-        batch.draw(texture, position, GROUND_LEVEL, SCAMP_SIZE, SCAMP_SIZE);
+        batch.draw(texture, position * Block.BLOCK_WIDTH, Global.GROUND_LEVEL, SCAMP_SIZE, SCAMP_SIZE);
+    }
+
+    public int getBlockPosition() { return (int) Math.floor(position); }
+    public float getPixelPosition() { return position * Block.BLOCK_WIDTH; }
+
+    public int getBlockTargetPosition() { return (int) Math.floor(targetPosition); }
+    public float getPixelTargetPosition() { return targetPosition * Block.BLOCK_WIDTH; }
+
+    public int getSkinID() { return skinID; }
+    public TextureRegion getSkin() { return texture; }
+
+    public void setSkin(int skinID) {
+        TextureRegion temp = null;
+        try {
+            temp = Assets.scamps.get(skinID);
+        } catch(IndexOutOfBoundsException e) {
+            System.err.println("Error: tried to set scamp skin to invalid texture: " + skinID);
+            return;
+        }
+
+        if(temp == null) {
+            System.err.println("Error: tried to set scamp skin to missing texture: " + skinID);
+            return;
+        }
+
+        this.skinID = skinID;
+        this.texture = temp;
     }
 
 }

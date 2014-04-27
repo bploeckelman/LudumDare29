@@ -1,5 +1,8 @@
 package lando.systems.ld29;
 
+import lando.systems.ld29.blocks.Block;
+
 public class Global {
-    // add any global things as required
+    public static final float UNDERGROUND_HEIGHT = 100;
+    public static final float GROUND_LEVEL = UNDERGROUND_HEIGHT + World.gameHeight * Block.BLOCK_WIDTH;
 }
