@@ -9,7 +9,7 @@ public class GrapesBlock extends Block {
 
     public GrapesBlock(float x, float y) {
         super(x, y);
-
+        this.blockType = "grapes";
         setSprite(new Sprite(img));
     }
 }

@@ -9,7 +9,7 @@ public class IronBlock extends Block {
 
     public IronBlock(float x, float y) {
         super(x, y);
-
+        this.blockType = "iron";
         setSprite(new Sprite(img));
     }
 }

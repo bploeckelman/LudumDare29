@@ -48,7 +48,7 @@ public class Player {
 		 json.setScale(.2f);
 		skeletonData = json.readSkeletonData(Gdx.files.internal(name + ".json"));
 
-		walkAnimation = skeletonData.findAnimation("run");
+		walkAnimation = skeletonData.findAnimation("idle");
 		jumpAnimation = skeletonData.findAnimation("jump");
 
 		skeleton = new Skeleton(skeletonData);

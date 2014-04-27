@@ -11,19 +11,21 @@ public class World {
     public Hud hud;
 
 	DayCycle dayCycle;
+    public ResourceManager rManager;
 
 	public final int gameWidth = 30;
 	public final int gameHeight = 6;
 
-	
+
 	public World() {
 		grid = new GameGrid(this);
 		dayCycle = new DayCycle(this);
 		player = new Player(this);
         hud = new Hud(this);
 		dayCycle.Scale = 50;
+        this.rManager = new ResourceManager(this);
 	}
-	
+
 	public void update(float dt){
 		grid.update(dt);
 		dayCycle.update(dt);
