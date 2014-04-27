@@ -1,7 +1,10 @@
 package lando.systems.ld29.core;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.*;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -24,6 +27,8 @@ public class Assets {
     public static Texture scamps_spritesheet;
     public static Array<TextureRegion> scamps;
     public static int num_scamps;
+
+    public static NinePatch panelBrown;
 
     //public static Sound sound;
     //public static Music music;
@@ -66,6 +71,12 @@ public class Assets {
 
 //        sound = Gdx.audio.newSound("audio/sound.wav");
 //        music = Gdx.audio.newMusic("audio/music.mp3");
+
+        panelBrown = new NinePatch(
+            new Texture("art/panel_brown.png"),
+            10, 10, 10 , 10
+        );
+        panelBrown.setColor(new Color(153, 102, 51, 1));
     }
 
     public static void dispose() {
@@ -74,6 +85,7 @@ public class Assets {
 //        sound.dispose();
 //        music.dispose();
         batch.dispose();
+        hudBatch.dispose();
     }
 
 }

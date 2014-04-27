@@ -59,6 +59,17 @@ public class Hud {
     }
 
     public void render(SpriteBatch batch){
+        // Draw belief meter
+        // TODO: Draw belief meter!
+
+        // Draw block picker
+        Assets.panelBrown.draw(
+            batch,
+            HUDX - Assets.panelBrown.getPadLeft(),
+            HUDY - Assets.panelBrown.getPadBottom(),
+            (blockNames.length * HUD_BLOCK_WIDTH) + (Assets.panelBrown.getPadRight() * 2),
+            (Assets.panelBrown.getPadTop() * 2) + HUD_BLOCK_WIDTH
+        );
         for(Sprite block : blocks){
             block.draw(batch);
         }
