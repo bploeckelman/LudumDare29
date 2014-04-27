@@ -5,6 +5,7 @@
 	<inherits name='com.badlogic.gdx.physics.box2d.box2d-gwt' />
 
     <inherits name='LudumDare29' />
+    <inherits name="com.esotericsoftware.spine"/>
 	<entry-point class='lando.systems.ld29.client.HtmlLauncher' />
 	
 	<add-linker name="xsiframe"/>
