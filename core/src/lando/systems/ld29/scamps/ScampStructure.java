@@ -8,6 +8,7 @@ public class ScampStructure {
 
     public static enum ScampStructureType {
         HOUSE,
+        CELLAR,
         FARM,
         VINEYARD,
         TEMPLE

@@ -13,6 +13,7 @@ import lando.systems.ld29.blocks.Block;
 import lando.systems.ld29.LudumDare29;
 import lando.systems.ld29.World;
 import lando.systems.ld29.core.Assets;
+import lando.systems.ld29.scamps.ScampManager;
 import lando.systems.ld29.util.Config;
 import lando.systems.ld29.util.Utils;
 
@@ -21,6 +22,7 @@ public class GameScreen implements Screen {
     private final OrthographicCamera camera;
     private final LudumDare29 game;
     private final World world;
+    private final ScampManager scampManager;
     private float accum = 0.f;
 
     public GameScreen(LudumDare29 game) {
@@ -28,6 +30,7 @@ public class GameScreen implements Screen {
 
         this.game = game;
         world = new World();
+        scampManager = new ScampManager(world);
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Config.window_width, Config.window_height);
     }
@@ -39,6 +42,7 @@ public class GameScreen implements Screen {
             // do things
         }
         world.update(dt);
+        scampManager.update(dt);
         
         // Upate Camera
         //camera.position.x = world.player.xPos * 64;
