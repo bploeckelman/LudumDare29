@@ -23,6 +23,7 @@ public class Assets {
     public static Texture libgdx;
     public static Map<String,TextureRegion> blocks;
     public static Map<String,TextureRegion> resources;
+    public static Map<String,TextureRegion> structures;
 
     public static Texture scamps_spritesheet;
     public static Array<TextureRegion> scamps;
@@ -68,6 +69,13 @@ public class Assets {
         resources.put("mountain",   new TextureRegion(resourceSpritesheet, 64, 0, 32, 32));
         resources.put("quarry", new TextureRegion(resourceSpritesheet, 96, 0, 32, 32));
         resources.put("vinyard",   new TextureRegion(resourceSpritesheet, 128, 0, 32, 32));
+
+        Texture structureSpritesheet = new Texture("art/structures-spritesheet.png");
+        structures = new HashMap<String,TextureRegion>();
+        structures.put("house-day"  , new TextureRegion(structureSpritesheet,   0, 0, 64, 64));
+        structures.put("house-night", new TextureRegion(structureSpritesheet,  64, 0, 64, 64));
+        structures.put("temple"     , new TextureRegion(structureSpritesheet, 128, 0, 64, 64));
+        structures.put("warehouse"  , new TextureRegion(structureSpritesheet, 192, 0, 64, 64));
 
 //        sound = Gdx.audio.newSound("audio/sound.wav");
 //        music = Gdx.audio.newMusic("audio/music.mp3");

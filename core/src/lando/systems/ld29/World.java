@@ -8,6 +8,7 @@ import lando.systems.ld29.blocks.Block;
 import lando.systems.ld29.core.Assets;
 import lando.systems.ld29.scamps.ScampManager;
 import lando.systems.ld29.screens.GameScreen;
+import lando.systems.ld29.structures.StructureManager;
 
 public class World {
 
@@ -15,9 +16,10 @@ public class World {
 	public Player player;
     public Hud hud;
 
-	DayCycle dayCycle;
+	public DayCycle dayCycle;
     public ResourceManager rManager;
     public ScampManager scampManager;
+    public StructureManager structureManager;
     public ParticleSystem particleSystem;
 
 	public static final int gameWidth = 30;
@@ -33,6 +35,7 @@ public class World {
 		dayCycle.Scale = 50;
         rManager = new ResourceManager(this);
         scampManager = new ScampManager(this);
+        structureManager = new StructureManager(this);
         particleSystem = new ParticleSystem();
 	}
 
@@ -49,6 +52,7 @@ public class World {
 		player.update(dt);
         scampManager.update(dt);
         rManager.update(dt);
+        structureManager.update(dt);
         hud.update(dt, player);
         particleSystem.update(dt);
 	}
@@ -58,6 +62,9 @@ public class World {
 	
 		// Draw Resource Layer
 		rManager.render(batch);
+
+        // Draw Structure Layer
+        structureManager.render(batch);
 		
 		// Draw AI Layer
         scampManager.renderScamps(batch);

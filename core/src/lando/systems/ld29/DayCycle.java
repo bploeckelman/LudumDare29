@@ -23,6 +23,7 @@ public class DayCycle
 		
 	private Color _color = new Color(NightColor);	
 	private float _time = 0;
+    private boolean dayNightChanged = false;
 	
 	public float Scale = 1.0f;
 	
@@ -47,14 +48,28 @@ public class DayCycle
 		_time = time;
 		calcColor(time);
 	}
+
+    public boolean isDay() {
+        return _time >= Dawn && _time < Night;
+    }
+    public boolean hasNightEnded() {
+        return dayNightChanged && isDay();
+    }
+    public boolean hasDayEnded() {
+        return dayNightChanged && !isDay();
+    }
 	
 	public void update(float dt) {
 		
 		float time = _time + (dt * Scale);
+        dayNightChanged = false;
 		if (time > 1440) { 
 			time = 0;
-		}
-		
+            dayNightChanged = true;
+		} else if(_time <= Night && time >= Night) {
+            dayNightChanged = true;
+        }
+
 		setTime(time);
 	}
 	
