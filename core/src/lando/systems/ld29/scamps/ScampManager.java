@@ -1,6 +1,8 @@
 package lando.systems.ld29.scamps;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import lando.systems.ld29.World;
+import lando.systems.ld29.blocks.Block;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -51,8 +53,8 @@ public class ScampManager {
         this.scamps = null;
         this.scamps = new Scamp[INITIAL_SCAMP_COUNT];
         for (i = 0; i < this.scamps.length; i++) {
-            thisPosition = r.nextFloat() * (this.world.gameWidth - 1);
-            new Scamp( thisPosition );
+            thisPosition = r.nextFloat() * (this.world.gameWidth - 1) * Block.BLOCK_WIDTH;
+            this.scamps[i] = new Scamp( thisPosition );
         }
 
     }
@@ -64,9 +66,12 @@ public class ScampManager {
             this.accum = this.accum % PRIORITY_RECOMPUTE_TIME;
             this.determinePriorities();
         }
+        for(Scamp scamp : scamps) { scamp.update(dt); }
     }
 
-
+    public void renderScamps(SpriteBatch batch) {
+        for(Scamp scamp : scamps) { scamp.render(batch); }
+    }
 
     public void determinePriorities() {
 
