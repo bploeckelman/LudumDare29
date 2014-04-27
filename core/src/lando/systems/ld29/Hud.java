@@ -49,7 +49,9 @@ public class Hud {
                 Block block = getBlockForCoords(x);
                 if(null != block) {
                 	block.setNewPosition(x, 0);
-                    if (world.grid.pushUp(block, x)){
+                	float cost = block.cost;
+                    if (player.belief > cost && world.grid.pushUp(block, x)){
+                    	player.belief -= cost;
                     	player.inputDelay = .5f; // Seconds until we can act again.
                     	player.animationTime = 0;
                     }

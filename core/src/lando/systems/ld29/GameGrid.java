@@ -60,7 +60,7 @@ public class GameGrid {
 		}
 		
 		
-		if (Assets.random.nextFloat() > .999 && earthQuakeTime <= 0){
+		if (Assets.random.nextFloat() > .999 && earthQuakeTime <= -3){
 			earthQuakeTime = EARTHQUAKEMAXTIME;
 		}
 		earthQuakeTime -= dt;

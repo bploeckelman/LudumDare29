@@ -12,5 +12,6 @@ public class StoneBlock extends Block {
         this.blockType = "stone";
         toolTipString = "another building material";
         setSprite(new Sprite(img));
+        cost = 6;
     }
 }
