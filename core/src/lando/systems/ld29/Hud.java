@@ -2,10 +2,12 @@ package lando.systems.ld29;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+
 import lando.systems.ld29.blocks.*;
 import lando.systems.ld29.core.Assets;
 import lando.systems.ld29.screens.GameScreen;
@@ -19,15 +21,20 @@ public class Hud {
     static final float HUD_BLOCK_WIDTH = 32;
     static final float HUDX = Config.window_half_width -
                               ((blockNames.length * HUD_BLOCK_WIDTH) / 2);
-    static final float HUDY = 0;
+    
+    static final NinePatch Panel = Assets.panelBrown;
+    
+    static final float HUDY = Panel.getPadBottom() + 1;
 
+    public static final float Height = Panel.getTopHeight() + HUD_BLOCK_WIDTH + Assets.panelBrown.getBottomHeight() + 2;
+    
     private Sprite[] blocks;
     private World world;
-    private BeliefMeter beliefMeter;
+    private BeliefMeter beliefMeter;   
     
     public Tooltip tooltip;
 
-    public Hud(World world){
+    public Hud(World world) {
         this.world = world;
         tooltip = new Tooltip(world);
         blocks = new Sprite[blockNames.length];
@@ -39,10 +46,11 @@ public class Hud {
             newX += HUD_BLOCK_WIDTH;
         }
         
-        int gap = 10;
-        int width = Config.window_width - (gap * 2);
-        beliefMeter = new BeliefMeter(width, gap);
-        beliefMeter.setPosition(gap, Global.UNDERGROUND_LEVEL - (gap + 1));
+        float width = HUDX - ((Panel.getPadLeft() * 2) + Panel.getPadRight()); // 30
+        
+        float height = 25;
+        beliefMeter = new BeliefMeter(width, height);
+        beliefMeter.setPosition(10, Global.UNDERGROUND_LEVEL - (height + 1));
     }
 
     boolean justClicked = true;
@@ -71,7 +79,10 @@ public class Hud {
         }
     }
 
-    public void render(SpriteBatch batch){
+    public void render(SpriteBatch batch) {
+        // Draw belief meter
+        beliefMeter.render(batch);
+        
         // Draw block picker
         Assets.panelBrown.draw(
             batch,
@@ -85,10 +96,6 @@ public class Hud {
         }
         
         tooltip.render(batch);
-     
-        // Draw belief meter
-        beliefMeter.render(batch);
-        
     }
 
     private Block getBlockForCoords(int column){

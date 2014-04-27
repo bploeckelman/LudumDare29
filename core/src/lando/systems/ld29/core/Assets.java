@@ -32,6 +32,7 @@ public class Assets {
 
     public static NinePatch panelBrown;
     public static NinePatch thoughtBubble;
+    public static NinePatch panelGreen;
     
     public static BitmapFont gameFont;
     public static BitmapFont TooltipHeaderFont;
@@ -90,6 +91,11 @@ public class Assets {
         
 
         panelBrown.setColor(new Color(153, 102, 51, 1));
+        
+        panelGreen = new NinePatch(
+                new Texture("art/greenbar.png"), 
+                7, 7, 7, 7
+            );
         
         thoughtBubble = new NinePatch(
                 new Texture("art/thought.png"),
