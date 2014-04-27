@@ -67,7 +67,9 @@ public class GameScreen implements Screen {
         
         SpriteBatch batch = Assets.batch;
         batch.setProjectionMatrix(camera.combined);
+        
         batch.begin();
+        
         world.render(batch);
         scampManager.renderScamps(batch);
         batch.end();

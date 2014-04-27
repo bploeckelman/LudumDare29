@@ -1,6 +1,6 @@
 package lando.systems.ld29;
 
-import lando.systems.ld29.blocks.Block;
+import lando.systems.ld29.blocks.*;
 import lando.systems.ld29.util.Utils;
 
 import com.badlogic.gdx.Gdx;
@@ -10,20 +10,55 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.utils.Array;
+import com.esotericsoftware.spine.*;
+
 
 public class Player {
 	
 	static Texture img = new Texture("badlogic.jpg");
-	final Sprite sprite;
+//	final Sprite sprite;
 	
 	public float xPos;
 	private World world;
 	private final float SPEED = 5;
 	
+	Array<Event> events = new Array();
+
+	SkeletonRenderer renderer;
+	SkeletonRendererDebug debugRenderer;
+
+	SkeletonData skeletonData;
+	Skeleton skeleton;
+	Animation walkAnimation;
+	Animation jumpAnimation;
+	float animationTime = 0;
+	
 	public Player(World world) {
+		renderer = new SkeletonRenderer();
+		renderer.setPremultipliedAlpha(false);
+		
+		final String name = "art/animation/anim";
+
+		TextureAtlas atlas = new TextureAtlas(Gdx.files.internal(name + ".atlas"));
+
+		
+		SkeletonJson json = new SkeletonJson(atlas);
+		 json.setScale(.2f);
+		skeletonData = json.readSkeletonData(Gdx.files.internal(name + ".json"));
+
+		walkAnimation = skeletonData.findAnimation("idle");
+		jumpAnimation = skeletonData.findAnimation("jump");
+
+		skeleton = new Skeleton(skeletonData);
+		skeleton.updateWorldTransform();
+		skeleton.setX(xPos);
+		skeleton.setY(20);
+		
 		this.world = world;
-		sprite = new Sprite(img);
-		sprite.setSize(64,64);
+//		sprite = new Sprite(img);
+//		sprite.setSize(64,64);
 		xPos = 15;
 	}
 	
@@ -39,7 +74,7 @@ public class Player {
 		if (Gdx.input.isButtonPressed(Input.Buttons.LEFT) && inputDelay <=0){
 			if (justClicked == false){
 				int x = (int)(xPos + .5f);
-				world.grid.pushUp(new Block(x, 0), x);
+				world.grid.pushUp(Block.getRandomBlock(x, 0), x);
 				inputDelay = 1; // Seconds until we can act again.
 			}
 			justClicked = true;
@@ -49,12 +84,19 @@ public class Player {
 		
 		inputDelay = Math.max(0, inputDelay - dt);
 		xPos = Utils.clamp(xPos, 0, world.gameWidth-1);
+		animationTime += dt;
 	}
 	
 	
 	public void render(SpriteBatch batch){
-		sprite.setPosition(xPos * 64, 10);
-		sprite.draw(batch);
+//		sprite.setPosition(xPos * 64, 10);
+//		sprite.draw(batch);
+		walkAnimation.apply(skeleton, animationTime, animationTime, true, events);
+		skeleton.setX((xPos + .5f) * 64);
+		skeleton.updateWorldTransform();
+		skeleton.update(Gdx.graphics.getDeltaTime());
+		
+		renderer.draw(batch, skeleton);
 	}
 	
 }
