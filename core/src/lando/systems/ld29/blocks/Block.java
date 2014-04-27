@@ -3,6 +3,9 @@ package lando.systems.ld29.blocks;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.*;
+
+import lando.systems.ld29.Global;
+import lando.systems.ld29.World;
 import lando.systems.ld29.core.Assets;
 
 public class Block {
@@ -95,7 +98,7 @@ public class Block {
 		if (y <= 0){
 			sprite.setAlpha(1+ y);
 		}
-		getSprite().setPosition(x * BLOCK_WIDTH + xShift, 100 + y * BLOCK_WIDTH);
+		getSprite().setPosition(x * BLOCK_WIDTH + xShift, Global.UNDERGROUND_HEIGHT + y * BLOCK_WIDTH);
 		getSprite().draw(batch);
 	}
 }

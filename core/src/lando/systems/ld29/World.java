@@ -22,8 +22,7 @@ public class World {
     public ParticleSystem particleSystem;
 
     public static final int gameWidth = 30;
-    public static final int gameHeight = 6;
-
+    public static final int gameHeight = 5;
 
     public World() {
 

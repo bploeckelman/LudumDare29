@@ -80,7 +80,7 @@ public class GameGrid {
 			pushedOutBlock.render(batch, xShift);
 
 		}
-		batch.draw(caveTex, 0, 0, 64 * World.gameWidth, 100);
+		batch.draw(caveTex, 0, 0, 64 * World.gameWidth, Global.UNDERGROUND_HEIGHT);
 	}
 
 	public Block getBlock(int x, int y){
@@ -88,8 +88,8 @@ public class GameGrid {
 	}
 	
 	public Block getBlockFromPos(float x, float y){
-		if (y > 100 && y < 100 + 64 * World.gameHeight){
-			return getBlock((int)x/64, (int)(y-100)/64);
+		if (y > Global.UNDERGROUND_HEIGHT && y < Global.UNDERGROUND_HEIGHT + 64 * World.gameHeight){
+			return getBlock((int)x/64, (int)(y-Global.UNDERGROUND_HEIGHT)/64);
 		}
 		
 		return null;
