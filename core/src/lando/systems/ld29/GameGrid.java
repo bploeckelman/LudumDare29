@@ -1,7 +1,7 @@
 package lando.systems.ld29;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import lando.systems.ld29.blocks.Block;
+import lando.systems.ld29.blocks.*;
 
 public class GameGrid {
 
@@ -23,7 +23,7 @@ public class GameGrid {
 		for (int y = 0; y < parentWorld.gameHeight ; y++){
 			for (int x =0; x < parentWorld.gameWidth; x++)
 			{
-				blocks[x +(parentWorld.gameWidth * y)] = new Block(x, y);
+				blocks[x +(parentWorld.gameWidth * y)] = Block.getRandomBlock(x, y);
 			}
 		}
 	}

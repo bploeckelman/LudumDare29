@@ -1,6 +1,6 @@
 package lando.systems.ld29;
 
-import lando.systems.ld29.blocks.Block;
+import lando.systems.ld29.blocks.*;
 import lando.systems.ld29.util.Utils;
 
 import com.badlogic.gdx.Gdx;
@@ -74,7 +74,7 @@ public class Player {
 		if (Gdx.input.isButtonPressed(Input.Buttons.LEFT) && inputDelay <=0){
 			if (justClicked == false){
 				int x = (int)(xPos + .5f);
-				world.grid.pushUp(new Block(x, 0), x);
+				world.grid.pushUp(Block.getRandomBlock(x, 0), x);
 				inputDelay = 1; // Seconds until we can act again.
 			}
 			justClicked = true;
