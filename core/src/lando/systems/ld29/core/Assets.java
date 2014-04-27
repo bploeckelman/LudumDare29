@@ -31,6 +31,7 @@ public class Assets {
     public static int num_scamps;
 
     public static NinePatch panelBrown;
+    public static NinePatch thoughtBubble;
     
     public static BitmapFont gameFont;
     public static BitmapFont TooltipHeaderFont;
@@ -82,7 +83,14 @@ public class Assets {
             new Texture("art/panel_brown.png"),
             10, 10, 10 , 10
         );
+        
+
         panelBrown.setColor(new Color(153, 102, 51, 1));
+        
+        thoughtBubble = new NinePatch(
+                new Texture("art/thought.png"),
+                4, 5, 4 , 9
+            );
         
         gameFont = new BitmapFont(Gdx.files.internal("fonts/ariel.fnt"),Gdx.files.internal("fonts/ariel.png"),false);
         TooltipHeaderFont = new BitmapFont(Gdx.files.internal("fonts/ariel.fnt"),Gdx.files.internal("fonts/ariel.png"),false);

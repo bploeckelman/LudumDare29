@@ -75,6 +75,7 @@ public class Scamp {
 
     public void render(SpriteBatch batch) {
         batch.draw(texture, position * Block.BLOCK_WIDTH, Global.GROUND_LEVEL, SCAMP_SIZE, SCAMP_SIZE);
+        Assets.thoughtBubble.draw(batch, position * Block.BLOCK_WIDTH + 10, Global.GROUND_LEVEL + SCAMP_SIZE, 20, 30);
     }
 
     public boolean isIdle() { return currentState == ScampState.IDLE; }
