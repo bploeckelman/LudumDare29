@@ -24,7 +24,7 @@ public class ResourceManager {
 
     public ResourceManager(World world){
         parentWorld = world;
-        resources = new Resource[parentWorld.gameWidth * parentWorld.gameHeight];
+        resources = new Resource[parentWorld.gameWidth];
         width = world.gameWidth;
         height = world.gameHeight;
     }
@@ -69,37 +69,39 @@ public class ResourceManager {
         return resources[x];
     }
 
+    public Resource getResource(String blockName) {
+        Resource resource = null;
+        String resourceName = null;
+        for(int i = 0; i < resources.length; ++i) {
+            if (resources[i] == null) {
+                continue;
+            } else if (blockName.equals(resources[i].getName())) {
+                resource = resources[i];
+                break;
+            }
+        }
+        return resource;
+    }
+
     public Resource getNewResource(String blockName, int x, int y){
-
         switch(blockName){
-            case "dirt":
-                return new Field(x, y);
-
-            case "stone":
-                return new Quarry(x, y);
-
-            case "iron":
-                return new Mountain(x, y);
-
-            case "acorn":
-                return new Forrest(x, y);
-
-            case "grapes":
-                return new Vinyard(x, y);
-
-            default:
-                return null;
+            case "dirt":   return new Field(x, y);
+            case "stone":  return new Quarry(x, y);
+            case "iron":   return new Mountain(x, y);
+            case "acorn":  return new Forrest(x, y);
+            case "grapes": return new Vinyard(x, y);
+            default:       return null;
         }
     }
 
     public boolean createResource(Block block, int x){
         // set pixel x and y
-        int xpx = x * 64;
-        int ypx = 100 + 64*6;
+        int xpx = x * Block.BLOCK_WIDTH;
+        int ypx = (int) Global.GROUND_LEVEL;
 
         String blockName = block.blockType;
         resources[x] = this.getNewResource(blockName, xpx, ypx);
-        parentWorld.particleSystem.createFountain(xpx + 32, ypx, block.fountainColor);
+        parentWorld.particleSystem.createFountain(xpx + (Block.BLOCK_WIDTH / 2), ypx, block.fountainColor);
 
         return true;
     }

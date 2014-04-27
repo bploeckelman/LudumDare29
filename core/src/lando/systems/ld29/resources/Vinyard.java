@@ -15,4 +15,6 @@ public class Vinyard extends Resource{
 
         this.createSprite(this.img);
     }
+
+    public String getName() { return "vinyard"; }
 }

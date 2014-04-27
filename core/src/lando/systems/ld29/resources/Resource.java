@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.*;
 /**
  * Created by jhoopes on 4/26/14.
  */
-public class Resource {
+public abstract class Resource {
 
     protected Sprite sprite;
     float x;
@@ -56,4 +56,8 @@ public class Resource {
         this.resourceCount = newRCount;
     }
 
+    public float getX() { return x / RESOURCE_WIDTH; }
+    public float getY() { return y / RESOURCE_WIDTH; }
+
+    public abstract String getName();
 }

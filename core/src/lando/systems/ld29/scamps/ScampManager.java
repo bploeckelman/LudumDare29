@@ -1,8 +1,11 @@
 package lando.systems.ld29.scamps;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.Array;
 import lando.systems.ld29.World;
 import lando.systems.ld29.blocks.Block;
+import lando.systems.ld29.core.Assets;
+import lando.systems.ld29.resources.Resource;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -18,18 +21,23 @@ public class ScampManager {
     private static enum ScampPriority {
         FOOD,
         SHELTER,
-        WINE
+        WINE,
+        TEMPLE
     }
 
     private final static int INITIAL_SCAMP_COUNT = 8;
     private final static float DEFAULT_SCAMP_PRIORITY_SCORE = 10;
-    private final static float PRIORITY_RECOMPUTE_TIME = 10;
+    private final static float PRIORITY_RECOMPUTE_TIME = 10; // in seconds
 
     World world;
     ScampResources scampResources;
-    int scampCount = INITIAL_SCAMP_COUNT;
-    Scamp[] scamps;
+    Array<Scamp> scamps;
+
     float accum = 0;
+
+    private Map<ScampPriority, Float> scampPriorityScores = new HashMap<ScampPriority, Float>(
+            ScampPriority.values().length
+    );
 
     public ScampManager(World world) {
         this.world = world;
@@ -37,35 +45,25 @@ public class ScampManager {
         this.placeScamps();
     }
 
-    private Map<ScampPriority, Float> scampPriorityScores = new HashMap<ScampPriority, Float>(
-            ScampPriority.values().length
-    );
-
     /**
      * Places the starting number of scamps in the world.
      * Clears any already existing Scamps, so this should only really be called on startup.
      */
     private void placeScamps() {
-        Random r = new Random( new Date().getTime() );
-        int i;
-        float thisPosition;
-
-        this.scamps = null;
-        this.scamps = new Scamp[INITIAL_SCAMP_COUNT];
-        for (i = 0; i < this.scamps.length; i++) {
-            thisPosition = r.nextFloat() * (this.world.gameWidth - 1) * Block.BLOCK_WIDTH;
-            this.scamps[i] = new Scamp( thisPosition );
+        scamps = new Array<>();
+        for (int i = 0; i < INITIAL_SCAMP_COUNT; i++) {
+            scamps.add(new Scamp( Assets.random.nextInt(world.gameWidth) ));
         }
-
     }
 
     public void update(float dt) {
-        this.accum += dt;
-        if (this.accum > PRIORITY_RECOMPUTE_TIME) {
+        accum += dt;
+        if (accum > PRIORITY_RECOMPUTE_TIME) {
+            accum %= PRIORITY_RECOMPUTE_TIME;
             System.out.println("update() | it's time");
-            this.accum = this.accum % PRIORITY_RECOMPUTE_TIME;
-            this.determinePriorities();
+            determinePriorities();
         }
+
         for(Scamp scamp : scamps) { scamp.update(dt); }
     }
 
@@ -74,54 +72,94 @@ public class ScampManager {
     }
 
     public void determinePriorities() {
-
         System.out.println("determinePriorities | called");
-        float thisPriorityScore;
-
-
-        for (ScampPriority scampPriority : ScampPriority.values()) {
-
-            thisPriorityScore = DEFAULT_SCAMP_PRIORITY_SCORE;
-
-            switch (scampPriority) {
-
+        for (ScampPriority priority: ScampPriority.values()) {
+            switch (priority) {
                 case FOOD:
+                    int foodCount = scampResources.getScampResourceCount(ScampResources.ScampResourceType.FOOD);
                     float foodPriority = 50;
-                    int foodCount = this.scampResources.getScampResourceCount(ScampResources.ScampResourceType.FOOD);
-                    double temp = (foodCount / (this.scampCount * 2));
+
+                    double temp = (foodCount / (scamps.size * 2));
                     if (temp < 1) {
                         temp = (1 - temp) * 50;
                     } else {
                         temp = Math.pow(temp, 2);
                     }
+
                     foodPriority += (int)temp;
+                    scampPriorityScores.put(priority, foodPriority);
                     System.out.println("determinePriorities | foodPriority='" + foodPriority + "'");
-                    this.scampPriorityScores.put(scampPriority, foodPriority);
 
                     break;
 
                 case SHELTER:
                     float shelterPriority = 40;
+                    scampPriorityScores.put(priority, shelterPriority);
+                    System.out.println("determinePriorities | shelterPriority='" + shelterPriority + "'");
                     break;
 
                 case WINE:
+                    float winePriority = 30;
+                    scampPriorityScores.put(priority, winePriority);
+                    System.out.println("determinePriorities | winePriority='" + winePriority + "'");
                     break;
 
+                case TEMPLE:
+                    float templePriority = 5;
+                    scampPriorityScores.put(priority, templePriority);
+                    System.out.println("determinePriorities | templePriority='" + templePriority + "'");
                 default:
-
             }
         }
 
-
-
+        ScampPriority topPriority = getTopScampPriority();
+        Scamp idleScamp = getIdleScamp();
+        if (idleScamp == null) {
+            System.out.println("determinePriorities | no idle scamps available for current top priority '" + topPriority.toString() + "'");
+        } else {
+            switch (topPriority) {
+                case FOOD:
+                    // find a field to harvest from
+                    Resource resource = world.rManager.getResource("field");
+                    if (resource != null) {
+                        idleScamp.setTarget(resource.getX());
+                        idleScamp.setState(Scamp.ScampState.HARVESTING);
+                        System.out.println("determinePriorities | Scamp " + idleScamp.toString() + " now harvesting field at x=" + idleScamp.getBlockTargetPosition());
+                    } else {
+                        // todo: handle case where there are no fields
+                        System.out.println("determinePriorities | top priority is food, but can't find field resource");
+                    }
+                    break;
+                case SHELTER:
+                    break;
+                case WINE:
+                    break;
+                case TEMPLE:
+                    break;
+            }
+        }
     }
 
+    private Scamp getIdleScamp() {
+        for(Scamp scamp : scamps) {
+            if (scamp.isIdle()) {
+                return scamp;
+            }
+        }
+        return null;
+    }
 
+    private ScampPriority getTopScampPriority() {
+        float maxPriority = -999999;
+        ScampPriority topPriority = null;
 
-
-
-
-
-
-
+        for(ScampPriority priority : scampPriorityScores.keySet()) {
+            float thisPriority = scampPriorityScores.get(priority);
+            if (thisPriority > maxPriority) {
+                maxPriority = thisPriority;
+                topPriority = priority;
+            }
+        }
+        return topPriority;
+    }
 }

@@ -30,8 +30,8 @@ public class Block {
 	float targetX;
 	float targetY;
 
-	public static final float BLOCK_SPEED = 3;
-	public static final float BLOCK_WIDTH = 64;
+	public static final int BLOCK_SPEED = 3;
+	public static final int BLOCK_WIDTH = 64;
 
     public String blockType = "F*CK";
     public String toolTipString = "YOU MISSED ME!";
@@ -43,6 +43,9 @@ public class Block {
         setNewPosition(x, y);
         fountainColor = Color.WHITE;
 	}
+
+    public float getX() { return x / BLOCK_WIDTH; }
+    public float getY() { return y / BLOCK_WIDTH; }
 
 	public void setNewPosition(float x, float y){
 		targetX = x;
