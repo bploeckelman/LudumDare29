@@ -42,12 +42,14 @@ public class Block {
     public String blockType = "F*CK";
     public String toolTipString = "YOU MISSED ME!";
     public Color fountainColor;
+    public float cost;
 
 	public Block(float x, float y) {
 		this.x = x;
 		this.y = y;
         setNewPosition(x, y);
         fountainColor = Color.WHITE;
+        cost = -100000;
 	}
 
     public float getX() { return x / BLOCK_WIDTH; }

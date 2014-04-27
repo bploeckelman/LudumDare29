@@ -2,8 +2,10 @@ package lando.systems.ld29;
 
 import lando.systems.ld29.blocks.Block;
 import lando.systems.ld29.core.Assets;
+import lando.systems.ld29.scamps.Scamp;
 import lando.systems.ld29.screens.GameScreen;
 import lando.systems.ld29.util.Config;
+import lando.systems.ld29.util.Utils;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -34,6 +36,7 @@ public class Tooltip {
 	}
 	
 	float offset = 10;
+	Rectangle targetRect = new Rectangle();
 	public void update(float dt){
 		show = false;
 		Vector3 hudClickPoint = GameScreen.hudCamera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
@@ -46,6 +49,15 @@ public class Tooltip {
 			text = under.toolTipString.toUpperCase();
 			show = true;
 		} 
+		
+		for (Scamp scamp : world.scampManager.scamps){
+			targetRect.set(scamp.position * Block.BLOCK_WIDTH, Global.GROUND_LEVEL, 32, 32);
+			if (targetRect.contains(gameClickPoint.x, gameClickPoint.y)){
+				show = true;
+				header = "Scamp";
+				text = "I am a scamp";
+			}
+		}
 		
 		if (show){
 			alpha = Math.min(1, alpha + 2*dt);
@@ -67,12 +79,13 @@ public class Tooltip {
 			
 			rect.set(x , y, width, height);
 		} else {
-			alpha = 0;
+			alpha -= dt * 3;
 		}
+		alpha = Utils.clamp(alpha, 0, 1);
 	}
 	
 	public void render(SpriteBatch batch){
-		if (show){
+		if (true){
 			Color col = new Color(1,1,1,alpha);
 			panel.setColor(col);
 			panel.draw(batch, rect.x, rect.y, rect.width, rect.height);

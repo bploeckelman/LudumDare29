@@ -14,5 +14,6 @@ public class DirtBlock extends Block {
         toolTipString = "useless";
         fountainColor = new Color(.5f, .3f, .1f, 1);
         setSprite(new Sprite(img));
+        cost = 3;
     }
 }

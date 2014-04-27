@@ -14,5 +14,6 @@ public class IronBlock extends Block {
         toolTipString = "You know what to use me for";
         fountainColor = Color.GRAY;
         setSprite(new Sprite(img));
+        cost = 10;
     }
 }

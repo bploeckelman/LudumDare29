@@ -14,5 +14,6 @@ public class AcornBlock extends Block {
         toolTipString = "I want to become a tree!";
         fountainColor = Color.GREEN;
         setSprite(new Sprite(img));
+        cost = 6;
     }
 }

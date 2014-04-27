@@ -28,7 +28,7 @@ public class ScampManager {
     private final static float PRIORITY_RECOMPUTE_TIME = 10; // in seconds
 
     World world;
-    Array<Scamp> scamps;
+    public Array<Scamp> scamps;
     public ScampResources scampResources;
 
     float accum = 0;
@@ -91,6 +91,12 @@ public class ScampManager {
 
     public void determinePriorities() {
         System.out.println("determinePriorities | called");
+
+        updatePriorities();
+        updateScampTask(getIdleScamp(), getTopScampPriority());
+    }
+
+    private void updatePriorities() {
         for (ScampPriority priority: ScampPriority.values()) {
             switch (priority) {
                 case FOOD:
@@ -129,9 +135,9 @@ public class ScampManager {
                 default:
             }
         }
+    }
 
-        ScampPriority topPriority = getTopScampPriority();
-        Scamp idleScamp = getIdleScamp();
+    private void updateScampTask(Scamp idleScamp, ScampPriority topPriority) {
         if (idleScamp == null) {
             System.out.println("determinePriorities | no idle scamps available for current top priority '" + topPriority.toString() + "'");
         } else {
@@ -141,7 +147,7 @@ public class ScampManager {
                     Resource resource = world.rManager.getResource("field");
                     if (resource != null) {
                         idleScamp.setTarget(resource.getX());
-                        idleScamp.setState(Scamp.ScampState.HARVESTING);
+                        idleScamp.setState(ScampState.HARVESTING);
                         idleScamp.setWorkingResource(resource);
                         System.out.println("determinePriorities | Scamp " + idleScamp.toString() + " now harvesting field at x=" + idleScamp.getBlockTargetPosition());
                     } else {
