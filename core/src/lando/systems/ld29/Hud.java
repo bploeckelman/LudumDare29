@@ -49,9 +49,10 @@ public class Hud {
                 Block block = getBlockForCoords(x);
                 if(null != block) {
                 	block.setNewPosition(x, 0);
-                    world.grid.pushUp(block, x);
-                    player.inputDelay = .5f; // Seconds until we can act again.
-                    player.animationTime = 0;
+                    if (world.grid.pushUp(block, x)){
+                    	player.inputDelay = .5f; // Seconds until we can act again.
+                    	player.animationTime = 0;
+                    }
                 }
                 
             }

@@ -51,6 +51,13 @@ public class Block {
 		targetX = x;
 		targetY = y;
 	}
+	
+	public void setRealPosition(float x, float y){
+		targetX = x;
+		targetY = y;
+		this.x = x;
+		this.y = y;
+	}
 
     public void setSprite(Sprite sprite){
         sprite.setSize(BLOCK_WIDTH, BLOCK_WIDTH);
@@ -65,7 +72,9 @@ public class Block {
 		if (dist > Math.abs(targetX - x)){
 			x = targetX;
 		} else {
-			x = x + dist; // TODO: This can't get backwards
+			float sign = 1;
+			if (targetX < x) sign = -1;
+			x = x + sign * dist; // TODO: This can't get backwards
 		}
 		if (dist > Math.abs(targetY - y)){
 			y = targetY;
@@ -79,11 +88,11 @@ public class Block {
 		sprite.setAlpha(amount);
 	}
 	
-	public void render(SpriteBatch batch){
+	public void render(SpriteBatch batch, float xShift){
 		if (y <= 0){
 			sprite.setAlpha(1+ y);
 		}
-		getSprite().setPosition(x * BLOCK_WIDTH, 100 + y * BLOCK_WIDTH);
+		getSprite().setPosition(x * BLOCK_WIDTH + xShift, 100 + y * BLOCK_WIDTH);
 		getSprite().draw(batch);
 	}
 }
