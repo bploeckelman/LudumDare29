@@ -60,7 +60,7 @@ public class Player {
 		skeleton = new Skeleton(skeletonData);
 		skeleton.updateWorldTransform();
 		skeleton.setX(xPos);
-		skeleton.setY(20);
+		skeleton.setY(Global.UNDERGROUND_LEVEL + 4);
 		
 		this.world = world;
 //		sprite = new Sprite(img);
