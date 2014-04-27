@@ -17,4 +17,5 @@ public class Mountain extends Resource{
     }
 
     public String getName() { return "mountain"; }
+    public String resourceName() { return "iron"; }
 }

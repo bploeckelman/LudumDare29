@@ -1,7 +1,9 @@
-package lando.systems.ld29;
+package lando.systems.ld29.resources;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import lando.systems.ld29.Global;
+import lando.systems.ld29.World;
 import lando.systems.ld29.blocks.Block;
 import lando.systems.ld29.resources.*;
 
@@ -30,23 +32,25 @@ public class ResourceManager {
     }
 
     public int takeResource(int pos, int resourcesAsked ){
-        Resource selectedResource = resources[pos];
+        if (resources[pos] == null) return 0;
 
-        int rCount = selectedResource.getResourceCount();
+        int rCount = resources[pos].getResourceCount();
         if(resourcesAsked > rCount){
             resources[pos] = null;
+            parentWorld.particleSystem.addFirework(pos * Block.BLOCK_WIDTH + Block.BLOCK_WIDTH / 2, Global.GROUND_LEVEL);
             return rCount;
         }else{
             int rLeftOver = rCount - resourcesAsked;
             if(rLeftOver == 0){
                 resources[pos] = null;
+                parentWorld.particleSystem.addFirework(pos * Block.BLOCK_WIDTH + Block.BLOCK_WIDTH / 2, Global.GROUND_LEVEL);
             }else{
-                selectedResource.setResourceCount(rLeftOver);
+                resources[pos].setResourceCount(rLeftOver);
             }
             return resourcesAsked;
         }
     }
-    
+
     public void update(float dt){
         for (Resource resource : resources){
             if(resource == null){

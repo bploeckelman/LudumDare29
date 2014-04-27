@@ -10,6 +10,8 @@ public class StoneBlock extends Block {
     public StoneBlock(float x, float y) {
         super(x, y);
         this.blockType = "stone";
+        toolTipString = "another building material";
         setSprite(new Sprite(img));
+        cost = 6;
     }
 }

@@ -2,15 +2,15 @@ package lando.systems.ld29.scamps;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
+import lando.systems.ld29.Global;
 import lando.systems.ld29.World;
-import lando.systems.ld29.blocks.Block;
 import lando.systems.ld29.core.Assets;
 import lando.systems.ld29.resources.Resource;
+import lando.systems.ld29.scamps.Scamp.*;
+import lando.systems.ld29.util.Utils;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
 /**
  * Author: Ian McNamara <ian.mcnamara@doit.wisc.edu>
@@ -30,8 +30,8 @@ public class ScampManager {
     private final static float PRIORITY_RECOMPUTE_TIME = 10; // in seconds
 
     World world;
-    ScampResources scampResources;
-    Array<Scamp> scamps;
+    public Array<Scamp> scamps;
+    public ScampResources scampResources;
 
     float accum = 0;
 
@@ -41,8 +41,8 @@ public class ScampManager {
 
     public ScampManager(World world) {
         this.world = world;
-        this.scampResources = new ScampResources();
         this.placeScamps();
+        this.scampResources = new ScampResources();
     }
 
     /**
@@ -56,6 +56,19 @@ public class ScampManager {
         }
     }
 
+    public Scamp getScampFromPos(float x, float y) {
+        Scamp scamp = null;
+        if (Utils.isBetween(y, Global.GROUND_LEVEL, Global.GROUND_LEVEL + Scamp.SCAMP_SIZE)) {
+            for(Scamp s : scamps) {
+                if (Utils.isBetween(x, s.getPixelPosition(), s.getPixelPosition() + Scamp.SCAMP_SIZE)) {
+                    scamp = s;
+                    break;
+                }
+            }
+        }
+        return scamp;
+    }
+
     public void update(float dt) {
         accum += dt;
         if (accum > PRIORITY_RECOMPUTE_TIME) {
@@ -64,15 +77,41 @@ public class ScampManager {
             determinePriorities();
         }
 
-        for(Scamp scamp : scamps) { scamp.update(dt); }
+        for(Scamp scamp : scamps) {
+            scamp.update(dt);
+            doGather(scamp);
+        }
     }
 
     public void renderScamps(SpriteBatch batch) {
         for(Scamp scamp : scamps) { scamp.render(batch); }
     }
 
+    private void doGather(Scamp scamp) {
+        if (scamp.workingResource == null) return;
+        if (scamp.isGatherReady()) {
+            int numResourcesGathered = world.rManager.takeResource((int) scamp.workingResource.getX(), 1);
+            if (numResourcesGathered > 0) {
+                scampResources.addScampResources(scampResources.getType(scamp.workingResource.resourceName()), numResourcesGathered);
+                System.out.println("update() | scamp " + scamp.toString() + " gathered " + numResourcesGathered + " resources of type '" + scamp.workingResource.resourceName() + "'");
+            } else {
+                scamp.setWorkingResource(null);
+                scamp.setState(ScampState.IDLE);
+                scamp.setTarget(Assets.random.nextInt(World.gameWidth));
+                scamp.atTarget = false;
+            }
+            scamp.didGather();
+        }
+    }
+
     public void determinePriorities() {
         System.out.println("determinePriorities | called");
+
+        updatePriorities();
+        updateScampTask(getIdleScamp(), getTopScampPriority());
+    }
+
+    private void updatePriorities() {
         for (ScampPriority priority: ScampPriority.values()) {
             switch (priority) {
                 case FOOD:
@@ -111,9 +150,9 @@ public class ScampManager {
                 default:
             }
         }
+    }
 
-        ScampPriority topPriority = getTopScampPriority();
-        Scamp idleScamp = getIdleScamp();
+    private void updateScampTask(Scamp idleScamp, ScampPriority topPriority) {
         if (idleScamp == null) {
             System.out.println("determinePriorities | no idle scamps available for current top priority '" + topPriority.toString() + "'");
         } else {
@@ -123,7 +162,8 @@ public class ScampManager {
                     Resource resource = world.rManager.getResource("field");
                     if (resource != null) {
                         idleScamp.setTarget(resource.getX());
-                        idleScamp.setState(Scamp.ScampState.HARVESTING);
+                        idleScamp.setState(ScampState.HARVESTING);
+                        idleScamp.setWorkingResource(resource);
                         System.out.println("determinePriorities | Scamp " + idleScamp.toString() + " now harvesting field at x=" + idleScamp.getBlockTargetPosition());
                     } else {
                         // todo: handle case where there are no fields
@@ -162,4 +202,5 @@ public class ScampManager {
         }
         return topPriority;
     }
+
 }

@@ -6,14 +6,15 @@ import com.badlogic.gdx.math.Vector3;
 
 import lando.systems.ld29.blocks.Block;
 import lando.systems.ld29.core.Assets;
+import lando.systems.ld29.resources.ResourceManager;
 import lando.systems.ld29.scamps.ScampManager;
 import lando.systems.ld29.screens.GameScreen;
 import lando.systems.ld29.structures.StructureManager;
 
 public class World {
 
-	public GameGrid grid;
-	public Player player;
+    public GameGrid grid;
+    public Player player;
     public Hud hud;
 
 	public DayCycle dayCycle;
@@ -22,34 +23,33 @@ public class World {
     public StructureManager structureManager;
     public ParticleSystem particleSystem;
 
-	public static final int gameWidth = 30;
-	public static final int gameHeight = 6;
+    public static final int gameWidth = 30;
+    public static final int gameHeight = 5;
 
+    public World() {
 
-	public World() {
-
-		grid = new GameGrid(this);
-		dayCycle = new DayCycle(this);
-		player = new Player(this);
+        grid = new GameGrid(this);
+        dayCycle = new DayCycle(this);
+        player = new Player(this);
         hud = new Hud(this);
-		dayCycle.Scale = 50;
+        dayCycle.Scale = 50;
         rManager = new ResourceManager(this);
         scampManager = new ScampManager(this);
         structureManager = new StructureManager(this);
         particleSystem = new ParticleSystem();
-	}
+    }
 
-	public void update(float dt){
-		// It is getting too late in the night  remove all of this
-		Vector3 clickPoint = GameScreen.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
-		particleSystem.fuckingCrazy(clickPoint.x, clickPoint.y, 30);
-		if (Assets.random.nextFloat() > .99){
-			particleSystem.addFirework(Assets.random.nextFloat() * World.gameWidth * 64, 100 + Block.BLOCK_WIDTH * 6);
-		}
-		// To here
-		grid.update(dt);
-		dayCycle.update(dt);
-		player.update(dt);
+    public void update(float dt){
+        // It is getting too late in the night  remove all of this
+//        Vector3 clickPoint = GameScreen.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
+//        particleSystem.fuckingCrazy(clickPoint.x, clickPoint.y, 30);
+//        if (Assets.random.nextFloat() > .99){
+//            particleSystem.addFirework(Assets.random.nextFloat() * World.gameWidth * 64, 100 + Block.BLOCK_WIDTH * 6);
+//        }
+        // To here
+        grid.update(dt);
+        dayCycle.update(dt);
+        player.update(dt);
         scampManager.update(dt);
         rManager.update(dt);
         structureManager.update(dt);
@@ -69,21 +69,21 @@ public class World {
 		// Draw AI Layer
         scampManager.renderScamps(batch);
 
-		// Draw Grid
-		grid.render(batch);
-		
-		// Draw Player
-		player.render(batch);
-		
-		particleSystem.render(batch);
+        // Draw Grid
+        grid.render(batch);
+
+        // Draw Player
+        player.render(batch);
+
+        particleSystem.render(batch);
 
         batch.end();
         hudBatch.begin();
         // Draw Hud
         hud.render(hudBatch);
-
-	    hudBatch.end();
+        
+        hudBatch.end();
         batch.begin();
-	}
-	
+    }
+
 }

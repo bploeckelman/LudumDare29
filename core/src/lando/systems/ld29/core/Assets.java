@@ -1,9 +1,11 @@
 package lando.systems.ld29.core;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.*;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -30,7 +32,16 @@ public class Assets {
     public static int num_scamps;
 
     public static NinePatch panelBrown;
+    public static NinePatch thoughtBubble;
+    
+    public static BitmapFont gameFont;
+    public static BitmapFont TooltipHeaderFont;
+    public static BitmapFont TooltipTextFont;
 
+    public static BitmapFont HUDFont;
+
+    public static String[] scampNames;
+    
     //public static Sound sound;
     //public static Music music;
 
@@ -84,7 +95,25 @@ public class Assets {
             new Texture("art/panel_brown.png"),
             10, 10, 10 , 10
         );
+        
+
         panelBrown.setColor(new Color(153, 102, 51, 1));
+        
+        thoughtBubble = new NinePatch(
+                new Texture("art/thought.png"),
+                4, 5, 4 , 9
+            );
+        
+        gameFont = new BitmapFont(Gdx.files.internal("fonts/ariel.fnt"),Gdx.files.internal("fonts/ariel.png"),false);
+        TooltipHeaderFont = new BitmapFont(Gdx.files.internal("fonts/ariel.fnt"),Gdx.files.internal("fonts/ariel.png"),false);
+
+        TooltipTextFont = new BitmapFont(Gdx.files.internal("fonts/ariel.fnt"),Gdx.files.internal("fonts/ariel.png"),false);
+        TooltipTextFont.setScale(.7f);
+       
+        HUDFont = new BitmapFont(Gdx.files.internal("fonts/ariel.fnt"),Gdx.files.internal("fonts/ariel.png"),false);
+        HUDFont.setScale(.5f);
+        
+        scampNames = Gdx.files.internal("text/scamp-names.txt").readString().split("\r\n|\r|\n");
     }
 
     public static void dispose() {
@@ -94,6 +123,10 @@ public class Assets {
 //        music.dispose();
         batch.dispose();
         hudBatch.dispose();
+    }
+
+    public static String randomName() {
+        return scampNames[random.nextInt(scampNames.length)];
     }
 
 }

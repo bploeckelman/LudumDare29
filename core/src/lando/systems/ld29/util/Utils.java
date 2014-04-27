@@ -7,4 +7,8 @@ public class Utils {
         return Math.max(Math.min(value, max), min);
     }
 
+    public static boolean isBetween(float value, float lower, float upper) {
+        return (value >= lower && value <= upper);
+    }
+
 }

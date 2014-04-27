@@ -11,7 +11,9 @@ public class AcornBlock extends Block {
     public AcornBlock(float x, float y) {
         super(x, y);
         this.blockType = "acorn";
+        toolTipString = "I want to become a tree!";
         fountainColor = Color.GREEN;
         setSprite(new Sprite(img));
+        cost = 6;
     }
 }

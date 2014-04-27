@@ -95,8 +95,10 @@ public class DayCycle
 		skySprite.setColor(_color);
 	    skySprite.draw(batch);
 		
-		float sunX = ((_time - 120) / 640) * _world.gameWidth * 64;
-		sunSprite.setPosition(sunX, 600);
+		float sunX = ((_time) / 900) * World.gameWidth * 64 ; 
+		float sunY =   400 + (float) (250 * Math.sin((sunX)  * Math.PI / (World.gameWidth * 64)));
+		
+		sunSprite.setPosition(sunX, sunY);
 		sunSprite.draw(batch);
 	}
 }

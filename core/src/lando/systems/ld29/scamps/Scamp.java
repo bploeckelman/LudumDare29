@@ -7,6 +7,8 @@ import lando.systems.ld29.Global;
 import lando.systems.ld29.World;
 import lando.systems.ld29.blocks.Block;
 import lando.systems.ld29.core.Assets;
+import lando.systems.ld29.resources.Resource;
+import lando.systems.ld29.util.Utils;
 
 /**
  * Author: Ian McNamara <ian.mcnamara@doit.wisc.edu>
@@ -16,6 +18,7 @@ public class Scamp {
 
     public static final int SCAMP_SIZE = 32;
     public static final float SCAMP_SPEED = 1.0f;
+    public static final float GATHER_RATE = 5f; // in seconds
 
     public enum ScampState {
         IDLE,
@@ -26,55 +29,75 @@ public class Scamp {
     }
 
     int skinID;
-    float position;
+    public float position;
     float targetPosition;
+    float gatherAccum;
 
     boolean walkRight;
+    boolean gatherReady;
 
+    String name;
+    Resource workingResource;
     TextureRegion texture;
     ScampState currentState = ScampState.IDLE;
 
     public Scamp(float startingPosition) {
+        this.name = Assets.randomName();
         this.position = startingPosition;
         this.targetPosition = Assets.random.nextInt(World.gameWidth);
-        // TODO : each scamp should have a unique skin, duplicates will end up facing the wrong direction
+        this.walkRight = isWalkingRight();
+
         this.skinID = Assets.random.nextInt(Assets.num_scamps);
-        this.walkRight = (targetPosition - position) >= 0;
         this.texture = Assets.scamps.get(skinID);
-        if(!walkRight) texture.flip(true, false);
+
+        this.workingResource = null;
+        this.gatherAccum = 0f;
+        this.gatherReady = false;
     }
 
-    boolean atTarget = false;
+    public boolean atTarget = false;
     public void update(float dt) {
-        // If we've reached the target, acquire a new target
-        if((walkRight && position >= targetPosition) || (!walkRight && position <= targetPosition)) {
+        // Have we reached our target yet?
+        if( Utils.isBetween(position, targetPosition - 0.2f, targetPosition + 0.8f) ) {
             atTarget = true;
 
-            // If idling, move around randomly
+            // If idling, pick a new random target position
             if (currentState == ScampState.IDLE) {
-                targetPosition = Assets.random.nextInt(World.gameWidth);
                 atTarget = false;
+                targetPosition = Assets.random.nextInt(World.gameWidth);
             } else {
-                System.out.println("non-idle scamp " + this.toString() + " arrived at target: target(" + targetPosition + "), pos(" + position + ")");
+                if (!atTarget) {
+                    System.out.println("non-idle scamp " + this.toString()
+                            + " arrived at target: target(" + targetPosition + "), "
+                            + "pos(" + position + ")");
+                }
             }
 
-            // todo : won't always be turning around
-            texture.flip(true, false);
-
-            // todo : walkRight will be based on new targetPosition
-            walkRight = !walkRight;
-
+            walkRight = isWalkingRight();
         }
 
         if (!atTarget) {
             // Move you sluggard!
             position += (walkRight ? SCAMP_SPEED : -SCAMP_SPEED) * dt;
+        } else {
+            // Update gathering timer/state
+            gatherAccum += dt;
+            if (gatherAccum > GATHER_RATE) {
+                gatherAccum %= GATHER_RATE;
+                gatherReady = true;
+            }
         }
     }
 
 
     public void render(SpriteBatch batch) {
-        batch.draw(texture, position * Block.BLOCK_WIDTH, Global.GROUND_LEVEL, SCAMP_SIZE, SCAMP_SIZE);
+        batch.draw(texture.getTexture(),
+                position * Block.BLOCK_WIDTH, Global.GROUND_LEVEL,    // screen position x,y
+                SCAMP_SIZE, SCAMP_SIZE,                               // pixel width/height
+                texture.getRegionX(), texture.getRegionY(),           // texel x,y
+                texture.getRegionWidth(), texture.getRegionHeight(),  // texel w,h
+                !walkRight, false);                                   // flipx, flipy
+        Assets.thoughtBubble.draw(batch, position * Block.BLOCK_WIDTH , Global.GROUND_LEVEL + SCAMP_SIZE, SCAMP_SIZE, 30);
     }
 
     public boolean isIdle() { return currentState == ScampState.IDLE; }
@@ -82,6 +105,11 @@ public class Scamp {
     public boolean isSleeping() { return currentState == ScampState.SLEEPING; }
     public boolean isMurdering() { return currentState == ScampState.MURDERING; }
     public boolean isHarvesting() { return currentState == ScampState.HARVESTING; }
+
+    public boolean isWalkingRight() { return (targetPosition - position >= 0); }
+
+    public void didGather() { gatherReady = false; }
+    public boolean isGatherReady() { return gatherReady; }
 
     public void setState(ScampState state) { currentState = state; }
 
@@ -113,6 +141,24 @@ public class Scamp {
 
         this.skinID = skinID;
         this.texture = temp;
+    }
+
+    public Resource getWorkingResource() { return workingResource; }
+    public void setWorkingResource(Resource resource) { workingResource = resource; }
+
+    public String toString() {
+        return name;
+    }
+
+    public String getCurrentStateName() {
+        switch(currentState) {
+            case IDLE:       return "Idling";
+            case HARVESTING: return "Harvesting";
+            case EATING:     return "Eating";
+            case SLEEPING:   return "Sleeping";
+            case MURDERING:  return "Murdering!!";
+            default:         return "???";
+        }
     }
 
 }

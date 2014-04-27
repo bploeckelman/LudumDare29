@@ -3,12 +3,15 @@ package lando.systems.ld29.blocks;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.*;
+
+import lando.systems.ld29.Global;
+import lando.systems.ld29.World;
 import lando.systems.ld29.core.Assets;
 
 public class Block {
 
     public static Block getRandomBlock(float x, float y){
-        switch (Assets.random.nextInt(5)) {
+        switch (Assets.random.nextInt(20)) {
             case 0:
                 return new DirtBlock(x, y);
             case 1:
@@ -19,8 +22,11 @@ public class Block {
                 return new AcornBlock(x, y);
             case 4:
                 return new GrapesBlock(x, y);
+            default:
+            	return new DirtBlock(x, y);
+            	
         }
-        return null;
+        
     }
 
 	private Sprite sprite;
@@ -33,14 +39,17 @@ public class Block {
 	public static final int BLOCK_SPEED = 3;
 	public static final int BLOCK_WIDTH = 64;
 
-    public String blockType;
+    public String blockType = "F*CK";
+    public String toolTipString = "YOU MISSED ME!";
     public Color fountainColor;
+    public float cost;
 
 	public Block(float x, float y) {
 		this.x = x;
 		this.y = y;
         setNewPosition(x, y);
         fountainColor = Color.WHITE;
+        cost = -100000;
 	}
 
     public float getX() { return x / BLOCK_WIDTH; }
@@ -49,6 +58,13 @@ public class Block {
 	public void setNewPosition(float x, float y){
 		targetX = x;
 		targetY = y;
+	}
+	
+	public void setRealPosition(float x, float y){
+		targetX = x;
+		targetY = y;
+		this.x = x;
+		this.y = y;
 	}
 
     public void setSprite(Sprite sprite){
@@ -64,7 +80,9 @@ public class Block {
 		if (dist > Math.abs(targetX - x)){
 			x = targetX;
 		} else {
-			x = x + dist; // TODO: This can't get backwards
+			float sign = 1;
+			if (targetX < x) sign = -1;
+			x = x + sign * dist; // TODO: This can't get backwards
 		}
 		if (dist > Math.abs(targetY - y)){
 			y = targetY;
@@ -78,11 +96,11 @@ public class Block {
 		sprite.setAlpha(amount);
 	}
 	
-	public void render(SpriteBatch batch){
+	public void render(SpriteBatch batch, float xShift){
 		if (y <= 0){
 			sprite.setAlpha(1+ y);
 		}
-		getSprite().setPosition(x * BLOCK_WIDTH, 100 + y * BLOCK_WIDTH);
+		getSprite().setPosition(x * BLOCK_WIDTH + xShift, Global.UNDERGROUND_HEIGHT + y * BLOCK_WIDTH);
 		getSprite().draw(batch);
 	}
 }

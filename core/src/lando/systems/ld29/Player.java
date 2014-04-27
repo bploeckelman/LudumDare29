@@ -37,6 +37,8 @@ public class Player {
 	Animation pickAnimation;
 	float animationTime = 0;
 	
+	public float belief;
+	
 	public Player(World world) {
 		renderer = new SkeletonRenderer();
 		renderer.setPremultipliedAlpha(false);
@@ -58,7 +60,7 @@ public class Player {
 		skeleton = new Skeleton(skeletonData);
 		skeleton.updateWorldTransform();
 		skeleton.setX(xPos);
-		skeleton.setY(20);
+		skeleton.setY(Global.UNDERGROUND_LEVEL + 4);
 		
 		this.world = world;
 //		sprite = new Sprite(img);
@@ -80,7 +82,7 @@ public class Player {
 					xTarget++;
 					animationTime = 0;
 				}
-				xTarget = Math.min(world.gameWidth-1, Math.max(xTarget, 0));
+				xTarget = Math.min(World.gameWidth-1, Math.max(xTarget, 0));
 			}
 		} else {
 			float dist = SPEED * dt;
@@ -99,14 +101,20 @@ public class Player {
 		inputDelay = Math.max(0, inputDelay - dt);
 		xPos = Utils.clamp(xPos, 0, world.gameWidth-1);
 		animationTime += dt;
+		belief += 1 * dt;
+		belief = Utils.clamp(belief, 0, 100);
+		
 	}
 	
+	public void addBelief(float amount) {
+		belief = Math.min(100, belief + amount);
+	}
 	
 	public void render(SpriteBatch batch){
 //		sprite.setPosition(xPos * 64, 10);
 //		sprite.draw(batch);
 		if (inputDelay > 0){
-			pickAnimation.apply(skeleton, animationTime, animationTime, true, events);
+			pickAnimation.apply(skeleton, animationTime/2.0f, animationTime/2.0f, true, events);
 		} else if (xTarget == xPos){
 			idleAnimation.apply(skeleton, animationTime, animationTime, true, events);
 		} else if (xTarget < xPos){
