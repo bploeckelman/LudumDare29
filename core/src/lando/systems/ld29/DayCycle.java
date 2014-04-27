@@ -6,6 +6,8 @@ import lando.systems.ld29.util.Config;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
@@ -24,11 +26,16 @@ public class DayCycle
 	
 	public float Scale = 1.0f;
 	
+	private static Texture sunTex = new Texture("art/sky/sun.png");
+	private final Sprite sunSprite;
+	
 	private World _world;
 
 	public DayCycle(World world) {
 		_world = world;
 		setTime(60); // 7 am
+		sunSprite = new Sprite(sunTex);
+		sunSprite.setSize(64,64);
 	}
 	
 	public void setTime(float time) {
@@ -75,5 +82,8 @@ public class DayCycle
 		Assets.shapes.end();
 		
 		batch.begin();
+		float sunX = ((_time - 120) / 640) * _world.gameWidth * 64;
+		sunSprite.setPosition(sunX, 600);
+		sunSprite.draw(batch);
 	}
 }
