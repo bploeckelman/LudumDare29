@@ -16,6 +16,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Rectangle;
 import lando.systems.ld29.LudumDare29;
 import lando.systems.ld29.World;
+import lando.systems.ld29.blocks.Block;
 import lando.systems.ld29.core.Assets;
 import lando.systems.ld29.scamps.ScampManager;
 import lando.systems.ld29.util.Config;
@@ -65,7 +66,8 @@ public class GameScreen implements Screen {
 
         // Upate Camera
         //camera.position.x = world.player.xPos * 64;
-        camera.position.x = Utils.clamp((world.player.xPos+.5f) * 64, Config.window_half_width, world.gameWidth * 64 - Config.window_half_width);
+        camera.position.x = Utils.clamp((world.player.xPos+.5f) * Block.BLOCK_WIDTH,
+                Config.window_half_width, world.gameWidth * Block.BLOCK_WIDTH - Config.window_half_width);
         camera.update();
         accum += dt;
     }

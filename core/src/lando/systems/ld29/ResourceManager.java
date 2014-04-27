@@ -85,12 +85,12 @@ public class ResourceManager {
 
     public boolean createResource(Block block, int x){
         // set pixel x and y
-        int xpx = x * 64;
-        int ypx = 100 + 64*6;
+        int xpx = x * Block.BLOCK_WIDTH;
+        int ypx = 100 + Block.BLOCK_WIDTH * World.gameWidth;
 
         String blockName = block.blockType;
         resources[x] = this.getNewResource(blockName, xpx, ypx);
-        parentWorld.particleSystem.createFountain(xpx + 32, ypx, block.fountainColor);
+        parentWorld.particleSystem.createFountain(xpx + (Block.BLOCK_WIDTH / 2), ypx, block.fountainColor);
 
         return true;
     }

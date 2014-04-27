@@ -30,8 +30,8 @@ public class Block {
 	float targetX;
 	float targetY;
 
-	public static final float BLOCK_SPEED = 3;
-	public static final float BLOCK_WIDTH = 64;
+	public static final int BLOCK_SPEED = 3;
+	public static final int BLOCK_WIDTH = 64;
 
     public String blockType;
     public Color fountainColor;
