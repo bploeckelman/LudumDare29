@@ -95,11 +95,7 @@ public class GameScreen implements Screen {
         Gdx.gl20.glClearColor(0, 0, 0, 1);
         Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
         
-        Assets.shapes.begin(ShapeType.Filled);
-        drawShapes();
-        Assets.shapes.identity();
-        Assets.shapes.end();
-        
+      
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
         world.render(batch, hudBatch);
@@ -119,28 +115,6 @@ public class GameScreen implements Screen {
         
     }
 
-    private float rot = 0f;
-    private Color bgcolor = new Color(0.53f, 0.81f, 0.92f, 1);
-    private void drawShapes() {
-        Rectangle r = new Rectangle(Config.window_half_width / 2, -40,
-                Config.window_half_width, Config.window_height + 80);
-
-        float boxWidth = 50;
-        float boxHeight = 50;
-        float x = r.x + (r.width/2);
-        float y = r.y + (r.height/2);
-        rot -= 15f;
-
-        Assets.shapes.identity();
-
-        Assets.shapes.setColor(bgcolor);
-        Assets.shapes.rect(r.x, r.y, r.width, r.height);
-
-        Assets.shapes.setColor(Color.RED);
-        Assets.shapes.translate(x, y, 0);
-        Assets.shapes.rotate(0,0,1,rot);
-        Assets.shapes.rect(-boxWidth/2, -boxHeight/2, boxWidth, boxHeight);
-    }
 
     @Override
     public void resize(int width, int height) {

@@ -25,7 +25,7 @@ public class GameGrid {
 		blocks = new Block[World.gameWidth * World.gameHeight];
 		width = World.gameWidth;
 		height = World.gameHeight;
-		caveTex.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		caveTex.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
 		// TODO: make this more awesome?
 		for (int y = 0; y < World.gameHeight ; y++){
 			for (int x =0; x < World.gameWidth; x++)

@@ -28,7 +28,7 @@ public class ScampManager {
     private final static float PRIORITY_RECOMPUTE_TIME = 10; // in seconds
 
     World world;
-    Array<Scamp> scamps;
+    public Array<Scamp> scamps;
     public ScampResources scampResources;
 
     float accum = 0;

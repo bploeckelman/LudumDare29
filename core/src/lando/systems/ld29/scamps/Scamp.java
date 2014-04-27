@@ -28,7 +28,7 @@ public class Scamp {
     }
 
     int skinID;
-    float position;
+    public float position;
     float targetPosition;
     float gatherAccum;
 
