@@ -20,7 +20,6 @@ public class Scamp {
     public static final float SCAMP_SPEED = 1.0f;
     public static final float GATHER_RATE = 5f; // in seconds
 
-    // TODO : add traveling state
     public enum ScampState {
         IDLE,
         HARVESTING,
@@ -59,7 +58,7 @@ public class Scamp {
     public boolean atTarget = false;
     public void update(float dt) {
         // Have we reached our target yet?
-        if( Utils.isBetween(position, targetPosition - 0.2f, targetPosition + 0.2f) ) {
+        if( Utils.isBetween(position, targetPosition - 0.2f, targetPosition + 0.8f) ) {
             atTarget = true;
 
             // If idling, pick a new random target position
