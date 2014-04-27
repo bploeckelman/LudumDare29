@@ -43,11 +43,9 @@ public class Scamp {
         this.position = startingPosition;
         this.targetPosition = Assets.random.nextInt(World.gameWidth);
 
-        // TODO : each scamp should have a unique skin, duplicates will end up facing the wrong direction
         this.skinID = Assets.random.nextInt(Assets.num_scamps);
         this.walkRight = (targetPosition - position) >= 0;
         this.texture = Assets.scamps.get(skinID);
-        if(!walkRight) texture.flip(true, false);
 
         this.workingResource = null;
         this.gatherAccum = 0f;
@@ -68,9 +66,6 @@ public class Scamp {
                 System.out.println("non-idle scamp " + this.toString() + " arrived at target: target(" + targetPosition + "), pos(" + position + ")");
             }
 
-            // todo : won't always be turning around
-            texture.flip(true, false);
-
             // todo : walkRight will be based on new targetPosition
             walkRight = !walkRight;
         }
@@ -89,8 +84,12 @@ public class Scamp {
 
 
     public void render(SpriteBatch batch) {
-        // todo : flip drawing instead of flipping texture
-        batch.draw(texture, position * Block.BLOCK_WIDTH, Global.GROUND_LEVEL, SCAMP_SIZE, SCAMP_SIZE);
+        batch.draw(texture.getTexture(),
+                position * Block.BLOCK_WIDTH, Global.GROUND_LEVEL,    // screen position x,y
+                SCAMP_SIZE, SCAMP_SIZE,                               // pixel width/height
+                texture.getRegionX(), texture.getRegionY(),           // texel x,y
+                texture.getRegionWidth(), texture.getRegionHeight(),  // texel w,h
+                !walkRight, false);                                   // flipx, flipy
         Assets.thoughtBubble.draw(batch, position * Block.BLOCK_WIDTH , Global.GROUND_LEVEL + SCAMP_SIZE, SCAMP_SIZE, 30);
     }
 
