@@ -14,4 +14,6 @@ public class Quarry extends Resource {
 
         this.createSprite(this.img);
     }
+
+    public String getName() { return "quarry"; }
 }

@@ -15,4 +15,6 @@ public class Mountain extends Resource{
 
         this.createSprite(this.img);
     }
+
+    public String getName() { return "mountain"; }
 }

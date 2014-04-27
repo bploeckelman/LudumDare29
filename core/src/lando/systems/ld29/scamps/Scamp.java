@@ -37,37 +37,61 @@ public class Scamp {
     public Scamp(float startingPosition) {
         this.position = startingPosition;
         this.targetPosition = Assets.random.nextInt(World.gameWidth);
+        // TODO : each scamp should have a unique skin, duplicates will end up facing the wrong direction
         this.skinID = Assets.random.nextInt(Assets.num_scamps);
         this.walkRight = (targetPosition - position) >= 0;
         this.texture = Assets.scamps.get(skinID);
         if(!walkRight) texture.flip(true, false);
     }
 
+    boolean atTarget = false;
     public void update(float dt) {
         // If we've reached the target, acquire a new target
         if((walkRight && position >= targetPosition) || (!walkRight && position <= targetPosition)) {
-            // todo : base this on available resources
-            targetPosition = Assets.random.nextInt(World.gameWidth);
+            atTarget = true;
+
+            // If idling, move around randomly
+            if (currentState == ScampState.IDLE) {
+                targetPosition = Assets.random.nextInt(World.gameWidth);
+                atTarget = false;
+            } else {
+                System.out.println("non-idle scamp " + this.toString() + " arrived at target: target(" + targetPosition + "), pos(" + position + ")");
+            }
 
             // todo : won't always be turning around
             texture.flip(true, false);
 
             // todo : walkRight will be based on new targetPosition
             walkRight = !walkRight;
+
         }
 
-        // Move you sluggard!
-        position += (walkRight ? SCAMP_SPEED : -SCAMP_SPEED) * dt;
+        if (!atTarget) {
+            // Move you sluggard!
+            position += (walkRight ? SCAMP_SPEED : -SCAMP_SPEED) * dt;
+        }
     }
+
 
     public void render(SpriteBatch batch) {
         batch.draw(texture, position * Block.BLOCK_WIDTH, Global.GROUND_LEVEL, SCAMP_SIZE, SCAMP_SIZE);
     }
 
-    public int getBlockPosition() { return (int) Math.floor(position); }
-    public float getPixelPosition() { return position * Block.BLOCK_WIDTH; }
+    public boolean isIdle() { return currentState == ScampState.IDLE; }
+    public boolean isEating() { return currentState == ScampState.EATING; }
+    public boolean isSleeping() { return currentState == ScampState.SLEEPING; }
+    public boolean isMurdering() { return currentState == ScampState.MURDERING; }
+    public boolean isHarvesting() { return currentState == ScampState.HARVESTING; }
 
+    public void setState(ScampState state) { currentState = state; }
+
+    public void setTarget(float position) { this.targetPosition = position; }
+    public void setTarget(Block block) { this.targetPosition = block.getX(); }
+
+    public int getBlockPosition() { return (int) Math.floor(position); }
     public int getBlockTargetPosition() { return (int) Math.floor(targetPosition); }
+
+    public float getPixelPosition() { return position * Block.BLOCK_WIDTH; }
     public float getPixelTargetPosition() { return targetPosition * Block.BLOCK_WIDTH; }
 
     public int getSkinID() { return skinID; }

@@ -15,4 +15,7 @@ public class Field extends Resource {
 
         this.createSprite(this.img);
     }
+
+    public String getName() { return "field"; }
+
 }

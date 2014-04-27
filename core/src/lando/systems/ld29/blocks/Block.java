@@ -43,6 +43,9 @@ public class Block {
         fountainColor = Color.WHITE;
 	}
 
+    public float getX() { return x / BLOCK_WIDTH; }
+    public float getY() { return y / BLOCK_WIDTH; }
+
 	public void setNewPosition(float x, float y){
 		targetX = x;
 		targetY = y;

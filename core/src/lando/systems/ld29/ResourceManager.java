@@ -69,6 +69,20 @@ public class ResourceManager {
         return resources[x];
     }
 
+    public Resource getResource(String blockName) {
+        Resource resource = null;
+        String resourceName = null;
+        for(int i = 0; i < resources.length; ++i) {
+            if (resources[i] == null) {
+                continue;
+            } else if (blockName.equals(resources[i].getName())) {
+                resource = resources[i];
+                break;
+            }
+        }
+        return resource;
+    }
+
     public Resource getNewResource(String blockName, int x, int y){
 
         switch(blockName){
