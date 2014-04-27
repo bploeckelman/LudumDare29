@@ -1,0 +1,26 @@
+
+anim.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+head
+  rotate: false
+  xy: 2, 2
+  size: 48, 48
+  orig: 50, 50
+  offset: 1, 1
+  index: -1
+line
+  rotate: true
+  xy: 52, 30
+  size: 20, 50
+  orig: 20, 50
+  offset: 0, 0
+  index: -1
+template
+  rotate: false
+  xy: 52, 5
+  size: 15, 23
+  orig: 24, 25
+  offset: 4, 1
+  index: -1
