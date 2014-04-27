@@ -8,7 +8,7 @@ import lando.systems.ld29.core.Assets;
 public class Block {
 
     public static Block getRandomBlock(float x, float y){
-        switch (Assets.random.nextInt(5)) {
+        switch (Assets.random.nextInt(20)) {
             case 0:
                 return new DirtBlock(x, y);
             case 1:
@@ -19,8 +19,11 @@ public class Block {
                 return new AcornBlock(x, y);
             case 4:
                 return new GrapesBlock(x, y);
+            default:
+            	return new DirtBlock(x, y);
+            	
         }
-        return null;
+        
     }
 
 	private Sprite sprite;

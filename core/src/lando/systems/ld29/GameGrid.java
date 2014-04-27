@@ -22,15 +22,15 @@ public class GameGrid {
 
 	public GameGrid(World world){
 		parentWorld = world;
-		blocks = new Block[parentWorld.gameWidth * parentWorld.gameHeight];
-		width = world.gameWidth;
-		height = world.gameHeight;
+		blocks = new Block[World.gameWidth * World.gameHeight];
+		width = World.gameWidth;
+		height = World.gameHeight;
 		caveTex.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		// TODO: make this more awesome?
-		for (int y = 0; y < parentWorld.gameHeight ; y++){
-			for (int x =0; x < parentWorld.gameWidth; x++)
+		for (int y = 0; y < World.gameHeight ; y++){
+			for (int x =0; x < World.gameWidth; x++)
 			{
-				blocks[x +(parentWorld.gameWidth * y)] = Block.getRandomBlock(x, y);
+				blocks[x +(World.gameWidth * y)] = Block.getRandomBlock(x, y);
 			}
 		}
 	}
@@ -122,7 +122,7 @@ public class GameGrid {
 	}
 	
 	public boolean pushUp(Block newBlock, int x){
-		if (earthQuakeTime > 0) return false;
+		if (earthQuakeTime > EARTHQUAKEMAXTIME/2) return false;
 		// Pop up what was on the top
 		pushedOutBlock = blocks[x + (height -1) * width];
 		pushedTimer = pushedDelay;
