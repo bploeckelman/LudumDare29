@@ -95,7 +95,7 @@ public class ResourceManager {
     public boolean createResource(Block block, int x){
         // set pixel x and y
         int xpx = x * Block.BLOCK_WIDTH;
-        int ypx = 100 + Block.BLOCK_WIDTH * World.gameWidth;
+        int ypx = (int) Global.GROUND_LEVEL;
 
         String blockName = block.blockType;
         resources[x] = this.getNewResource(blockName, xpx, ypx);
