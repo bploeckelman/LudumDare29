@@ -9,7 +9,7 @@ public class AcornBlock extends Block {
 
     public AcornBlock(float x, float y) {
         super(x, y);
-
+        this.blockType = "acorn";
         setSprite(new Sprite(img));
     }
 }

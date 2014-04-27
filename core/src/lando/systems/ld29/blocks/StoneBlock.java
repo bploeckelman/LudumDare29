@@ -9,7 +9,7 @@ public class StoneBlock extends Block {
 
     public StoneBlock(float x, float y) {
         super(x, y);
-
+        this.blockType = "stone";
         setSprite(new Sprite(img));
     }
 }

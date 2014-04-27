@@ -9,7 +9,7 @@ public class DirtBlock extends Block {
 
     public DirtBlock(float x, float y) {
         super(x, y);
-
+        this.blockType = "dirt";
         setSprite(new Sprite(img));
     }
 }
