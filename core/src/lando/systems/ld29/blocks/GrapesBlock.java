@@ -11,6 +11,7 @@ public class GrapesBlock extends Block {
     public GrapesBlock(float x, float y) {
         super(x, y);
         this.blockType = "grapes";
+        toolTipString = "for grapejuice?";
         fountainColor = new Color (1,0,1,1);
         setSprite(new Sprite(img));
     }

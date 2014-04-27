@@ -59,6 +59,14 @@ public class GameGrid {
 	public Block getBlock(int x, int y){
 		return blocks[x + (width * y)];
 	}
+	
+	public Block getBlockFromPos(float x, float y){
+		if (y > 100 && y < 100 + 64 * World.gameHeight){
+			return getBlock((int)x/64, (int)(y-100)/64);
+		}
+		
+		return null;
+	}
 
 	public boolean pushUp(Block newBlock, int x){
 		// Pop up what was on the top

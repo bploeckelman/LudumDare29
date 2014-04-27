@@ -1,9 +1,11 @@
 package lando.systems.ld29.core;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.*;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -29,7 +31,11 @@ public class Assets {
     public static int num_scamps;
 
     public static NinePatch panelBrown;
-
+    
+    public static BitmapFont gameFont;
+    public static BitmapFont TooltipHeaderFont;
+    public static BitmapFont TooltipTextFont;
+    
     //public static Sound sound;
     //public static Music music;
 
@@ -77,6 +83,13 @@ public class Assets {
             10, 10, 10 , 10
         );
         panelBrown.setColor(new Color(153, 102, 51, 1));
+        
+        gameFont = new BitmapFont(Gdx.files.internal("fonts/ariel.fnt"),Gdx.files.internal("fonts/ariel.png"),false);
+        TooltipHeaderFont = new BitmapFont(Gdx.files.internal("fonts/ariel.fnt"),Gdx.files.internal("fonts/ariel.png"),false);
+
+        TooltipTextFont = new BitmapFont(Gdx.files.internal("fonts/ariel.fnt"),Gdx.files.internal("fonts/ariel.png"),false);
+        TooltipTextFont.setScale(.7f);
+        
     }
 
     public static void dispose() {

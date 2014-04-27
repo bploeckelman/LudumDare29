@@ -11,6 +11,7 @@ public class IronBlock extends Block {
     public IronBlock(float x, float y) {
         super(x, y);
         this.blockType = "iron";
+        toolTipString = "You know what to use me for";
         fountainColor = Color.GRAY;
         setSprite(new Sprite(img));
     }

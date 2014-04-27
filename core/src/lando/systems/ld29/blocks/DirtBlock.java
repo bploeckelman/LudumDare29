@@ -11,6 +11,7 @@ public class DirtBlock extends Block {
     public DirtBlock(float x, float y) {
         super(x, y);
         this.blockType = "dirt";
+        toolTipString = "useless";
         fountainColor = new Color(.5f, .3f, .1f, 1);
         setSprite(new Sprite(img));
     }

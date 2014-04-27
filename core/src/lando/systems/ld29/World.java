@@ -38,8 +38,8 @@ public class World {
 
 	public void update(float dt){
 		// It is getting too late in the night  remove all of this
-		Vector3 clickPoint = GameScreen.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
-		particleSystem.fuckingCrazy(clickPoint.x, clickPoint.y, 30);
+//		Vector3 clickPoint = GameScreen.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
+//		particleSystem.fuckingCrazy(clickPoint.x, clickPoint.y, 30);
 		if (Assets.random.nextFloat() > .99){
 			particleSystem.addFirework(Assets.random.nextFloat() * World.gameWidth * 64, 100 + Block.BLOCK_WIDTH * 6);
 		}
@@ -74,7 +74,8 @@ public class World {
         hudBatch.begin();
         // Draw Hud
         hud.render(hudBatch);
-
+        
+        
 	    hudBatch.end();
         batch.begin();
 	}

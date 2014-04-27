@@ -33,7 +33,8 @@ public class Block {
 	public static final float BLOCK_SPEED = 3;
 	public static final float BLOCK_WIDTH = 64;
 
-    public String blockType;
+    public String blockType = "F*CK";
+    public String toolTipString = "YOU MISSED ME!";
     public Color fountainColor;
 
 	public Block(float x, float y) {

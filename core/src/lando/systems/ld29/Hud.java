@@ -23,10 +23,12 @@ public class Hud {
 
     private Sprite[] blocks;
     private World world;
+    
+    public Tooltip tooltip;
 
     public Hud(World world){
         this.world = world;
-
+        tooltip = new Tooltip(world);
         blocks = new Sprite[blockNames.length];
         float newX = HUDX;
         for(int i = 0; i < blockNames.length; i++){
@@ -40,7 +42,8 @@ public class Hud {
     boolean justClicked = true;
     
     public void update(float dt, Player player){
-        if (Gdx.input.isButtonPressed(Input.Buttons.LEFT) && player.inputDelay <=0 && player.xPos == player.xTarget){
+        tooltip.update(dt);
+    	if (Gdx.input.isButtonPressed(Input.Buttons.LEFT) && player.inputDelay <=0 && player.xPos == player.xTarget){
             if (justClicked == false){
                 int x = (int)(player.xPos + .5f);
                 Block block = getBlockForCoords(x);
@@ -74,6 +77,8 @@ public class Hud {
         for(Sprite block : blocks){
             block.draw(batch);
         }
+        
+        tooltip.render(batch);
     }
 
     private Block getBlockForCoords(int column){
