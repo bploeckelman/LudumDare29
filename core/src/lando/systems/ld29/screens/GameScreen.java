@@ -18,6 +18,7 @@ import lando.systems.ld29.util.Utils;
 public class GameScreen implements Screen {
 
     private final OrthographicCamera camera;
+    public static final OrthographicCamera hudCamera = new OrthographicCamera();
     private final LudumDare29 game;
     private final World world;
     private float accum = 0.f;
@@ -29,6 +30,7 @@ public class GameScreen implements Screen {
         world = new World();
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Config.window_width, Config.window_height);
+        hudCamera.setToOrtho(false, Config.window_width, Config.window_height);
     }
 
     public void update(float dt) {
@@ -62,10 +64,12 @@ public class GameScreen implements Screen {
         
         SpriteBatch batch = Assets.batch;
         batch.setProjectionMatrix(camera.combined);
-        
+        SpriteBatch hudBatch = Assets.hudBatch;
+        hudBatch.setProjectionMatrix(hudCamera.combined);
+
         batch.begin();
         
-        world.render(batch);
+        world.render(batch, hudBatch);
         batch.end();
     }
 

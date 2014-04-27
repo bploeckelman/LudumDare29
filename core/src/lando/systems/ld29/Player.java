@@ -62,8 +62,6 @@ public class Player {
 		xPos = 15;
 	}
 	
-	boolean justClicked = true;
-	float inputDelay = 0;
 	public void update(float dt){
 		if (Gdx.input.isKeyPressed(Keys.A)){
 			xPos -= SPEED * dt;
@@ -71,18 +69,6 @@ public class Player {
 		if (Gdx.input.isKeyPressed(Keys.D)){
 			xPos += SPEED * dt;
 		}
-		if (Gdx.input.isButtonPressed(Input.Buttons.LEFT) && inputDelay <=0){
-			if (justClicked == false){
-				int x = (int)(xPos + .5f);
-				world.grid.pushUp(Block.getRandomBlock(x, 0), x);
-				inputDelay = 1; // Seconds until we can act again.
-			}
-			justClicked = true;
-		} else {
-			justClicked = false;
-		}
-		
-		inputDelay = Math.max(0, inputDelay - dt);
 		xPos = Utils.clamp(xPos, 0, world.gameWidth-1);
 		animationTime += dt;
 	}

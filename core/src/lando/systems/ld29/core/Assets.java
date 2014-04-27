@@ -13,6 +13,7 @@ import java.util.Random;
 public class Assets {
     public static Random random;
     public static SpriteBatch batch;
+    public static SpriteBatch hudBatch;
     public static ShapeRenderer shapes;
 
     public static Texture libgdx;
@@ -25,6 +26,7 @@ public class Assets {
     public static void load() {
         random = new Random();
         batch  = new SpriteBatch();
+        hudBatch = new SpriteBatch();
         shapes = new ShapeRenderer();
 
         libgdx = new Texture("badlogic.jpg");
