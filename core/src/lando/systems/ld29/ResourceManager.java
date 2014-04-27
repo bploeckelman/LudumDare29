@@ -1,5 +1,6 @@
 package lando.systems.ld29;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import lando.systems.ld29.blocks.Block;
 import lando.systems.ld29.resources.*;
@@ -89,7 +90,7 @@ public class ResourceManager {
 
         String blockName = block.blockType;
         resources[x] = this.getNewResource(blockName, xpx, ypx);
-
+        parentWorld.particleSystem.createFountain(xpx + 32, ypx, block.fountainColor);
 
         return true;
     }

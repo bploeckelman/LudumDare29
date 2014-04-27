@@ -12,6 +12,7 @@ public class World {
 	DayCycle dayCycle;
     public ResourceManager rManager;
     public ScampManager scampManager;
+    public ParticleSystem particleSystem;
 
 	public static final int gameWidth = 30;
 	public static final int gameHeight = 6;
@@ -25,6 +26,7 @@ public class World {
 		dayCycle.Scale = 50;
         rManager = new ResourceManager(this);
         scampManager = new ScampManager(this);
+        particleSystem = new ParticleSystem();
 	}
 
 	public void update(float dt){
@@ -33,6 +35,7 @@ public class World {
 		player.update(dt);
         scampManager.update(dt);
         hud.update(dt, player);
+        particleSystem.update(dt);
 	}
 	
 	public void render(SpriteBatch batch, SpriteBatch hudBatch){
@@ -49,6 +52,8 @@ public class World {
 		
 		// Draw Player
 		player.render(batch);
+		
+		particleSystem.render(batch);
 
         batch.end();
         hudBatch.begin();

@@ -1,6 +1,7 @@
 package lando.systems.ld29.blocks;
 
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.*;
 import lando.systems.ld29.core.Assets;
 
@@ -33,11 +34,13 @@ public class Block {
 	public static final float BLOCK_WIDTH = 64;
 
     public String blockType;
+    public Color fountainColor;
 
 	public Block(float x, float y) {
 		this.x = x;
 		this.y = y;
         setNewPosition(x, y);
+        fountainColor = Color.WHITE;
 	}
 
 	public void setNewPosition(float x, float y){

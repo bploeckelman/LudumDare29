@@ -1,5 +1,6 @@
 package lando.systems.ld29.blocks;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import lando.systems.ld29.core.Assets;
@@ -10,6 +11,7 @@ public class GrapesBlock extends Block {
     public GrapesBlock(float x, float y) {
         super(x, y);
         this.blockType = "grapes";
+        fountainColor = new Color (1,0,1,1);
         setSprite(new Sprite(img));
     }
 }
