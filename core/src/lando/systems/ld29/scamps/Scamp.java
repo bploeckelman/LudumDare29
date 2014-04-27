@@ -7,6 +7,7 @@ import lando.systems.ld29.Global;
 import lando.systems.ld29.World;
 import lando.systems.ld29.blocks.Block;
 import lando.systems.ld29.core.Assets;
+import lando.systems.ld29.resources.Resource;
 
 /**
  * Author: Ian McNamara <ian.mcnamara@doit.wisc.edu>
@@ -16,6 +17,7 @@ public class Scamp {
 
     public static final int SCAMP_SIZE = 32;
     public static final float SCAMP_SPEED = 1.0f;
+    public static final float GATHER_RATE = 5f; // in seconds
 
     public enum ScampState {
         IDLE,
@@ -28,23 +30,31 @@ public class Scamp {
     int skinID;
     float position;
     float targetPosition;
+    float gatherAccum;
 
     boolean walkRight;
+    boolean gatherReady;
 
+    Resource workingResource;
     TextureRegion texture;
     ScampState currentState = ScampState.IDLE;
 
     public Scamp(float startingPosition) {
         this.position = startingPosition;
         this.targetPosition = Assets.random.nextInt(World.gameWidth);
+
         // TODO : each scamp should have a unique skin, duplicates will end up facing the wrong direction
         this.skinID = Assets.random.nextInt(Assets.num_scamps);
         this.walkRight = (targetPosition - position) >= 0;
         this.texture = Assets.scamps.get(skinID);
         if(!walkRight) texture.flip(true, false);
+
+        this.workingResource = null;
+        this.gatherAccum = 0f;
+        this.gatherReady = false;
     }
 
-    boolean atTarget = false;
+    public boolean atTarget = false;
     public void update(float dt) {
         // If we've reached the target, acquire a new target
         if((walkRight && position >= targetPosition) || (!walkRight && position <= targetPosition)) {
@@ -63,17 +73,23 @@ public class Scamp {
 
             // todo : walkRight will be based on new targetPosition
             walkRight = !walkRight;
-
         }
 
         if (!atTarget) {
             // Move you sluggard!
             position += (walkRight ? SCAMP_SPEED : -SCAMP_SPEED) * dt;
+        } else {
+            gatherAccum += dt;
+            if (gatherAccum > GATHER_RATE) {
+                gatherAccum %= GATHER_RATE;
+                gatherReady = true;
+            }
         }
     }
 
 
     public void render(SpriteBatch batch) {
+        // todo : flip drawing instead of flipping texture
         batch.draw(texture, position * Block.BLOCK_WIDTH, Global.GROUND_LEVEL, SCAMP_SIZE, SCAMP_SIZE);
         Assets.thoughtBubble.draw(batch, position * Block.BLOCK_WIDTH , Global.GROUND_LEVEL + SCAMP_SIZE, SCAMP_SIZE, 30);
     }
@@ -83,6 +99,9 @@ public class Scamp {
     public boolean isSleeping() { return currentState == ScampState.SLEEPING; }
     public boolean isMurdering() { return currentState == ScampState.MURDERING; }
     public boolean isHarvesting() { return currentState == ScampState.HARVESTING; }
+
+    public void didGather() { gatherReady = false; }
+    public boolean isGatherReady() { return gatherReady; }
 
     public void setState(ScampState state) { currentState = state; }
 
@@ -115,5 +134,8 @@ public class Scamp {
         this.skinID = skinID;
         this.texture = temp;
     }
+
+    public Resource getWorkingResource() { return workingResource; }
+    public void setWorkingResource(Resource resource) { workingResource = resource; }
 
 }

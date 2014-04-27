@@ -60,4 +60,5 @@ public abstract class Resource {
     public float getY() { return y / RESOURCE_WIDTH; }
 
     public abstract String getName();
+    public abstract String resourceName();
 }

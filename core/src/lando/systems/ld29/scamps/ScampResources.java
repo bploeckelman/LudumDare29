@@ -1,5 +1,7 @@
 package lando.systems.ld29.scamps;
 
+import lando.systems.ld29.resources.*;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,22 +19,38 @@ public class ScampResources {
         WOOD
     }
     Map<ScampResourceType, Integer> scampResourcesByType;
+    Map<String, ScampResourceType> resourceNameToType;
 
     public ScampResources() {
         this.initializeScampResources();
     }
 
     public void initializeScampResources() {
-        this.scampResourcesByType = new HashMap<ScampResourceType, Integer>(ScampResourceType.values().length);
+        scampResourcesByType = new HashMap<ScampResourceType, Integer>(ScampResourceType.values().length);
         for (ScampResourceType thisResourceType : ScampResourceType.values() ) {
-            this.scampResourcesByType.put(thisResourceType, 0);
+            scampResourcesByType.put(thisResourceType, 0);
         }
+
+        resourceNameToType = new HashMap<String, ScampResourceType>();
+        resourceNameToType.put("food", ScampResourceType.FOOD);
+        resourceNameToType.put("stone", ScampResourceType.STONE);
+        resourceNameToType.put("wood", ScampResourceType.WOOD);
+        resourceNameToType.put("grapes", ScampResourceType.GRAPE);
+        resourceNameToType.put("iron", ScampResourceType.IRON);
+    }
+
+    public ScampResourceType getType(String resourceName) {
+        return resourceNameToType.get(resourceName);
     }
 
     public void addScampResource(ScampResourceType scampResourceType) {
+        addScampResources(scampResourceType, 1);
+    }
+
+    public void addScampResources(ScampResourceType scampResourceType, int numResources) {
         this.scampResourcesByType.put(
                 scampResourceType,
-                this.scampResourcesByType.get(scampResourceType) + 1);
+                this.scampResourcesByType.get(scampResourceType) + numResources);
     }
 
     /**
