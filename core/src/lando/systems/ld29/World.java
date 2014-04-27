@@ -37,7 +37,7 @@ public class World {
 		dayCycle.render(batch);
 	
 		// Draw Resource Layer
-		// TODO: Draw the resources behind the AI guys
+		rManager.render(batch);
 		
 		// Draw AI Layer
 		// TODO: draw the AI guys and their huts etc

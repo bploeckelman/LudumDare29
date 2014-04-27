@@ -21,8 +21,9 @@ public class Player {
 //	final Sprite sprite;
 	
 	public float xPos;
+	private int xTarget;
 	private World world;
-	private final float SPEED = 5;
+	private final float SPEED = 4;
 	
 	Array<Event> events = new Array();
 
@@ -31,8 +32,10 @@ public class Player {
 
 	SkeletonData skeletonData;
 	Skeleton skeleton;
-	Animation walkAnimation;
-	Animation jumpAnimation;
+	Animation idleAnimation;
+	Animation walkLeftAnimation;
+	Animation walkRightAnimation;
+	Animation pickAnimation;
 	float animationTime = 0;
 	
 	public Player(World world) {
@@ -48,9 +51,11 @@ public class Player {
 		 json.setScale(.2f);
 		skeletonData = json.readSkeletonData(Gdx.files.internal(name + ".json"));
 
-		walkAnimation = skeletonData.findAnimation("idle");
-		jumpAnimation = skeletonData.findAnimation("jump");
-
+		idleAnimation = skeletonData.findAnimation("idle");
+		walkLeftAnimation = skeletonData.findAnimation("walkLeft");
+		walkRightAnimation = skeletonData.findAnimation("walkRight");
+		pickAnimation = skeletonData.findAnimation("pick");
+		
 		skeleton = new Skeleton(skeletonData);
 		skeleton.updateWorldTransform();
 		skeleton.setX(xPos);
@@ -60,15 +65,39 @@ public class Player {
 //		sprite = new Sprite(img);
 //		sprite.setSize(64,64);
 		xPos = 15;
+		xTarget = 15;
 	}
 	
+	float inputDelay = 0;
+	
 	public void update(float dt){
-		if (Gdx.input.isKeyPressed(Keys.A)){
-			xPos -= SPEED * dt;
+		if (xPos == xTarget){
+			if (inputDelay <= 0){
+				if (Gdx.input.isKeyPressed(Keys.A)){
+					xTarget--;
+					animationTime = 0;
+				}
+				if (Gdx.input.isKeyPressed(Keys.D)){
+					xTarget++;
+					animationTime = 0;
+				}
+				xTarget = Math.min(world.gameWidth-1, Math.max(xTarget, 0));
+			}
+		} else {
+			float dist = SPEED * dt;
+			if (dist >= Math.abs(xTarget - xPos)){
+				xPos = xTarget;
+				animationTime = 0;
+			} else {
+				float sign = 1;
+				if (xTarget< xPos){
+					sign = -1;
+				}
+				xPos += sign * dist;
+			}
 		}
-		if (Gdx.input.isKeyPressed(Keys.D)){
-			xPos += SPEED * dt;
-		}
+		
+		inputDelay = Math.max(0, inputDelay - dt);
 		xPos = Utils.clamp(xPos, 0, world.gameWidth-1);
 		animationTime += dt;
 	}
@@ -77,7 +106,16 @@ public class Player {
 	public void render(SpriteBatch batch){
 //		sprite.setPosition(xPos * 64, 10);
 //		sprite.draw(batch);
-		walkAnimation.apply(skeleton, animationTime, animationTime, true, events);
+		if (inputDelay > 0){
+			pickAnimation.apply(skeleton, animationTime, animationTime, true, events);
+		} else if (xTarget == xPos){
+			idleAnimation.apply(skeleton, animationTime, animationTime, true, events);
+		} else if (xTarget < xPos){
+			walkLeftAnimation.apply(skeleton, animationTime*3, animationTime*3, true, events);
+		} else {
+			walkRightAnimation.apply(skeleton, animationTime*3, animationTime*3, true, events);
+
+		}
 		skeleton.setX((xPos + .5f) * 64);
 		skeleton.updateWorldTransform();
 		skeleton.update(Gdx.graphics.getDeltaTime());
