@@ -56,16 +56,7 @@ public class Tooltip {
                 show = true;
             }
         }
-		
-		for (Scamp scamp : world.scampManager.scamps){
-			targetRect.set(scamp.position * Block.BLOCK_WIDTH, Global.GROUND_LEVEL, 32, 32);
-			if (targetRect.contains(gameClickPoint.x, gameClickPoint.y)){
-				show = true;
-				header = "Scamp";
-				text = "I am a scamp";
-			}
-		}
-		
+
 		if (show){
 			alpha = Math.min(1, alpha + 2*dt);
 			
