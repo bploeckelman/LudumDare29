@@ -24,7 +24,7 @@ import lando.systems.ld29.util.Utils;
 
 public class GameScreen implements Screen {
 
-    private final OrthographicCamera camera;
+	public static final OrthographicCamera camera  = new OrthographicCamera();;
     public static final OrthographicCamera hudCamera = new OrthographicCamera();
     private final LudumDare29 game;
     private final World world;
@@ -40,7 +40,7 @@ public class GameScreen implements Screen {
 
         this.game = game;
         world = new World();
-        camera = new OrthographicCamera();
+        
         camera.setToOrtho(false, Config.window_width, Config.window_height);
         hudCamera.setToOrtho(false, Config.window_width, Config.window_height);
 

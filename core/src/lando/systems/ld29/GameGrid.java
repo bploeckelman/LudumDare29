@@ -1,5 +1,7 @@
 package lando.systems.ld29;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import lando.systems.ld29.blocks.*;
 
@@ -8,6 +10,7 @@ public class GameGrid {
 	World parentWorld; // so we can access the world
 	int width;
 	int height;
+	Texture caveTex = new Texture("art/cave.png");
 
 	Block[] blocks;
 	Block pushedOutBlock;
@@ -19,6 +22,7 @@ public class GameGrid {
 		blocks = new Block[parentWorld.gameWidth * parentWorld.gameHeight];
 		width = world.gameWidth;
 		height = world.gameHeight;
+		caveTex.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		// TODO: make this more awesome?
 		for (int y = 0; y < parentWorld.gameHeight ; y++){
 			for (int x =0; x < parentWorld.gameWidth; x++)
@@ -49,6 +53,7 @@ public class GameGrid {
 			pushedOutBlock.render(batch);
 
 		}
+		batch.draw(caveTex, 0, 0, 64 * World.gameWidth, 100);
 	}
 
 	public Block getBlock(int x, int y){

@@ -49,7 +49,7 @@ public class Particle {
 		y += vY * dt;
 		if (gravity){
 			vX *= .99;
-			vY -= 10 * dt;
+			vY -= 50 * dt;
 		}
 		currentColor = startColor.cpy();
 		currentColor.lerp(endColor, 1 - ttl/startTTL);
