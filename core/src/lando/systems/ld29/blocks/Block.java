@@ -29,7 +29,7 @@ public class Block {
 	private Sprite sprite;
 	float x;
 	float y;
-
+	
 	float targetX;
 	float targetY;
 
@@ -69,13 +69,13 @@ public class Block {
 		} else {
 			y = y + dist; // TODO: This can't get backwards
 		}
-
+		
 	}
-
+	
 	public void setAlpha(float amount){
 		sprite.setAlpha(amount);
 	}
-
+	
 	public void render(SpriteBatch batch){
 		getSprite().setPosition(x * BLOCK_WIDTH, 100 + y * BLOCK_WIDTH);
 		getSprite().draw(batch);
