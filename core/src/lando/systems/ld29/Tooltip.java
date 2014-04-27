@@ -48,17 +48,15 @@ public class Tooltip {
 			header = under.blockType.toUpperCase();
 			text = under.toolTipString.toUpperCase();
 			show = true;
-		} 
-		
-		for (Scamp scamp : world.scampManager.scamps){
-			targetRect.set(scamp.position * Block.BLOCK_WIDTH, Global.GROUND_LEVEL, 32, 32);
-			if (targetRect.contains(gameClickPoint.x, gameClickPoint.y)){
-				show = true;
-				header = "Scamp";
-				text = "I am a scamp";
-			}
-		}
-		
+		} else {
+            Scamp scamp = world.scampManager.getScampFromPos(gameClickPoint.x, gameClickPoint.y);
+            if (scamp != null) {
+                header = scamp.toString();
+                text = scamp.getCurrentStateName();
+                show = true;
+            }
+        }
+
 		if (show){
 			alpha = Math.min(1, alpha + 2*dt);
 			
@@ -66,7 +64,7 @@ public class Tooltip {
 			TextBounds textBounds = Assets.TooltipTextFont.getBounds(text);
 			float x = hudClickPoint.x + offset;
 			float y = hudClickPoint.y + offset;
-			float width = textBounds.width + 40;
+			float width = Math.max(textBounds.width, headerBounds.width) + 40;
 			float height = 100;
 			if (hudClickPoint.y > Config.window_half_height){
 				y -= height + 2* offset;

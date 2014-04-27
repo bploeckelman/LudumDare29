@@ -8,6 +8,7 @@ import lando.systems.ld29.World;
 import lando.systems.ld29.blocks.Block;
 import lando.systems.ld29.core.Assets;
 import lando.systems.ld29.resources.Resource;
+import lando.systems.ld29.util.Utils;
 
 /**
  * Author: Ian McNamara <ian.mcnamara@doit.wisc.edu>
@@ -35,16 +36,18 @@ public class Scamp {
     boolean walkRight;
     boolean gatherReady;
 
+    String name;
     Resource workingResource;
     TextureRegion texture;
     ScampState currentState = ScampState.IDLE;
 
     public Scamp(float startingPosition) {
+        this.name = Assets.randomName();
         this.position = startingPosition;
         this.targetPosition = Assets.random.nextInt(World.gameWidth);
+        this.walkRight = isWalkingRight();
 
         this.skinID = Assets.random.nextInt(Assets.num_scamps);
-        this.walkRight = (targetPosition - position) >= 0;
         this.texture = Assets.scamps.get(skinID);
 
         this.workingResource = null;
@@ -54,26 +57,30 @@ public class Scamp {
 
     public boolean atTarget = false;
     public void update(float dt) {
-        // If we've reached the target, acquire a new target
-        if((walkRight && position >= targetPosition) || (!walkRight && position <= targetPosition)) {
+        // Have we reached our target yet?
+        if( Utils.isBetween(position, targetPosition - 0.2f, targetPosition + 0.8f) ) {
             atTarget = true;
 
-            // If idling, move around randomly
+            // If idling, pick a new random target position
             if (currentState == ScampState.IDLE) {
-                targetPosition = Assets.random.nextInt(World.gameWidth);
                 atTarget = false;
+                targetPosition = Assets.random.nextInt(World.gameWidth);
             } else {
-                System.out.println("non-idle scamp " + this.toString() + " arrived at target: target(" + targetPosition + "), pos(" + position + ")");
+                if (!atTarget) {
+                    System.out.println("non-idle scamp " + this.toString()
+                            + " arrived at target: target(" + targetPosition + "), "
+                            + "pos(" + position + ")");
+                }
             }
 
-            // todo : walkRight will be based on new targetPosition
-            walkRight = !walkRight;
+            walkRight = isWalkingRight();
         }
 
         if (!atTarget) {
             // Move you sluggard!
             position += (walkRight ? SCAMP_SPEED : -SCAMP_SPEED) * dt;
         } else {
+            // Update gathering timer/state
             gatherAccum += dt;
             if (gatherAccum > GATHER_RATE) {
                 gatherAccum %= GATHER_RATE;
@@ -98,6 +105,8 @@ public class Scamp {
     public boolean isSleeping() { return currentState == ScampState.SLEEPING; }
     public boolean isMurdering() { return currentState == ScampState.MURDERING; }
     public boolean isHarvesting() { return currentState == ScampState.HARVESTING; }
+
+    public boolean isWalkingRight() { return (targetPosition - position >= 0); }
 
     public void didGather() { gatherReady = false; }
     public boolean isGatherReady() { return gatherReady; }
@@ -136,5 +145,20 @@ public class Scamp {
 
     public Resource getWorkingResource() { return workingResource; }
     public void setWorkingResource(Resource resource) { workingResource = resource; }
+
+    public String toString() {
+        return name;
+    }
+
+    public String getCurrentStateName() {
+        switch(currentState) {
+            case IDLE:       return "Idling";
+            case HARVESTING: return "Harvesting";
+            case EATING:     return "Eating";
+            case SLEEPING:   return "Sleeping";
+            case MURDERING:  return "Murdering!!";
+            default:         return "???";
+        }
+    }
 
 }

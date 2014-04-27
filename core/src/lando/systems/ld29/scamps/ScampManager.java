@@ -2,10 +2,12 @@ package lando.systems.ld29.scamps;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
+import lando.systems.ld29.Global;
 import lando.systems.ld29.World;
 import lando.systems.ld29.core.Assets;
 import lando.systems.ld29.resources.Resource;
 import lando.systems.ld29.scamps.Scamp.*;
+import lando.systems.ld29.util.Utils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -52,6 +54,19 @@ public class ScampManager {
         for (int i = 0; i < INITIAL_SCAMP_COUNT; i++) {
             scamps.add(new Scamp( Assets.random.nextInt(world.gameWidth) ));
         }
+    }
+
+    public Scamp getScampFromPos(float x, float y) {
+        Scamp scamp = null;
+        if (Utils.isBetween(y, Global.GROUND_LEVEL, Global.GROUND_LEVEL + Scamp.SCAMP_SIZE)) {
+            for(Scamp s : scamps) {
+                if (Utils.isBetween(x, s.getPixelPosition(), s.getPixelPosition() + Scamp.SCAMP_SIZE)) {
+                    scamp = s;
+                    break;
+                }
+            }
+        }
+        return scamp;
     }
 
     public void update(float dt) {

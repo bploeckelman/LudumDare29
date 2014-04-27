@@ -5,22 +5,50 @@ filter: Linear,Linear
 repeat: none
 head
   rotate: false
-  xy: 2, 2
-  size: 48, 48
-  orig: 50, 50
-  offset: 1, 1
+  xy: 115, 14
+  size: 10, 16
+  orig: 10, 16
+  offset: 0, 0
   index: -1
 line
   rotate: true
-  xy: 52, 30
+  xy: 2, 10
   size: 20, 50
   orig: 20, 50
   offset: 0, 0
   index: -1
-template
+lowerArm
   rotate: false
-  xy: 52, 5
+  xy: 71, 3
+  size: 10, 10
+  orig: 10, 10
+  offset: 0, 0
+  index: -1
+template
+  rotate: true
+  xy: 90, 15
   size: 15, 23
   orig: 24, 25
   offset: 4, 1
+  index: -1
+torso
+  rotate: true
+  xy: 54, 15
+  size: 15, 34
+  orig: 15, 34
+  offset: 0, 0
+  index: -1
+upperArm
+  rotate: true
+  xy: 54, 6
+  size: 7, 15
+  orig: 7, 15
+  offset: 0, 0
+  index: -1
+upperLeg
+  rotate: true
+  xy: 2, 2
+  size: 6, 14
+  orig: 6, 14
+  offset: 0, 0
   index: -1
