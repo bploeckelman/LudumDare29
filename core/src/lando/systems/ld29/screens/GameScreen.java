@@ -12,6 +12,7 @@ import com.badlogic.gdx.math.Rectangle;
 import lando.systems.ld29.LudumDare29;
 import lando.systems.ld29.World;
 import lando.systems.ld29.core.Assets;
+import lando.systems.ld29.scamps.ScampManager;
 import lando.systems.ld29.util.Config;
 import lando.systems.ld29.util.Utils;
 
@@ -22,6 +23,8 @@ public class GameScreen implements Screen {
     private final LudumDare29 game;
     private final World world;
     private float accum = 0.f;
+    private SpriteBatch batch;
+    private SpriteBatch hudBatch;
 
     public GameScreen(LudumDare29 game) {
         super();
@@ -31,6 +34,9 @@ public class GameScreen implements Screen {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Config.window_width, Config.window_height);
         hudCamera.setToOrtho(false, Config.window_width, Config.window_height);
+
+        batch = Assets.batch;
+        hudBatch = Assets.hudBatch;
     }
 
     public void update(float dt) {
@@ -40,7 +46,7 @@ public class GameScreen implements Screen {
             // do things
         }
         world.update(dt);
-        
+
         // Upate Camera
         //camera.position.x = world.player.xPos * 64;
         camera.position.x = Utils.clamp((world.player.xPos+.5f) * 64, Config.window_half_width, world.gameWidth * 64 - Config.window_half_width);
@@ -56,19 +62,12 @@ public class GameScreen implements Screen {
         Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         Assets.shapes.begin(ShapeType.Filled);
-
         drawShapes();
-
         Assets.shapes.identity();
         Assets.shapes.end();
         
-        SpriteBatch batch = Assets.batch;
         batch.setProjectionMatrix(camera.combined);
-        SpriteBatch hudBatch = Assets.hudBatch;
-        hudBatch.setProjectionMatrix(hudCamera.combined);
-
         batch.begin();
-        
         world.render(batch, hudBatch);
         batch.end();
     }

@@ -33,8 +33,8 @@ public class Block {
 	float targetX;
 	float targetY;
 
-	static final float BLOCK_SPEED = 3;
-	static final float BLOCK_WIDTH = 64;
+	public static final float BLOCK_SPEED = 3;
+	public static final float BLOCK_WIDTH = 64;
 
     public String blockType;
 

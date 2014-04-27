@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture.*;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.utils.Array;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,6 +20,10 @@ public class Assets {
     public static Texture libgdx;
     public static Map<String,TextureRegion> blocks;
     public static Map<String,TextureRegion> resources;
+
+    public static Texture scamps_spritesheet;
+    public static Array<TextureRegion> scamps;
+    public static int num_scamps;
 
     //public static Sound sound;
     //public static Music music;
@@ -43,6 +48,14 @@ public class Assets {
         blocks.put("lava",   new TextureRegion(blocksSpritesheet, 96, 0, 16, 16));
         blocks.put("water",  new TextureRegion(blocksSpritesheet, 112, 0, 16, 16));
 
+        scamps_spritesheet = new Texture("art/scamps-spritesheet.png");
+        scamps = new Array<TextureRegion>();
+        TextureRegion[][] scamp_regions = TextureRegion.split(scamps_spritesheet, 16, 16);
+        for(int i = 0; i < scamp_regions.length; ++i) {
+            scamps.addAll(scamp_regions[i], 0, scamp_regions[i].length);
+        }
+        num_scamps = 81; // 9 rows of unusable scamp images at the moment (9 images per row)
+
         Texture resourceSpritesheet = new Texture("art/resources-spritesheet.png");
         resources = new HashMap<String,TextureRegion>();
         resources.put("field",   new TextureRegion(resourceSpritesheet, 0, 0, 32, 32));
@@ -57,6 +70,7 @@ public class Assets {
 
     public static void dispose() {
         libgdx.dispose();
+        // todo : dispose the rest of the things
 //        sound.dispose();
 //        music.dispose();
         batch.dispose();

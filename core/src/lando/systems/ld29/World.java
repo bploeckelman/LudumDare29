@@ -1,8 +1,7 @@
 package lando.systems.ld29;
 
-import lando.systems.ld29.core.Input;
-
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import lando.systems.ld29.scamps.ScampManager;
 
 public class World {
 
@@ -12,9 +11,10 @@ public class World {
 
 	DayCycle dayCycle;
     public ResourceManager rManager;
+    public ScampManager scampManager;
 
-	public final int gameWidth = 30;
-	public final int gameHeight = 6;
+	public static final int gameWidth = 30;
+	public static final int gameHeight = 6;
 
 
 	public World() {
@@ -23,13 +23,15 @@ public class World {
 		player = new Player(this);
         hud = new Hud(this);
 		dayCycle.Scale = 50;
-        this.rManager = new ResourceManager(this);
+        rManager = new ResourceManager(this);
+        scampManager = new ScampManager(this);
 	}
 
 	public void update(float dt){
 		grid.update(dt);
 		dayCycle.update(dt);
 		player.update(dt);
+        scampManager.update(dt);
         hud.update(dt, player);
 	}
 	
@@ -40,8 +42,8 @@ public class World {
 		rManager.render(batch);
 		
 		// Draw AI Layer
-		// TODO: draw the AI guys and their huts etc
-		
+        scampManager.renderScamps(batch);
+
 		// Draw Grid
 		grid.render(batch);
 		
