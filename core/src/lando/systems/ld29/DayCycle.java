@@ -76,11 +76,7 @@ public class DayCycle
 	}
 	
 	public void render(SpriteBatch batch) {
-
-		
-		
-       
-	 
+ 
 		skySprite.setColor(_color);
 	    skySprite.draw(batch);
 		

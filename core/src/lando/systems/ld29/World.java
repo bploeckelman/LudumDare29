@@ -1,7 +1,13 @@
 package lando.systems.ld29;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector3;
+
+import lando.systems.ld29.blocks.Block;
+import lando.systems.ld29.core.Assets;
 import lando.systems.ld29.scamps.ScampManager;
+import lando.systems.ld29.screens.GameScreen;
 
 public class World {
 
@@ -19,6 +25,7 @@ public class World {
 
 
 	public World() {
+
 		grid = new GameGrid(this);
 		dayCycle = new DayCycle(this);
 		player = new Player(this);
@@ -30,6 +37,13 @@ public class World {
 	}
 
 	public void update(float dt){
+		// It is getting too late in the night  remove all of this
+		Vector3 clickPoint = GameScreen.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
+		particleSystem.fuckingCrazy(clickPoint.x, clickPoint.y);
+		if (Assets.random.nextFloat() > .99){
+			particleSystem.addFirework(Assets.random.nextFloat() * World.gameWidth * 64, 100 + Block.BLOCK_WIDTH * 6);
+		}
+		// To here
 		grid.update(dt);
 		dayCycle.update(dt);
 		player.update(dt);

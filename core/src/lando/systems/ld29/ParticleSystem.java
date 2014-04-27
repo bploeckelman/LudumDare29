@@ -9,6 +9,8 @@ import com.badlogic.gdx.utils.Pool;
 
 public class ParticleSystem {
 
+	private final Array<Firework> fireworks = new Array<Firework>();
+	
 	private final Array<Particle> activeParticles = new Array<Particle>();
 	
 	private final Pool<Particle> particlePool = new Pool<Particle>() {
@@ -31,6 +33,19 @@ public class ParticleSystem {
 		}
 	}
 	
+	public void addFirework(float x, float y){
+		fireworks.add(new Firework(x, y));
+	}
+	
+	public void fuckingCrazy(float x, float y){
+		for (int i = 0; i < 50; i ++){
+			Particle item = particlePool.obtain();
+			float dir = (float) (Assets.random.nextFloat() * Math.PI * 2.0);
+			item.init(x, y, (float)Math.cos(dir) * Assets.random.nextFloat() * 50, (float)Math.sin(dir)*  Assets.random.nextFloat() *50, 1.0f + Assets.random.nextFloat(), new Color(Assets.random.nextFloat(),Assets.random.nextFloat(),Assets.random.nextFloat(),1), Color.CLEAR, true);
+        	activeParticles.add(item);
+		}
+	}
+	
 	public void update(float dt){
         // if you want to free dead bullets, returning them to the pool:
 		Particle item;
@@ -41,6 +56,22 @@ public class ParticleSystem {
             if (item.ttl <= 0) {
             	activeParticles.removeIndex(i);
             	particlePool.free(item);
+            }
+        }
+        
+		Firework firework;
+        int flen = fireworks.size;
+        for (int i = flen; --i >= 0;) {
+        	firework = fireworks.get(i);
+        	firework.update(dt);
+            if (firework.vY < 0) {
+            	fireworks.removeIndex(i);
+            	fuckingCrazy(firework.x, firework.y);
+            } else {
+    			Particle trail = particlePool.obtain();
+    			float dir = (float) (Assets.random.nextFloat() * Math.PI * 2.0);
+    			trail.init(firework.x, firework.y, (float)Math.cos(dir) * Assets.random.nextFloat() * 2, (float)Math.sin(dir)*  Assets.random.nextFloat() *2, Assets.random.nextFloat(), Color.YELLOW, Color.RED, true);
+    			activeParticles.add(trail);
             }
         }
 	}
