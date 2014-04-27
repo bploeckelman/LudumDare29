@@ -6,21 +6,21 @@ package lando.systems.ld29.scamps;
  */
 public class ScampStructure {
 
-	public static enum ScampStructureType {
-		HOUSE,
-		FARM,
-		VINEYARD,
-		TEMPLE
-	}
+    public static enum ScampStructureType {
+        HOUSE,
+        FARM,
+        VINEYARD,
+        TEMPLE
+    }
 
-	private ScampStructureType type;
+    private ScampStructureType type;
 
-	public ScampStructure(ScampStructureType type) {
-		this.type = type;
-	}
+    public ScampStructure(ScampStructureType type) {
+        this.type = type;
+    }
 
-	public void render() {
-		//todo
-	}
+    public void render() {
+        //todo
+    }
 
 }
