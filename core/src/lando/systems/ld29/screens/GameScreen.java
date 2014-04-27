@@ -21,17 +21,18 @@ public class GameScreen implements Screen {
     private final OrthographicCamera camera;
     private final LudumDare29 game;
     private final World world;
-    private final ScampManager scampManager;
     private float accum = 0.f;
+    private SpriteBatch batch;
 
     public GameScreen(LudumDare29 game) {
         super();
 
         this.game = game;
         world = new World();
-        scampManager = new ScampManager(world);
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Config.window_width, Config.window_height);
+
+        batch = Assets.batch;
     }
 
     public void update(float dt) {
@@ -41,8 +42,6 @@ public class GameScreen implements Screen {
             // do things
         }
         world.update(dt);
-
-        scampManager.update(dt);
 
         // Upate Camera
         //camera.position.x = world.player.xPos * 64;
@@ -59,19 +58,13 @@ public class GameScreen implements Screen {
         Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         Assets.shapes.begin(ShapeType.Filled);
-
         drawShapes();
-
         Assets.shapes.identity();
         Assets.shapes.end();
         
-        SpriteBatch batch = Assets.batch;
         batch.setProjectionMatrix(camera.combined);
-        
         batch.begin();
-        
         world.render(batch);
-        scampManager.renderScamps(batch);
         batch.end();
     }
 
