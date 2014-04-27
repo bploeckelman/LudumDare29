@@ -92,7 +92,7 @@ public class GameScreen implements Screen {
 
         m_fbo.begin();
         
-        Gdx.gl20.glClearColor(0.53f, 0.81f, 0.92f, 1);
+        Gdx.gl20.glClearColor(0, 0, 0, 1);
         Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
         
         Assets.shapes.begin(ShapeType.Filled);
