@@ -24,7 +24,7 @@ public class ResourceManager {
 
     public ResourceManager(World world){
         parentWorld = world;
-        resources = new Resource[parentWorld.gameWidth * parentWorld.gameHeight];
+        resources = new Resource[parentWorld.gameWidth];
         width = world.gameWidth;
         height = world.gameHeight;
     }
@@ -84,25 +84,13 @@ public class ResourceManager {
     }
 
     public Resource getNewResource(String blockName, int x, int y){
-
         switch(blockName){
-            case "dirt":
-                return new Field(x, y);
-
-            case "stone":
-                return new Quarry(x, y);
-
-            case "iron":
-                return new Mountain(x, y);
-
-            case "acorn":
-                return new Forrest(x, y);
-
-            case "grapes":
-                return new Vinyard(x, y);
-
-            default:
-                return null;
+            case "dirt":   return new Field(x, y);
+            case "stone":  return new Quarry(x, y);
+            case "iron":   return new Mountain(x, y);
+            case "acorn":  return new Forrest(x, y);
+            case "grapes": return new Vinyard(x, y);
+            default:       return null;
         }
     }
 
