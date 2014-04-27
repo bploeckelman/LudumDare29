@@ -17,5 +17,6 @@ public class Field extends Resource {
     }
 
     public String getName() { return "field"; }
+    public String resourceName() { return "food"; }
 
 }

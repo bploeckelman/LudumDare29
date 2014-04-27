@@ -3,14 +3,12 @@ package lando.systems.ld29.scamps;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 import lando.systems.ld29.World;
-import lando.systems.ld29.blocks.Block;
 import lando.systems.ld29.core.Assets;
 import lando.systems.ld29.resources.Resource;
+import lando.systems.ld29.scamps.Scamp.*;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
 /**
  * Author: Ian McNamara <ian.mcnamara@doit.wisc.edu>
@@ -30,8 +28,8 @@ public class ScampManager {
     private final static float PRIORITY_RECOMPUTE_TIME = 10; // in seconds
 
     World world;
-    ScampResources scampResources;
     Array<Scamp> scamps;
+    public ScampResources scampResources;
 
     float accum = 0;
 
@@ -41,8 +39,8 @@ public class ScampManager {
 
     public ScampManager(World world) {
         this.world = world;
-        this.scampResources = new ScampResources();
         this.placeScamps();
+        this.scampResources = new ScampResources();
     }
 
     /**
@@ -64,11 +62,31 @@ public class ScampManager {
             determinePriorities();
         }
 
-        for(Scamp scamp : scamps) { scamp.update(dt); }
+        for(Scamp scamp : scamps) {
+            scamp.update(dt);
+            doGather(scamp);
+        }
     }
 
     public void renderScamps(SpriteBatch batch) {
         for(Scamp scamp : scamps) { scamp.render(batch); }
+    }
+
+    private void doGather(Scamp scamp) {
+        if (scamp.workingResource == null) return;
+        if (scamp.isGatherReady()) {
+            int numResourcesGathered = world.rManager.takeResource((int) scamp.workingResource.getX(), 1);
+            if (numResourcesGathered > 0) {
+                scampResources.addScampResources(scampResources.getType(scamp.workingResource.resourceName()), numResourcesGathered);
+                System.out.println("update() | scamp " + scamp.toString() + " gathered " + numResourcesGathered + " resources of type '" + scamp.workingResource.resourceName() + "'");
+            } else {
+                scamp.setWorkingResource(null);
+                scamp.setState(ScampState.IDLE);
+                scamp.setTarget(Assets.random.nextInt(World.gameWidth));
+                scamp.atTarget = false;
+            }
+            scamp.didGather();
+        }
     }
 
     public void determinePriorities() {
@@ -124,6 +142,7 @@ public class ScampManager {
                     if (resource != null) {
                         idleScamp.setTarget(resource.getX());
                         idleScamp.setState(Scamp.ScampState.HARVESTING);
+                        idleScamp.setWorkingResource(resource);
                         System.out.println("determinePriorities | Scamp " + idleScamp.toString() + " now harvesting field at x=" + idleScamp.getBlockTargetPosition());
                     } else {
                         // todo: handle case where there are no fields
@@ -162,4 +181,5 @@ public class ScampManager {
         }
         return topPriority;
     }
+
 }

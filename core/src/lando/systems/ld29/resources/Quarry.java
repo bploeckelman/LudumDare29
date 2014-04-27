@@ -16,4 +16,5 @@ public class Quarry extends Resource {
     }
 
     public String getName() { return "quarry"; }
+    public String resourceName() { return "stone"; }
 }

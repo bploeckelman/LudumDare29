@@ -27,4 +27,5 @@ public class Forrest extends Resource {
     }
 
     public String getName() { return "forrest"; }
+    public String resourceName() { return "wood"; }
 }

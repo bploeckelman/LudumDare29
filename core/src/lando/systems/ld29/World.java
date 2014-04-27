@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector3;
 
 import lando.systems.ld29.blocks.Block;
 import lando.systems.ld29.core.Assets;
+import lando.systems.ld29.resources.ResourceManager;
 import lando.systems.ld29.scamps.ScampManager;
 import lando.systems.ld29.screens.GameScreen;
 
@@ -40,9 +41,9 @@ public class World {
 		// It is getting too late in the night  remove all of this
 //		Vector3 clickPoint = GameScreen.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
 //		particleSystem.fuckingCrazy(clickPoint.x, clickPoint.y, 30);
-		if (Assets.random.nextFloat() > .99){
-			particleSystem.addFirework(Assets.random.nextFloat() * World.gameWidth * 64, 100 + Block.BLOCK_WIDTH * 6);
-		}
+//		if (Assets.random.nextFloat() > .99){
+//			particleSystem.addFirework(Assets.random.nextFloat() * World.gameWidth * 64, 100 + Block.BLOCK_WIDTH * 6);
+//		}
 		// To here
 		grid.update(dt);
 		dayCycle.update(dt);

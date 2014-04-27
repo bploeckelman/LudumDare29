@@ -17,4 +17,5 @@ public class Vinyard extends Resource{
     }
 
     public String getName() { return "vinyard"; }
+    public String resourceName() { return "grapes"; }
 }
