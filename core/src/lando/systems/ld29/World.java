@@ -11,8 +11,8 @@ public class World {
 
 	DayCycle dayCycle;
 
-	public final int gameWidth = 30;
-	public final int gameHeight = 6;
+	public static final int gameWidth = 30;
+	public static final int gameHeight = 6;
 
 	
 	public World() {
