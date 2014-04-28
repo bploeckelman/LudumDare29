@@ -160,5 +160,6 @@ public class GameGrid {
 
     public void startEarthquake() {
         earthQuakeTime = EARTHQUAKEMAXTIME;
+        Assets.earthquake.play();
     }
 }
