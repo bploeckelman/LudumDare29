@@ -48,6 +48,8 @@ public class TitleScreen implements Screen {
         Assets.batch.begin();
         Assets.batch.draw(Assets.libgdx, 0, 0, Config.window_width,
                 Config.window_height);
+        Assets.panelBrown.draw(Assets.batch, 540, 140, 200, 100);
+        Assets.gameFont.draw(Assets.batch, "Click To Start", 560, 200);
         Assets.batch.end();
 
 //        Assets.shapes.begin(ShapeType.Filled);
