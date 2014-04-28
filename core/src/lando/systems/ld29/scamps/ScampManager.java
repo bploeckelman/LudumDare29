@@ -73,6 +73,10 @@ public class ScampManager {
             scamps.add(new Scamp( Assets.random.nextInt(world.gameWidth) ));
         }
     }
+    
+    public void killScamp(Scamp scamp){
+    	scamps.removeValue(scamp, true);
+    }
 
     public Scamp getScampFromPos(float x, float y) {
         Scamp scamp = null;
@@ -223,6 +227,9 @@ public class ScampManager {
     		break;
     	case "factory":
     		costs = FactoryStructure.buildCost;
+    		break;
+    	case "spaceship":
+    		costs = SpaceshipStructure.buildCost;
     		break;
     	}
     	

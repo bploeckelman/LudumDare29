@@ -123,7 +123,9 @@ public class Scamp {
         }
 
         hungerAmount += dt / 60; // 1 hunger a minute
-
+        if (hungerAmount > 10 && World.THEWORLD.scampManager.getCurrentPopulation() > 1){
+        	World.THEWORLD.scampManager.killScamp(this);
+        }
         // Update based on current state
         // ---------------------------------------------------------------------
         switch(currentState) {
