@@ -343,11 +343,15 @@ public class Scamp implements IResourceGenerator {
 
     private void updateBuilding(float dt) {
         if (buildingStructure == null) return;
-
-        isBuilding = true;
         targetPosition = buildingStructure.x;
+
+        if (!isBuilding && position == targetPosition) {
+            Assets.build.play();
+        }
+
         // If scamp is at building site...
         if (position == targetPosition) {
+            isBuilding = true;
             // Update build timer, and build if its time
             buildAccum += dt;
             if (buildAccum > BUILD_RATE) {
