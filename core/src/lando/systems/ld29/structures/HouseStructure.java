@@ -18,8 +18,8 @@ public class HouseStructure extends Structure {
     public HouseStructure(float x, World world){
         super(x, world);
 
-        setCapacity(5);
-        scamps = new ArrayList<Scamp>(getCapacity());
+        setMaxCapacity(5);
+        scamps = new ArrayList<Scamp>(getMaxCapacity());
         day = new Sprite(dayImg);
         night = new Sprite(nightImg);
         setSprite(day);
@@ -27,6 +27,10 @@ public class HouseStructure extends Structure {
 
     public void update(float dt){
         super.update(dt);
+
+        if(getWorld().dayCycle.hasNightEnded()){
+            evict();
+        }
 
         if(getWorld().dayCycle.isDay() != isDaySprite) {
             if (isDaySprite) {

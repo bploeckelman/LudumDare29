@@ -15,7 +15,7 @@ public class Structure {
     private World world;
     private Sprite sprite;
 
-    private int capacity;
+    private int maxCapacity;
     ArrayList<Scamp> scamps;
 
     float x;
@@ -23,7 +23,7 @@ public class Structure {
     public Structure(float x, World world){
         this.x = x;
         this.world = world;
-        this.capacity = 0;
+        this.maxCapacity = 0;
     }
 
     public void setSprite(Sprite sprite){
@@ -38,26 +38,30 @@ public class Structure {
         return world;
     }
 
-    void setCapacity(int capacity){
-        this.capacity = capacity;
+    void setMaxCapacity(int maxCapacity){
+        this.maxCapacity = maxCapacity;
+    }
+    public int getMaxCapacity(){
+        return maxCapacity;
     }
     public int getCapacity(){
-        return capacity;
-    }
-    public int getOccupancy(){
-        if(capacity > 0){
-            return capacity - scamps.size();
+        if(maxCapacity > 0){
+            return maxCapacity - scamps.size();
         }
         return 0;
     }
 
     public void enter(Scamp scamp){
-        if(capacity > 0) {
+        if(maxCapacity > 0) {
             scamps.add(scamp);
         }
     }
+    public void leave(Scamp scamp){
+        scamps.remove(scamp);
+        scamp.setState(Scamp.ScampState.IDLE);
+    }
     public void evict(){
-        if(capacity > 0) {
+        if(maxCapacity > 0) {
             Iterator<Scamp> iterator = scamps.iterator();
             while(iterator.hasNext()){
                 iterator.next().setState(Scamp.ScampState.IDLE);
@@ -67,9 +71,7 @@ public class Structure {
     }
 
     public void update(float dt){
-        if(getWorld().dayCycle.hasNightEnded()){
-            evict();
-        }
+        // Maybe do something for every Structure?
     }
 
     public void render(SpriteBatch batch){
