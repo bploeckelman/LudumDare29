@@ -7,13 +7,14 @@ import com.badlogic.gdx.graphics.g2d.*;
 import lando.systems.ld29.Global;
 import lando.systems.ld29.World;
 import lando.systems.ld29.core.Assets;
+import lando.systems.ld29.resources.Resource;
 
 public class Block {
 
     public static Block getRandomBlock(float x, float y){
         switch (Assets.random.nextInt(20)) {
             case 0:
-                return new DirtBlock(x, y);
+                return new WheatBlock(x, y);
             case 1:
                 return new StoneBlock(x, y);
             case 2:
@@ -103,4 +104,9 @@ public class Block {
 		getSprite().setPosition(x * BLOCK_WIDTH + xShift, Global.UNDERGROUND_HEIGHT + y * BLOCK_WIDTH);
 		getSprite().draw(batch);
 	}
+	
+	public Resource MakeResource(){
+		return null;
+	}
+	
 }

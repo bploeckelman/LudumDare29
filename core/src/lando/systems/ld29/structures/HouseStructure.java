@@ -7,6 +7,9 @@ import lando.systems.ld29.core.Assets;
 import lando.systems.ld29.scamps.Scamp;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 public class HouseStructure extends Structure {
     private static TextureRegion dayImg = Assets.structures.get("house-day");
@@ -14,7 +17,15 @@ public class HouseStructure extends Structure {
     private Sprite day;
     private Sprite night;
     boolean isDaySprite  = true;
-
+    
+    public static final Map<String, Integer> buildCost;
+    static {
+    	Map<String, Integer> aMap = new HashMap<String, Integer>();
+    	aMap.put("wood", 3);
+    	aMap.put("stone", 3);
+    	buildCost = Collections.unmodifiableMap(aMap);
+    }
+    
     public HouseStructure(float x, World world){
         super(x, world);
 
@@ -25,6 +36,7 @@ public class HouseStructure extends Structure {
         setSprite(day);
     }
 
+
     public void evict(){
         // Maybe create a baby?
         if(getCapacity() >= 2 && Assets.random.nextFloat() > .75f){
@@ -33,6 +45,7 @@ public class HouseStructure extends Structure {
 
         super.evict();
     }
+
 
     public void update(float dt){
         super.update(dt);

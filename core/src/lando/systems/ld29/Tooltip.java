@@ -54,6 +54,13 @@ public class Tooltip {
                 header = scamp.toString();
                 text = scamp.getCurrentStateName();
                 show = true;
+            } else {
+                Plaque plaque = world.hud.getPlaqueFromPos(hudClickPoint.x, hudClickPoint.y);
+                if (plaque != null) {
+                    header = "Resource";
+                    text = plaque.getIconName();
+                    show = true;
+                }
             }
         }
 

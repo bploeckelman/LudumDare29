@@ -114,9 +114,9 @@ public class Player {
 //		sprite.setPosition(xPos * 64, 10);
 //		sprite.draw(batch);
 		if (inputDelay > 0){
-			pickAnimation.apply(skeleton, animationTime/2.0f, animationTime/2.0f, true, events);
+			pickAnimation.apply(skeleton, animationTime, animationTime, true, events);
 		} else if (xTarget == xPos){
-			idleAnimation.apply(skeleton, animationTime, animationTime, true, events);
+			idleAnimation.apply(skeleton, animationTime/2, animationTime/2, true, events);
 		} else if (xTarget < xPos){
 			walkLeftAnimation.apply(skeleton, animationTime*3, animationTime*3, true, events);
 		} else {
