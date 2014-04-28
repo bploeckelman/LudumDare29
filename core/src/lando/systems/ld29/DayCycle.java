@@ -42,6 +42,8 @@ public class DayCycle
 	public DayCycle(World world) {
 		_world = world;
 		setTime(60); // 7 am
+		// TODO uncomment
+		//setTime(1180);
 		sunSprite = new Sprite(sunTex);
 		sunSprite.setSize(64,64);
 		skySprite = new Sprite(skyTex);

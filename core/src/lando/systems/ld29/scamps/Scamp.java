@@ -95,7 +95,7 @@ public class Scamp implements IResourceGenerator {
 
     boolean walkRight;
     boolean inHouse;
-    boolean actuallyinHouse;
+    public boolean actuallyinHouse;
     boolean isGathering;
     boolean isBuilding;
     boolean resourceDepleted;
@@ -221,10 +221,11 @@ public class Scamp implements IResourceGenerator {
             if (!inHouse) {
                 // If night, find an unoccupied house and enter it
                 for (Structure structure : World.THEWORLD.structureManager.structures) {
-                    if (structure instanceof HouseStructure && structure.getCapacity() > 0) {
+                    if (structure != null && structure.name == "house" && structure.getCapacity() > 0) {
                         targetPosition = structure.x;
                         structure.enter(this);
                         inHouse = true;
+                        break;
                     }
                 }
             }
@@ -257,12 +258,20 @@ public class Scamp implements IResourceGenerator {
     }
 
     private void updateStrolling(float dt) {
+    	if (!World.THEWORLD.dayCycle.isDay()) {
+    		setState(ScampState.SLEEP);
+    		return;
+    	}
         if (position == targetPosition) {
             currentState = ScampState.IDLE;
         }
     }
 
     private void updateGathering(float dt) {
+    	if (!World.THEWORLD.dayCycle.isDay()) {
+    		setState(ScampState.SLEEP);
+    		return;
+    	}
         if (workingResource == null) return;
         if (!World.THEWORLD.rManager.containsResource(workingResource)) {
         	setState(ScampState.IDLE);

@@ -55,6 +55,15 @@ public class ParticleSystem {
 		}
 	}
 	
+	public void chimenySmoke(float x, float y){
+		for (int i = 0; i < 3; i ++){
+			Particle item = particlePool.obtain();
+			float dir = (float) (Assets.random.nextFloat() * Math.PI);
+			item.init(x, y, (float)Math.cos(dir) * Assets.random.nextFloat() * 5, (float)Math.sin(dir)* ( 0.5f + Assets.random.nextFloat()) *1, 2.0f + Assets.random.nextFloat(), Color.GRAY, Color.CLEAR, false);
+        	activeParticles.add(item);
+		}
+	}
+	
 	public void update(float dt){
         // if you want to free dead bullets, returning them to the pool:
 		Particle item;

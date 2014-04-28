@@ -64,6 +64,16 @@ public class HouseStructure extends Structure implements IResourceGenerator {
         if(getWorld().dayCycle.hasNightEnded()){
             evict();
         }
+        
+        if (!getWorld().dayCycle.isDay()){
+        	boolean smoke = false;
+        	for (Scamp scamp : scamps){
+        		if (scamp.actuallyinHouse) smoke= true;
+        	}
+        	// someone is here, lets make a fire
+        	if (smoke)
+        	World.THEWORLD.particleSystem.chimenySmoke(x* 64 + 10, Global.GROUND_LEVEL + 60);
+        }
 
         if(getWorld().dayCycle.isDay() != isDaySprite) {
             if (isDaySprite) {
@@ -75,6 +85,8 @@ public class HouseStructure extends Structure implements IResourceGenerator {
             }
         }
     }
+    
+    
 
 
 	@Override
