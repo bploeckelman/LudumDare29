@@ -137,7 +137,7 @@ public class GameGrid {
 	public boolean pushUp(Block newBlock, int x){
 		if (earthQuakeTime > EARTHQUAKEMAXTIME/3) return false;
 
-        Assets.addBlock.play();
+        Assets.addBlock.play(0.5f);
 
 		// Pop up what was on the top
 		pushedOutBlock = blocks[x + (height -1) * width];

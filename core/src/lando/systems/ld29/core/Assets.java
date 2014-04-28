@@ -53,6 +53,7 @@ public class Assets {
     public static Sound addBlock;
     public static Sound newDay;
     public static Sound earthquake;
+    public static Sound gatherFood;
 
     //public static Music music;
     public static Music dayAmbient;
@@ -178,6 +179,7 @@ public class Assets {
         addBlock = Gdx.audio.newSound(Gdx.files.internal("audio/add_block.wav"));
         newDay = Gdx.audio.newSound(Gdx.files.internal("audio/new_day.wav"));
         earthquake = Gdx.audio.newSound(Gdx.files.internal("audio/earthquake.wav"));
+        gatherFood = Gdx.audio.newSound(Gdx.files.internal("audio/gather_food.wav"));
 
 //        music = Gdx.audio.newMusic("audio/music.mp3");
         dayAmbient = Gdx.audio.newMusic(Gdx.files.internal("audio/day_birds.mp3"));
