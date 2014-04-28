@@ -35,6 +35,7 @@ public class ParticleSystem {
 	
 	public void addFirework(float x, float y){
 		fireworks.add(new Firework(x, y));
+        Assets.fireworkLaunch.play();
 	}
 	
 	public void fuckingCrazy(float x, float y, int size){
@@ -84,6 +85,7 @@ public class ParticleSystem {
         	firework.update(dt);
             if (firework.vY < 0) {
             	fireworks.removeIndex(i);
+                Assets.fireworkPop.play();
             	fuckingCrazy(firework.x, firework.y, 100);
             } else {
     			Particle trail = particlePool.obtain();
