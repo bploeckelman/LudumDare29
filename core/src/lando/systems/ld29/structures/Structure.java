@@ -21,7 +21,7 @@ public class Structure {
     public float x;
     public float buildPercent;
     
-    String name = "CHANGE ME";
+    public String name = "CHANGE ME";
     
     public Structure(float x, World world){
         this.x = x;
@@ -85,11 +85,17 @@ public class Structure {
         getSprite().draw(batch);
     }
 
+    
+    public String getName(){
+    	return name;
+    }
+
     public boolean build(float percent) {
         buildPercent += percent;
         if (buildPercent > 1f)
             buildPercent = 1f;
 
         return buildPercent == 1f;
+
     }
 }

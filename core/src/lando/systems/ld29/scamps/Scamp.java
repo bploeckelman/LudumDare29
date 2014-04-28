@@ -125,9 +125,11 @@ public class Scamp {
         // Update based on current state
         // ---------------------------------------------------------------------
         switch(currentState) {
+
             case SLEEP:      updateSleeping(dt);      break;
             case EATING:     updateEating(dt);        break;
             case BUILDHOUSE: updateBuildingHouse(dt); break;
+
 //            case BUILD_XXXX:
 //                move to building target: buildingStructure
 //                add a dt to buildingStructure
@@ -150,7 +152,10 @@ public class Scamp {
                 }
             }
         } else { // we are walking not working yet
-            walkRight = isWalkingRight();
+
+        	gatherReady = false;
+        	walkRight = isWalkingRight();
+
             // Move you sluggard!
             float dist= SCAMP_SPEED * dt;
             if (dist > Math.abs(targetPosition - position)){

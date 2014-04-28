@@ -8,8 +8,7 @@ import lando.systems.ld29.core.Assets;
 import lando.systems.ld29.resources.Resource;
 import lando.systems.ld29.scamps.ScampResources.ScampResourceType;
 import lando.systems.ld29.scamps.Scamp.*;
-import lando.systems.ld29.structures.HouseStructure;
-import lando.systems.ld29.structures.Structure;
+import lando.systems.ld29.structures.*;
 import lando.systems.ld29.util.Utils;
 
 import java.util.HashMap;
@@ -44,7 +43,7 @@ public class ScampManager {
 //        
 //    }
 
-    private final static int INITIAL_SCAMP_COUNT = 2;
+    private final static int INITIAL_SCAMP_COUNT = 3;
 //    private final static float DEFAULT_SCAMP_PRIORITY_SCORE = 10;
 //    private final static float PRIORITY_RECOMPUTE_TIME = 10; // in seconds
 
@@ -111,7 +110,10 @@ public class ScampManager {
     private void doGather(Scamp scamp) {
         if (scamp.workingResource == null) return;
         if (scamp.isGatherReady()) {
-            int numResourcesGathered = world.rManager.takeResource((int) scamp.workingResource.getX(), 1);
+        	ScampResourceType type = scampResources.getType(scamp.workingResource.resourceName().toUpperCase());
+        	int numResourcesGathered = 0;
+        	if (scampResources.getScampResourceCount(type) < world.structureManager.getMaxAmount(type))
+        		numResourcesGathered = world.rManager.takeResource((int) scamp.workingResource.getX(), 1);
             if (numResourcesGathered > 0) {
             	world.displayResourceGather(scamp, numResourcesGathered);
                 scampResources.addScampResources(scampResources.getType(scamp.workingResource.resourceName().toUpperCase()), numResourcesGathered);
@@ -161,16 +163,36 @@ public class ScampManager {
     	// Build Factory
     	
     	// Build Warehouse
+    	if ((1 + world.structureManager.countStructures("warehouse")) * 2 == world.structureManager.countStructures("house") ){
+	    	if (tryBuilding(scamp, "warehouse")){
+	    		return;
+	    	}
+    	}
     	
     	// Build House
-    	if (tryBuilding(scamp, "house")){
-    		return;
+    	if ((1 + world.structureManager.countStructures("warehouse")) * 2 > world.structureManager.countStructures("house") ){
+	    	if (tryBuilding(scamp, "house")){
+	    		return;
+	    	}
     	}
 
     	
     	
+    	// get grapes?
+    	if (scampResources.getScampResourceCount(ScampResourceType.GRAPES) < world.structureManager.getMaxAmount(ScampResourceType.GRAPES) &&
+    			world.rManager.CountofType("vinyard") > 0) {
+			scamp.currentState = ScampState.GRAPES;
+			gatherResource(scamp, "vinyard");
+			return;
+    	}
     	
-    	
+    	// get Wood?
+    	if (scampResources.getScampResourceCount(ScampResourceType.WOOD) < world.structureManager.getMaxAmount(ScampResourceType.WOOD) &&
+    			world.rManager.CountofType("forrest") > 0) {
+			scamp.currentState = ScampState.WOOD;
+			gatherResource(scamp, "forrest");
+			return;
+    	}
     	
     	
     	//Nothing else Walk Around
@@ -186,6 +208,12 @@ public class ScampManager {
     	switch(name){
     	case "house":
     		costs = HouseStructure.buildCost;
+    		break;
+    	case "warehouse":
+    		costs = WarehouseStructure.buildCost;
+    		break;
+    	case "temple":
+    		costs = TempleStructure.buildCost;
     		break;
     	}
     	
@@ -209,6 +237,12 @@ public class ScampManager {
     		case "house": struct = new HouseStructure(world.structureManager.getRandomAvilSpot(), world);
     			scamp.currentState = ScampState.BUILDHOUSE;
     		break;
+    		case "warehouse": struct = new WarehouseStructure(world.structureManager.getRandomAvilSpot(), world);
+				scamp.currentState = ScampState.BUILDWAREHOUSE;
+			break;
+    		case "temple": struct = new TempleStructure(world.structureManager.getRandomAvilSpot(), world);
+				scamp.currentState = ScampState.BUILDTEMPLE;
+			break;
     		default : struct = new HouseStructure(world.structureManager.getRandomAvilSpot(), world);
     			
     		}
@@ -224,6 +258,10 @@ public class ScampManager {
     	
     	
     	return false;
+    }
+    
+    public int getCurrentPopulation(){
+    	return scamps.size;
     }
     
     private void gatherResource(Scamp scamp, String resourceName){
