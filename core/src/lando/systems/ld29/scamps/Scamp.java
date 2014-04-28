@@ -58,6 +58,7 @@ public class Scamp implements IResourceGenerator {
     
     static Map<String, ScampState> scampStates = new HashMap<String, ScampState>()
     {{
+        put("food", ScampState.FOOD);
         put("wood", ScampState.WOOD);
         put("stone", ScampState.STONE);
         put("iron", ScampState.IRON);
@@ -71,6 +72,7 @@ public class Scamp implements IResourceGenerator {
     }};
     
     static ScampState[] resourceGatherState = {
+        ScampState.FOOD,
         ScampState.WOOD,
         ScampState.STONE,
         ScampState.IRON,
@@ -89,6 +91,8 @@ public class Scamp implements IResourceGenerator {
 
     boolean walkRight;
     boolean inHouse;
+    
+    boolean dead;
 
     String name;
     Resource workingResource;
@@ -134,7 +138,11 @@ public class Scamp implements IResourceGenerator {
     private void updateHunger(float dt) {
         hungerAmount += dt / 60; // 1 hunger a minute
         if (hungerAmount > 10 && World.THEWORLD.scampManager.getCurrentPopulation() > 1){
+<<<<<<< HEAD
+            World.THEWORLD.scampManager.killScamp(this);
+=======
         	World.THEWORLD.scampManager.removeScamps(this);
+>>>>>>> 014c060624766a0b5cc9f2c05754ab8f8d7b895e
         }
     }
 
@@ -148,10 +156,12 @@ public class Scamp implements IResourceGenerator {
             case STROLLING: updateStrolling(dt); break;
 
             // Gathering
+            case FOOD:
             case WOOD:
             case STONE:
             case IRON:
             case GOLD:
+            case GRAPES:
             case MARBLE:
                 updateGathering(dt);
                 break;
@@ -307,11 +317,11 @@ public class Scamp implements IResourceGenerator {
     public boolean isWalkingRight() { return (targetPosition - position >= 0); }
 
     public TextureRegion getResourceIcon() {
-    	return Assets.icons.get(currentState.toString());
+    	return (dead) ? Assets.icons.get("PEOPLE") : Assets.icons.get(currentState.toString());
     }
     
     public Rectangle getResourceBounds() {
-    	return new Rectangle(position * Block.BLOCK_WIDTH  + 4, Global.GROUND_LEVEL + SCAMP_SIZE + 10, SCAMP_SIZE - 8, 15);
+    	return new Rectangle(position * Block.BLOCK_WIDTH  + 9, Global.GROUND_LEVEL + SCAMP_SIZE + 10, 15, 15);
     }
 
     public void setState(ScampState state) {
@@ -404,5 +414,10 @@ public class Scamp implements IResourceGenerator {
             default:                 return "???";
         }
     }
+
+
+	public void kill() {
+		dead = true;
+	}
 
 }

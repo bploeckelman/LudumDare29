@@ -76,7 +76,8 @@ public class ScampManager {
     }
     
     public void killScamp(Scamp scamp){
-    	scamps.removeValue(scamp, true);
+    	scamp.kill();
+    	removeScamps(scamp);
     }
 
     public Scamp getScampFromPos(float x, float y) {
@@ -325,6 +326,7 @@ public class ScampManager {
 	public void removeScamps(Scamp scamp) {
 		scamps.removeValue(scamp,  true);
 		scampResources.removeScampResource(ScampResourceType.PEOPLE, 1);
+		world.displayResourceGather(scamp,  -1);
 	}
 
 //    public void determinePriorities() {

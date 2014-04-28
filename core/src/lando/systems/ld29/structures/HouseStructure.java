@@ -87,7 +87,7 @@ public class HouseStructure extends Structure implements IResourceGenerator {
 	public Rectangle getResourceBounds() {
 		Rectangle bounds = getSprite().getBoundingRectangle();
 		
-		float width = Scamp.SCAMP_SIZE - 8;
+		float width = 15;
 		float height = 15;
 		
 		return new Rectangle(bounds.x + ((bounds.width - width)/2), bounds.y - height, width, height);
