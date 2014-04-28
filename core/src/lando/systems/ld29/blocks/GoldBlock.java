@@ -17,7 +17,6 @@ public class GoldBlock extends Block {
         toolTipString = "Used for making circuits";
         fountainColor = Color.GRAY;
         setSprite(new Sprite(img));
-        cost = 10;
     }
     
 	public Resource MakeResource(){

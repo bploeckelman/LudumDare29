@@ -1,28 +1,22 @@
 package lando.systems.ld29;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
 import lando.systems.ld29.blocks.*;
 import lando.systems.ld29.core.Assets;
-import lando.systems.ld29.scamps.ScampManager;
 import lando.systems.ld29.scamps.ScampResources.ScampResourceType;
 import lando.systems.ld29.screens.GameScreen;
 import lando.systems.ld29.util.Config;
 
 public class Hud {
-    private static String[] blockNames = {
-        "dirt", "stone", "iron", "acorn", "grapes"
-    };
+    private static String[] blockNames = Assets.blocks.keySet().toArray(new String[Assets.blocks.size()]);
 
     private ScampResourceType[] types = {
         ScampResourceType.FOOD,
@@ -38,7 +32,9 @@ public class Hud {
         ScampResourceType.STEEL,
         ScampResourceType.PEOPLE
     };
+    
     private ArrayList<Plaque> resources = new ArrayList<Plaque>();
+    private ArrayList<IToolTip> toolTipItems = new ArrayList<IToolTip>(20);
     
     static final float HUD_BLOCK_WIDTH = 32;
     static final float HUD_WIDTH = blockNames.length * HUD_BLOCK_WIDTH;
@@ -50,24 +46,23 @@ public class Hud {
 
     public static final float Height = Panel.getTopHeight() + HUD_BLOCK_WIDTH + Assets.panelBrown.getBottomHeight() + 2;
     
-    private Sprite[] blocks;
+    private HudBlock[] blocks;
     private World world;
     private BeliefMeter beliefMeter; 
         
     public Tooltip tooltip;
     
-    private ArrayList<IToolTip> items = new ArrayList<IToolTip>();
-
     public Hud(World world) {
         this.world = world;
         tooltip = new Tooltip(world);
-        blocks = new Sprite[blockNames.length];
+        blocks = new HudBlock[blockNames.length];
         float newX = HUDX;
         for(int i = 0; i < blockNames.length; i++){
-            blocks[i] = new Sprite(Assets.blocks.get(blockNames[i]));
+            blocks[i] = new HudBlock(blockNames[i]);
             blocks[i].setSize(HUD_BLOCK_WIDTH, HUD_BLOCK_WIDTH);
             blocks[i].setPosition(newX, HUDY);
             newX += HUD_BLOCK_WIDTH;
+            toolTipItems.add(blocks[i]);
         }
         
         float width = HUDX - ((Panel.getPadLeft() * 2) + Panel.getPadRight()); // 30
@@ -75,6 +70,7 @@ public class Hud {
         float height = 25;
         beliefMeter = new BeliefMeter(width, height);
         beliefMeter.setPosition(10, Global.UNDERGROUND_LEVEL - (height + 1));
+        toolTipItems.add(beliefMeter);
         
         addResources(types, HUDX + HUD_WIDTH + Panel.getPadRight(), height, width);
     }
@@ -102,7 +98,7 @@ public class Hud {
     		x += plaqueWidth + hGap;
     		
     		resources.add(p);
-    		items.add(p);
+    		toolTipItems.add(p);
     	}    	
     }
     
@@ -114,6 +110,10 @@ public class Hud {
         
         for (Plaque plaque : resources) {
         	plaque.update(world.scampManager);
+        }
+        
+        for (HudBlock hudBlock : blocks) {
+        	hudBlock.update(player.belief);
         }
         
     	if (Gdx.input.isButtonPressed(Input.Buttons.LEFT) && player.inputDelay <=0 && player.xPos == player.xTarget){
@@ -135,9 +135,17 @@ public class Hud {
         } else {
             justClicked = false;
         }
-        for(Plaque plaque : resources) {
-            plaque.setValue(world.scampManager.scampResources.getScampResourceCount(plaque.getIconName()));
-        }
+    }
+    
+    public IToolTip getToolTipItemFromPos(float x, float y) {
+    	IToolTip toolTipItem = null;
+    	for (IToolTip toolTip : toolTipItems) {
+    		if (toolTip.getToolTipBounds().contains(x, y)) {
+    			toolTipItem = toolTip;
+    			break;
+    		}
+    	}
+    	return toolTipItem;
     }
 
     public void render(SpriteBatch batch) {
@@ -152,7 +160,8 @@ public class Hud {
             (blockNames.length * HUD_BLOCK_WIDTH) + (Assets.panelBrown.getPadRight() * 2),
             (Assets.panelBrown.getPadTop() * 2) + HUD_BLOCK_WIDTH
         );
-        for(Sprite block : blocks){
+        
+        for(HudBlock block : blocks){
             block.draw(batch);
         }
         
@@ -190,14 +199,4 @@ public class Hud {
 
         return ret;
     }
-
-    public Plaque getPlaqueFromPos(float x, float y) {
-        for(Plaque plaque : resources) {
-            if (plaque.getBounds().contains(x,y)) {
-                return plaque;
-            }
-        }
-        return null;
-    }
-
 }

@@ -8,8 +8,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Rectangle;
 
-public class Meter {
+public class Meter implements IToolTip {
 	private float _value;
+	
+	private int _intValue;
 	
 	private final Rectangle _bounds;
 	private final String _header;
@@ -19,12 +21,21 @@ public class Meter {
 		_bounds = new Rectangle(0, 0, width, height);
 	}
 	
+	public Rectangle getBounds() {
+		return _bounds;
+	}
+	
+	public int getValue() {
+		return _intValue;
+	}
+	
 	public void setPosition(float x, float y) {
 		_bounds.x = x;
 		_bounds.y = y;
 	}
 	
 	public void setValue(float value) {
+		_intValue = (int)value;
 		_value = value / 100f;
 	}
 	
@@ -51,5 +62,20 @@ public class Meter {
 				_bounds.height - ((background.getPadTop() + background.getPadBottom())/2));
 		
 		
+	}
+
+	@Override
+	public Rectangle getToolTipBounds() {
+		return _bounds;
+	}
+
+	@Override
+	public String getTitle() {
+		return _header;
+	}
+
+	@Override
+	public String getText() {
+		return "" + _intValue;
 	}
 }

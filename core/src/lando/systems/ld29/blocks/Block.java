@@ -52,6 +52,12 @@ public class Block {
         fountainColor = Color.WHITE;
         cost = -100000;
 	}
+	
+	public void setCost()
+	{			
+		Integer value = Assets.costs.get(blockType);
+		cost = (value != null) ? value.intValue() : 0;
+	}
 
     public float getX() { return x / BLOCK_WIDTH; }
     public float getY() { return y / BLOCK_WIDTH; }
@@ -71,6 +77,7 @@ public class Block {
     public void setSprite(Sprite sprite){
         sprite.setSize(BLOCK_WIDTH, BLOCK_WIDTH);
         this.sprite = sprite;
+        setCost();
     }
     public Sprite getSprite(){
         return this.sprite;

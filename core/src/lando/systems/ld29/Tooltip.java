@@ -55,10 +55,10 @@ public class Tooltip {
                 text = scamp.getCurrentStateName();
                 show = true;
             } else {
-                Plaque plaque = world.hud.getPlaqueFromPos(hudClickPoint.x, hudClickPoint.y);
-                if (plaque != null) {
-                    header = "Resource";
-                    text = plaque.getIconName();
+            	IToolTip item = world.hud.getToolTipItemFromPos(hudClickPoint.x, hudClickPoint.y);
+                if (item != null) {
+                    header = item.getTitle();
+                    text = item.getText();
                     show = true;
                 }
             }
