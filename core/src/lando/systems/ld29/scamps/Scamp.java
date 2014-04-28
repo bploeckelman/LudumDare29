@@ -16,6 +16,7 @@ import lando.systems.ld29.core.Assets;
 import lando.systems.ld29.resources.Resource;
 import lando.systems.ld29.structures.HouseStructure;
 import lando.systems.ld29.structures.Structure;
+import lando.systems.ld29.scamps.ScampResources.*;
 
 /**
  * Author: Ian McNamara <ian.mcnamara@doit.wisc.edu>
@@ -83,7 +84,6 @@ public class Scamp implements IResourceGenerator {
     float buildAccum;
 
     boolean walkRight;
-    boolean gatherReady;
     boolean inHouse;
 
     String name;
@@ -109,7 +109,6 @@ public class Scamp implements IResourceGenerator {
 
         this.workingResource = null;
         this.gatherAccum = 0f;
-        this.gatherReady = false;
 
         this.eatAccum = 0f;
         this.inHouse = false;
@@ -124,12 +123,20 @@ public class Scamp implements IResourceGenerator {
             displayLastState -= dt;
         }
 
+        updateState(dt);
+        updateMovement(dt);
+    }
+
+    private void updateHunger(float dt) {
         hungerAmount += dt / 60; // 1 hunger a minute
         if (hungerAmount > 10 && World.THEWORLD.scampManager.getCurrentPopulation() > 1){
         	World.THEWORLD.scampManager.killScamp(this);
         }
-        // Update based on current state
-        // ---------------------------------------------------------------------
+    }
+
+    private void updateState(float dt) {
+        updateHunger(dt);
+
         switch(currentState) {
             // General actions
             case SLEEP:     updateSleeping(dt); break;
@@ -137,13 +144,13 @@ public class Scamp implements IResourceGenerator {
             case STROLLING: updateStrolling(dt); break;
 
             // Gathering
-//            case WOOD:
-//            case STONE:
-//            case IRON:
-//            case GOLD:
-//            case MARBLE:
-//                updateGathering(dt);
-//                break;
+            case WOOD:
+            case STONE:
+            case IRON:
+            case GOLD:
+            case MARBLE:
+                updateGathering(dt);
+                break;
 
             // Building
             case BUILDHOUSE:
@@ -154,28 +161,22 @@ public class Scamp implements IResourceGenerator {
                 updateBuilding(dt);
                 break;
         }
+    }
 
+    private void updateMovement(float dt) {
         // Have we reached our target yet?
-        if( targetPosition == position ) {
-            // TODO : HANDLE UP IN SWITCH, LIKE BUILDING
-            // Update gathering timer/state
-            gatherAccum += dt;
-            if (gatherAccum > GATHER_RATE) {
-                gatherAccum %= GATHER_RATE;
-                gatherReady = true;
-            }
-        } else { // we are walking not working yet
-        	gatherReady = false;
-        	walkRight = isWalkingRight();
+        if( targetPosition != position ) {
+            // We are walking not working yet
+            walkRight = isWalkingRight();
 
             // Move you sluggard!
-            float dist= SCAMP_SPEED * dt;
+            float dist = SCAMP_SPEED * dt;
             if (dist > Math.abs(targetPosition - position)){
                 position = targetPosition;
             } else {
                 position += (walkRight ? SCAMP_SPEED : -SCAMP_SPEED) * dt;
             }
-        } 
+        }
     }
 
     private boolean updateSleeping(float dt) {
@@ -224,7 +225,38 @@ public class Scamp implements IResourceGenerator {
     }
 
     private void updateGathering(float dt) {
-        // TODO: gather some shit
+        if (workingResource == null) return;
+
+        targetPosition = workingResource.getX();
+        // If scamp is at gathering site...
+        if (position == targetPosition) {
+            // Update gathering timer, and gather if its time
+            gatherAccum += dt;
+            if (gatherAccum > GATHER_RATE) {
+                gatherAccum = 0;
+
+                ScampResources resources = World.THEWORLD.scampManager.scampResources;
+                ScampResourceType type = resources.getType(workingResource.resourceName().toUpperCase());
+
+                // If there's anything to gather, gather one
+                int numResourcesGathered = 0;
+                if (resources.getScampResourceCount(type) < World.THEWORLD.structureManager.getMaxAmount(type)) {
+                    numResourcesGathered = World.THEWORLD.rManager.takeResource((int) workingResource.getX(), 1);
+                }
+
+                // If we gathered any, display it and store the gathered resource
+                if (numResourcesGathered > 0) {
+                    World.THEWORLD.displayResourceGather(this, numResourcesGathered);
+                    resources.addScampResources(resources.getType(workingResource.resourceName().toUpperCase()), numResourcesGathered);
+                    System.out.println("update() | scamp " + name + " gathered " + numResourcesGathered + " resources of type '" + workingResource.resourceName() + "'");
+                } else {
+                    // Resource used up, go about your business
+                    workingResource = null;
+                    isGatheringResources = false;
+                    currentState = ScampState.IDLE;
+                }
+            }
+        }
     }
 
     private void updateBuilding(float dt) {
@@ -266,7 +298,10 @@ public class Scamp implements IResourceGenerator {
         	}
         }
     }
-    
+
+    public boolean isIdle() { return currentState == ScampState.IDLE; }
+    public boolean isWalkingRight() { return (targetPosition - position >= 0); }
+
     public TextureRegion getResourceIcon() {
     	return Assets.icons.get(currentState.toString());
     }
@@ -275,15 +310,7 @@ public class Scamp implements IResourceGenerator {
     	return new Rectangle(position * Block.BLOCK_WIDTH  + 4, Global.GROUND_LEVEL + SCAMP_SIZE + 10, SCAMP_SIZE - 8, 15);
     }
 
-    public boolean isIdle() { return currentState == ScampState.IDLE; }
-
-    public boolean isWalkingRight() { return (targetPosition - position >= 0); }
-
-    public void didGather() { gatherReady = false; }
-    public boolean isGatherReady() { return gatherReady; }
-
-    public void setState(ScampState state) { 
-
+    public void setState(ScampState state) {
         if (currentState == state) return;
 
         boolean wasGatheringResources = isGatheringResources;

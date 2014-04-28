@@ -104,7 +104,6 @@ public class ScampManager {
         for(Scamp scamp : scamps) {
         	if (scamp.isIdle()) GiveScampJob(scamp);
             scamp.update(dt);
-            doGather(scamp);
         }
     }
 
@@ -112,27 +111,6 @@ public class ScampManager {
         for(Scamp scamp : scamps) { scamp.render(batch); }
     }
 
-    private void doGather(Scamp scamp) {
-        if (scamp.workingResource == null) return;
-        if (scamp.isGatherReady()) {
-        	ScampResourceType type = scampResources.getType(scamp.workingResource.resourceName().toUpperCase());
-        	int numResourcesGathered = 0;
-        	if (scampResources.getScampResourceCount(type) < world.structureManager.getMaxAmount(type))
-        		numResourcesGathered = world.rManager.takeResource((int) scamp.workingResource.getX(), 1);
-            if (numResourcesGathered > 0) {
-            	world.displayResourceGather(scamp, numResourcesGathered);
-                scampResources.addScampResources(scampResources.getType(scamp.workingResource.resourceName().toUpperCase()), numResourcesGathered);
-                System.out.println("update() | scamp " + scamp.toString() + " gathered " + numResourcesGathered + " resources of type '" + scamp.workingResource.resourceName() + "'");
-            } else {
-                scamp.setWorkingResource(null);
-                scamp.setState(ScampState.IDLE);
-                scamp.setTarget(Assets.random.nextInt(World.gameWidth));
-
-            }
-            scamp.didGather();
-        }
-    }
-    
     private void GiveScampJob(Scamp scamp){
     	if (scamp.hungerAmount > 5 && scampResources.getScampResourceCount(ScampResourceType.FOOD) > 0){
     		scamp.currentState = ScampState.EATING;
