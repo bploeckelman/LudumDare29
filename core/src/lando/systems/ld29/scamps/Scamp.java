@@ -30,8 +30,8 @@ public class Scamp implements IResourceGenerator {
     public static final float EAT_TIME = 3f; // in seconds
     public static final float BUILD_RATE = 1f; // in seconds
     public static final float BUILD_PERCENT = 0.1f;
-    
-    private float mySpeed;
+    // TODO : different refine rates for different items?
+    public static final float REFINE_RATE = 5f;
 
     public enum ScampState {
         IDLE,
@@ -92,26 +92,32 @@ public class Scamp implements IResourceGenerator {
     float gatherAccum;
     float eatAccum;
     float buildAccum;
+    float refineAccum;
 
     boolean walkRight;
     boolean inHouse;
     public boolean actuallyinHouse;
     boolean isGathering;
     boolean isBuilding;
+    boolean isRefining;
     boolean resourceDepleted;
     boolean onShip;
 
     boolean dead;
 
     String name;
-    Resource workingResource;
+
+    public Resource workingResource;
     public Structure buildingStructure;
+    public Structure refiningStructure;
+
     TextureRegion texture;
     ScampState currentState = ScampState.IDLE;
     Color thoughtColor = new Color(1, 1, 1, 0);
     float displayLastState;
     
     float hungerAmount = 0;
+    private float mySpeed;
 
 
     public Scamp(float startingPosition) {
@@ -131,6 +137,10 @@ public class Scamp implements IResourceGenerator {
 
         this.buildingStructure = null;
         this.buildAccum = 0f;
+
+        this.refineAccum = 0f;
+        this.isRefining = false;
+
         this.mySpeed = SCAMP_SPEED + (Assets.random.nextFloat() * .5f);
         this.onShip= false;
     }
@@ -184,9 +194,18 @@ public class Scamp implements IResourceGenerator {
             case BUILDSPACESHIP:
                 updateBuilding(dt);
                 break;
-                
+
+            // Refining
+            case FUEL:
+            case STEEL:
+            case CIRCUITS:
+                updateRefining(dt);
+                break;
+
+            // Win condition
             case GETONSHIP:
-            	updateWin(dt);
+                updateWin(dt);
+                break;
         }
     }
 
@@ -325,6 +344,51 @@ public class Scamp implements IResourceGenerator {
                     currentState = ScampState.IDLE;
                     isBuilding = false;
                 }
+            }
+        }
+    }
+
+    private void updateRefining(float dt) {
+        ScampResources resources = World.THEWORLD.scampManager.scampResources;
+        ScampResourceType type, rawType;
+        switch (currentState) {
+            case FUEL:     type = ScampResourceType.FUEL;     rawType = ScampResourceType.METEOR; break;
+            case STEEL:    type = ScampResourceType.STEEL;    rawType = ScampResourceType.IRON;   break;
+            case CIRCUITS: type = ScampResourceType.CIRCUITS; rawType = ScampResourceType.GOLD;   break;
+            // this shouldn't ever happen, its just to shut up the warning
+            default:       type = ScampResourceType.METEOR;   rawType = ScampResourceType.METEOR; break;
+        }
+
+        if (!isRefining) {
+            // Find and enter nearest open factory
+            Structure nearestFactory = World.THEWORLD.structureManager.getNearestStructure("factory", (int) position);
+            if (nearestFactory == null) return;
+            refiningStructure = nearestFactory;
+            refiningStructure.enter(this);
+
+            // Remove raw resource if we haven't already
+            resources.removeScampResource(rawType, 1);
+        }
+        isRefining = true;
+
+        targetPosition = refiningStructure.x;
+        // If scamp is at refining site...
+        if (position == targetPosition) {
+            // Update refine timer, and refine if its time
+            refineAccum += dt;
+            if (refineAccum > REFINE_RATE) {
+                refineAccum = 0;
+
+                // Generate the new refined resource and display
+                resources.addScampResources(type, 1);
+                World.THEWORLD.displayResourceGather(this, 1);
+                System.out.println("update() | scamp " + name + " refined 1 resource of type '" + type.toString() + "'");
+
+                // Done refining
+                refiningStructure.leave(this);
+                refiningStructure = null;
+                isRefining = false;
+                currentState = ScampState.IDLE;
             }
         }
     }

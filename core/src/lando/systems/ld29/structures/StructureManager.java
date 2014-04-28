@@ -7,6 +7,7 @@ import lando.systems.ld29.World;
 import lando.systems.ld29.core.Assets;
 import lando.systems.ld29.scamps.ScampResources;
 import lando.systems.ld29.scamps.ScampResources.ScampResourceType;
+import lando.systems.ld29.scamps.ScampStructure;
 
 public class StructureManager {
 
@@ -17,21 +18,25 @@ public class StructureManager {
         this.world = world;
         structures = new Structure[World.gameWidth];
 
-        // Add one for testing
-        // TODO: Remove this...
+        // Add initial house
         int i = World.gameWidth/2;
-
         HouseStructure initialHouse = new HouseStructure(i, world);
         initialHouse.buildPercent = 1f;
         createStructure(i, initialHouse);
-//        createStructure(++i, new WarehouseStructure(i, world));
-//        createStructure(++i, new TempleStructure(i, world));
-//        createStructure(++i, new FactoryStructure(i, world));
-        
+
+        // FOR THE DEBUGGING
 //        SpaceshipStructure space =new SpaceshipStructure(++i, world);
 //        space.buildPercent = 1f;
 //        createStructure(i, space);
-
+//        WarehouseStructure warehouse = new WarehouseStructure(++i, world);
+//        warehouse.buildPercent = 1f;
+//        createStructure(i,warehouse);
+//        FactoryStructure factory1 = new FactoryStructure(++i, world);
+//        factory1.buildPercent = 1f;
+//        createStructure(i,factory1);
+//        FactoryStructure factory2 = new FactoryStructure(++i, world);
+//        factory2.buildPercent = 1f;
+//        createStructure(i, factory2);
     }
     
     public Structure findStructure(String name){
@@ -63,6 +68,22 @@ public class StructureManager {
                 structure.update(dt);
             }
         }
+    }
+
+    public Structure getNearestStructure(String structureType, int pos) {
+        float dist = 99999;
+        Structure structure = null;
+        for(Structure s : structures) {
+            if (s == null) continue;
+            if (s.getName().equals(structureType) && s.getCapacity() > 0) {
+                float thisDist = Math.abs(s.x - pos);
+                if (thisDist < dist) {
+                    structure = s;
+                    dist = thisDist;
+                }
+            }
+        }
+        return structure;
     }
 
     public int getMaxAmount(ScampResourceType type){

@@ -31,6 +31,7 @@ public class Structure implements IToolTip {
         this.world = world;
         this.maxCapacity = 0;
         this.buildPercent = 0;
+        this.scamps = new ArrayList<>();
     }
 
 	public void setSprite(Sprite sprite){

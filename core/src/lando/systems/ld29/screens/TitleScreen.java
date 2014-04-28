@@ -6,7 +6,6 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Rectangle;
 import lando.systems.ld29.LudumDare29;
 import lando.systems.ld29.core.Assets;
@@ -50,12 +49,12 @@ public class TitleScreen implements Screen {
                 Config.window_height);
         Assets.batch.end();
 
-        Assets.shapes.begin(ShapeType.Filled);
+//        Assets.shapes.begin(ShapeType.Filled);
 
-        drawShapes();
+//        drawShapes();
 
-        Assets.shapes.identity();
-        Assets.shapes.end();
+//        Assets.shapes.identity();
+//        Assets.shapes.end();
     }
 
     private float rot = 0f;

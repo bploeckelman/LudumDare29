@@ -32,6 +32,7 @@ public class FactoryStructure extends Structure {
         night = new Sprite(nightImg);
         setSprite(day);
         name = "factory";
+        setMaxCapacity(1);
     }
 
     public void update(float dt){
