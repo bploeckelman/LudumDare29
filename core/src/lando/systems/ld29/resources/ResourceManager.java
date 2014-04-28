@@ -25,10 +25,12 @@ public class ResourceManager {
         resources = new Resource[parentWorld.gameWidth];
         width = world.gameWidth;
         height = world.gameHeight;
+
         // Fill the whole world with barren-ness
         for (int i = 0; i < parentWorld.gameWidth; i++) {
             resources[i] = new Barren(i);
         }
+
     }
 
     public int takeResource(int pos, int resourcesAsked ){

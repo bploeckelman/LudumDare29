@@ -1,8 +1,10 @@
 package lando.systems.ld29.core;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -23,12 +25,24 @@ public class Assets {
     public static Texture libgdx;
     public static Map<String,TextureRegion> blocks;
     public static Map<String,TextureRegion> resources;
+    public static Map<String,TextureRegion> structures;
+    public static Map<String,TextureRegion> icons;
 
     public static Texture scamps_spritesheet;
     public static Array<TextureRegion> scamps;
     public static int num_scamps;
 
     public static NinePatch panelBrown;
+    public static NinePatch thoughtBubble;
+    public static NinePatch panelGreen;
+
+    public static BitmapFont gameFont;
+    public static BitmapFont TooltipHeaderFont;
+    public static BitmapFont TooltipTextFont;
+
+    public static BitmapFont HUDFont;
+
+    public static String[] scampNames;
 
     //public static Sound sound;
     //public static Music music;
@@ -73,14 +87,63 @@ public class Assets {
         resources.put("quarry",   new TextureRegion(resourceSpritesheet, 0, Block.BLOCK_WIDTH * 11, 64, 64));
         resources.put("vinyard",       new TextureRegion(resourceSpritesheet, 0, Block.BLOCK_WIDTH * 12, 64, 64));
 
+        Texture structureSpritesheet = new Texture("art/structures-spritesheet.png");
+        structures = new HashMap<String,TextureRegion>();
+        structures.put("house-day"  , new TextureRegion(structureSpritesheet,   0, 192, 64, 64));
+        structures.put("house-night", new TextureRegion(structureSpritesheet,  64, 192, 64, 64));
+        structures.put("temple"     , new TextureRegion(structureSpritesheet, 128, 192, 64, 64));
+        structures.put("warehouse"  , new TextureRegion(structureSpritesheet, 192, 192, 64, 64));
+        structures.put("factory-day", new TextureRegion(structureSpritesheet, 256, 192, 64, 64));
+        structures.put("factory-night", new TextureRegion(structureSpritesheet, 320, 192, 64, 64));
+        structures.put("spaceship"  , new TextureRegion(structureSpritesheet, 384,   0, 64, 256));
+
+        Texture iconSpritesheet = new Texture("art/icon-spritesheet.png");
+        icons = new HashMap<String,TextureRegion>();
+        TextureRegion[][] iconRegions = TextureRegion.split(iconSpritesheet, 16, 16);
+        icons.put("FOOD",     iconRegions[0][0]);
+        icons.put("WOOD",     iconRegions[0][1]);
+        icons.put("STONE",    iconRegions[0][2]);
+        icons.put("IRON",     iconRegions[0][3]);
+        icons.put("MARBLE",   iconRegions[0][4]);
+        icons.put("GOLD",     iconRegions[0][5]);
+        icons.put("GRAPES",   iconRegions[1][0]);
+        icons.put("FUEL",     iconRegions[1][1]);
+        icons.put("CIRCUITS", iconRegions[1][2]);
+        icons.put("METEOR",   iconRegions[1][3]);
+        icons.put("STEEL",    iconRegions[1][4]);
+        icons.put("PEOPLE",   iconRegions[1][5]);
+
 //        sound = Gdx.audio.newSound("audio/sound.wav");
 //        music = Gdx.audio.newMusic("audio/music.mp3");
 
         panelBrown = new NinePatch(
-            new Texture("art/panel_brown.png"),
-            10, 10, 10 , 10
+                new Texture("art/panel_brown.png"),
+                10, 10, 10 , 10
         );
+
+
         panelBrown.setColor(new Color(153, 102, 51, 1));
+
+        panelGreen = new NinePatch(
+                new Texture("art/greenbar.png"),
+                7, 7, 7, 7
+        );
+
+        thoughtBubble = new NinePatch(
+                new Texture("art/thought.png"),
+                4, 5, 4 , 9
+        );
+
+        gameFont = new BitmapFont(Gdx.files.internal("fonts/ariel.fnt"),Gdx.files.internal("fonts/ariel.png"),false);
+        TooltipHeaderFont = new BitmapFont(Gdx.files.internal("fonts/ariel.fnt"),Gdx.files.internal("fonts/ariel.png"),false);
+
+        TooltipTextFont = new BitmapFont(Gdx.files.internal("fonts/ariel.fnt"),Gdx.files.internal("fonts/ariel.png"),false);
+        TooltipTextFont.setScale(.7f);
+
+        HUDFont = new BitmapFont(Gdx.files.internal("fonts/ariel.fnt"),Gdx.files.internal("fonts/ariel.png"),false);
+        HUDFont.setScale(.5f);
+
+        scampNames = Gdx.files.internal("text/scamp-names.txt").readString().split("\r\n|\r|\n");
     }
 
     public static void dispose() {
@@ -90,6 +153,10 @@ public class Assets {
 //        music.dispose();
         batch.dispose();
         hudBatch.dispose();
+    }
+
+    public static String randomName() {
+        return scampNames[random.nextInt(scampNames.length)];
     }
 
 }
