@@ -68,7 +68,8 @@ public class Scamp {
         ScampState.STONE,
         ScampState.IRON,
         ScampState.MARBLE,
-        ScampState.GOLD
+        ScampState.GOLD,
+        ScampState.GRAPES
     };
 
     int skinID;
