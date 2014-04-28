@@ -130,7 +130,7 @@ public class Scamp {
             // General actions
             case SLEEP:     updateSleeping(dt); break;
             case EATING:    updateEating(dt);   break;
-//            case STROLLING: updateStrolling(dt); break;
+            case STROLLING: updateStrolling(dt); break;
 
             // Gathering
 //            case WOOD:
@@ -153,17 +153,12 @@ public class Scamp {
 
         // Have we reached our target yet?
         if( targetPosition == position ) {
-            // If just strolling, go idle
-            if(currentState == ScampState.STROLLING) {
-               currentState = ScampState.IDLE;
-            } else {
-                // TODO : HANDLE UP IN SWITCH, LIKE BUILDING
-               // Update gathering timer/state
-                gatherAccum += dt;
-                if (gatherAccum > GATHER_RATE) {
-                    gatherAccum %= GATHER_RATE;
-                    gatherReady = true;
-                }
+            // TODO : HANDLE UP IN SWITCH, LIKE BUILDING
+            // Update gathering timer/state
+            gatherAccum += dt;
+            if (gatherAccum > GATHER_RATE) {
+                gatherAccum %= GATHER_RATE;
+                gatherReady = true;
             }
         } else { // we are walking not working yet
         	gatherReady = false;
