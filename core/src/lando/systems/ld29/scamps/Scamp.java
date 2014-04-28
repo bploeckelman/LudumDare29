@@ -8,6 +8,8 @@ import lando.systems.ld29.World;
 import lando.systems.ld29.blocks.Block;
 import lando.systems.ld29.core.Assets;
 import lando.systems.ld29.resources.Resource;
+import lando.systems.ld29.structures.HouseStructure;
+import lando.systems.ld29.structures.Structure;
 import lando.systems.ld29.util.Utils;
 
 /**
@@ -77,9 +79,19 @@ public class Scamp {
 
     public void update(float dt) {
     	hungerAmount += dt / 60; // 1 hunger a minute
-    	if (currentState == ScampState.SLEEP && World.THEWORLD.dayCycle.isDay()) {
-    		currentState = ScampState.IDLE;
-    		return;
+    	if (currentState == ScampState.SLEEP) {
+            if (World.THEWORLD.dayCycle.isDay()) {
+                currentState = ScampState.IDLE;
+                return;
+            } else {
+                // If night, find an unoccupied house and enter it
+                for(Structure structure : World.THEWORLD.structureManager.structures) {
+                    if (structure instanceof HouseStructure && structure.getCapacity() > 0) {
+                        targetPosition = structure.x;
+                        structure.enter(this);
+                    }
+                }
+            }
     	}
         // Have we reached our target yet?
         if( targetPosition == position ) {

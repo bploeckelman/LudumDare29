@@ -18,7 +18,7 @@ public class Structure {
     private int maxCapacity;
     ArrayList<Scamp> scamps;
 
-    float x;
+    public float x;
     
     String name = "CHANGE ME";
     
