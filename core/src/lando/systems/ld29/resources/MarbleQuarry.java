@@ -7,7 +7,7 @@ import lando.systems.ld29.core.Assets;
  * Created by jhoopes on 4/26/14.
  */
 public class MarbleQuarry extends Resource {
-    protected TextureRegion img = Assets.resources.get("quarry");
+    protected TextureRegion img = Assets.resources.get("marblequarry");
 
     public MarbleQuarry(float x) {
         super(x);

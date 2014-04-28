@@ -159,11 +159,17 @@ public class ScampManager {
     	// Build SpaceShip
     	
     	// Build Temple
+    	if (world.structureManager.countStructures("temple") == 0) {
+    	    	if (tryBuilding(scamp, "temple")){
+    	    		return;
+    	    	}
+        	}
     	
     	// Build Factory
     	
     	// Build Warehouse
-    	if ((1 + world.structureManager.countStructures("warehouse")) * 2 == world.structureManager.countStructures("house") ){
+    	if ((1 + world.structureManager.countStructures("warehouse")) * 2 == world.structureManager.countStructures("house") &&
+    		(1 + world.structureManager.countStructures("factory")) * 2 > world.structureManager.countStructures("warehouse")	){
 	    	if (tryBuilding(scamp, "warehouse")){
 	    		return;
 	    	}
@@ -189,7 +195,7 @@ public class ScampManager {
     	// get Wood?
     	if (scampResources.getScampResourceCount(ScampResourceType.WOOD) < world.structureManager.getMaxAmount(ScampResourceType.WOOD) &&
     			world.rManager.CountofType("forrest") > 0) {
-			scamp.currentState = ScampState.WOOD;
+    		scamp.setState(ScampState.WOOD);
 			gatherResource(scamp, "forrest");
 			return;
     	}
@@ -215,13 +221,17 @@ public class ScampManager {
     	case "temple":
     		costs = TempleStructure.buildCost;
     		break;
+    	case "factory":
+    		costs = FactoryStructure.buildCost;
+    		break;
     	}
     	
     	boolean missingresource = false;
     	for(String key : costs.keySet()){
     		if (scampResources.getScampResourceCount(key.toUpperCase()) < costs.get(key)) {
     			missingresource = true;
-    			if (world.rManager.CountofType(world.rManager.getResourceFromProduct(key)) > 0){
+    			if (world.rManager.CountofType(world.rManager.getResourceFromProduct(key)) > 0 && 
+    					costs.get(key) < world.structureManager.getMaxAmount(scampResources.getType(key.toUpperCase()))){
     				gatherResource(scamp, world.rManager.getResourceFromProduct(key));
     				scamp.setState(key);
     				System.out.println("Looking for " + key);
@@ -242,6 +252,12 @@ public class ScampManager {
 			break;
     		case "temple": struct = new TempleStructure(world.structureManager.getRandomAvilSpot(), world);
 				scamp.currentState = ScampState.BUILDTEMPLE;
+			break;
+    		case "factory": struct = new FactoryStructure(world.structureManager.getRandomAvilSpot(), world);
+				scamp.currentState = ScampState.BUILDFACTORY;
+			break;
+    		case "spaceship": struct = new SpaceshipStructure(world.structureManager.getRandomAvilSpot(), world);
+				scamp.currentState = ScampState.BUILDSPACESHIP;
 			break;
     		default : struct = new HouseStructure(world.structureManager.getRandomAvilSpot(), world);
     			

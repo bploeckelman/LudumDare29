@@ -6,7 +6,6 @@ import java.util.Map;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import lando.systems.ld29.Global;
 import lando.systems.ld29.World;
@@ -71,6 +70,7 @@ public class Scamp {
         ScampState.MARBLE,
         ScampState.GOLD,
         ScampState.GRAPES
+        // TODO : METEOR??
     };
 
     int skinID;
@@ -127,34 +127,40 @@ public class Scamp {
         // Update based on current state
         // ---------------------------------------------------------------------
         switch(currentState) {
+            // General actions
+            case SLEEP:     updateSleeping(dt); break;
+            case EATING:    updateEating(dt);   break;
+            case STROLLING: updateStrolling(dt); break;
 
-            case SLEEP:      updateSleeping(dt);      break;
-            case EATING:     updateEating(dt);        break;
-            case BUILDHOUSE: updateBuildingHouse(dt); break;
+            // Gathering
+//            case WOOD:
+//            case STONE:
+//            case IRON:
+//            case GOLD:
+//            case MARBLE:
+//                updateGathering(dt);
+//                break;
 
-//            case BUILD_XXXX:
-//                move to building target: buildingStructure
-//                add a dt to buildingStructure
-//                when rendering it, if it is in process of being built, grow the sprite vertically based on build percentage
-//                if structure finished, go back to idle
+            // Building
+            case BUILDHOUSE:
+            case BUILDWAREHOUSE:
+            case BUILDFACTORY:
+            case BUILDTEMPLE:
+            case BUILDSPACESHIP:
+                updateBuilding(dt);
+                break;
         }
 
         // Have we reached our target yet?
         if( targetPosition == position ) {
-            // If just strolling, go idle
-            if(currentState == ScampState.STROLLING) {
-               currentState = ScampState.IDLE;
-            } else {
-                // TODO : MAY BE GATHERING OR BUILDING OR REFINING, so adjust accordingly
-               // Update gathering timer/state
-                gatherAccum += dt;
-                if (gatherAccum > GATHER_RATE) {
-                    gatherAccum %= GATHER_RATE;
-                    gatherReady = true;
-                }
+            // TODO : HANDLE UP IN SWITCH, LIKE BUILDING
+            // Update gathering timer/state
+            gatherAccum += dt;
+            if (gatherAccum > GATHER_RATE) {
+                gatherAccum %= GATHER_RATE;
+                gatherReady = true;
             }
         } else { // we are walking not working yet
-
         	gatherReady = false;
         	walkRight = isWalkingRight();
 
@@ -207,7 +213,17 @@ public class Scamp {
         }
     }
 
-    private void updateBuildingHouse(float dt) {
+    private void updateStrolling(float dt) {
+        if (position == targetPosition) {
+            currentState = ScampState.IDLE;
+        }
+    }
+
+    private void updateGathering(float dt) {
+        // TODO: gather some shit
+    }
+
+    private void updateBuilding(float dt) {
         if (buildingStructure == null) return;
 
         targetPosition = buildingStructure.x;

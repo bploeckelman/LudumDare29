@@ -7,7 +7,7 @@ import lando.systems.ld29.core.Assets;
  * Created by jhoopes on 4/26/14.
  */
 public class MeteorCrash extends Resource {
-    protected TextureRegion img = Assets.resources.get("quarry");
+    protected TextureRegion img = Assets.resources.get("meteor");
 
     public MeteorCrash(float x) {
         super(x);
