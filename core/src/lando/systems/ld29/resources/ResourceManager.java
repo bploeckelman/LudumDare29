@@ -1,9 +1,12 @@
 package lando.systems.ld29.resources;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
 import lando.systems.ld29.Global;
+import lando.systems.ld29.IToolTip;
 import lando.systems.ld29.World;
 import lando.systems.ld29.blocks.Block;
+import lando.systems.ld29.structures.Structure;
 
 /**
  * Created by jhoopes on 4/26/14.
@@ -146,4 +149,15 @@ public class ResourceManager {
 
         return true;
     }
+    
+    public IToolTip getResourceFromPos(float x, float y) {
+		IToolTip structureToolTip = null;
+		for(Resource resource : resources) {
+			if(resource != null && resource.getSprite().getBoundingRectangle().contains(x, y)) {
+            	structureToolTip = resource;
+            	break;
+            }
+        }
+		return structureToolTip;
+	}
 }

@@ -1,17 +1,19 @@
 package lando.systems.ld29.resources;
 
 import lando.systems.ld29.Global;
+import lando.systems.ld29.IToolTip;
 import lando.systems.ld29.blocks.Block;
 import lando.systems.ld29.core.Assets;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.*;
+import com.badlogic.gdx.math.Rectangle;
 
 /**
  * Created by jhoopes on 4/26/14.
  */
-public abstract class Resource {
+public abstract class Resource implements IToolTip {
 
     protected Sprite sprite;
     float x;
@@ -68,4 +70,20 @@ public abstract class Resource {
 
     public abstract String getName();
     public abstract String resourceName();
+    
+
+	@Override
+	public Rectangle getToolTipBounds() {
+		return (sprite != null) ? sprite.getBoundingRectangle() : new Rectangle();
+	}
+
+	@Override
+	public String getTitle() {
+		return "RESOURCE";
+	}
+
+	@Override
+	public String getText() {
+		return getName();
+	}
 }

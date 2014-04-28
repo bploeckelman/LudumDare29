@@ -117,9 +117,14 @@ public class World {
     }
 
 	public IToolTip getToolTipItemFromPos(Vector3 gameClickPoint, Vector3 hudClickPoint) {
+		// check hud, then structures, then resources
 		IToolTip item = hud.getToolTipItemFromPos(hudClickPoint.x, hudClickPoint.y);
         if (item == null) {
            item = structureManager.getStructureFromPos(gameClickPoint.x, gameClickPoint.y);
+        }
+        
+        if (item == null) {
+            item = rManager.getResourceFromPos(gameClickPoint.x, gameClickPoint.y);
         }
         return item;
 	}
