@@ -13,7 +13,7 @@ public class MarbleBlock extends Block {
     public MarbleBlock(float x, float y) {
         super(x, y);
         this.blockType = "marble";
-        //toolTipString = "another building material";
+        toolTipString = "another building material";
         setSprite(new Sprite(img));
     }
     

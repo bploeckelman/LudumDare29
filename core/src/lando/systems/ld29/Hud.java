@@ -177,7 +177,7 @@ public class Hud {
 
         Block ret = null;
         for(int i = 0; i < blocks.length; i++){
-            if(blocks[i].getBoundingRectangle().contains(clickPoint.x, clickPoint.y)){
+            if(blocks[i].getBoundingRectangle().contains(clickPoint.x, clickPoint.y)) {
                 if (blockNames[i].equals("dirt")) {
                     ret = new DirtBlock(column, -1);
 
@@ -195,6 +195,12 @@ public class Hud {
 
                 } else if (blockNames[i].equals("wheat")) {
                     ret = new WheatBlock(column, -1);
+                }
+                else if (blockNames[i].equals("gold")) {
+                    ret = new GoldBlock(column, -1);
+                }
+                else if (blockNames[i].equals("marble")) {
+                    ret = new MarbleBlock(column, -1);
                 }
             }
         }
