@@ -123,6 +123,7 @@ public class ScampManager {
     }
 
     private void GiveScampJob(Scamp scamp){
+    	
     	if (scamp.hungerAmount > 5 && scampResources.getScampResourceCount(ScampResourceType.FOOD) > 0){
     		scamp.currentState = ScampState.EATING;
     		return;
@@ -255,6 +256,16 @@ public class ScampManager {
  	
     }
     
+    private int workersDoingJob(ScampState state){
+    	int count = 0;
+    	for (int i =0;i < scamps.size; i++){
+    		if (scamps.get(i).currentState == state){
+    			count ++;
+    		}
+    	}
+    	return count;
+    }
+    
     private boolean tryBuilding(Scamp scamp, String name){
     	Map<String, Integer> costs = new HashMap<String, Integer>();
     	switch(name){
@@ -303,6 +314,7 @@ public class ScampManager {
     				missingresource = true;
     				if (world.rManager.CountofType(world.rManager.getResourceFromProduct(key)) > 0 && 
     						costs.get(key) < world.structureManager.getMaxAmount(scampResources.getType(key.toUpperCase()))){
+    					if (workersDoingJob(Scamp.scampStates.get(key)) > 1) continue;
     					gatherResource(scamp, world.rManager.getResourceFromProduct(key));
     					scamp.setState(key);
     					System.out.println("Looking for " + key);
