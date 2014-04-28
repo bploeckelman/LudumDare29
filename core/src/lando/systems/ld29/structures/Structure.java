@@ -96,8 +96,11 @@ public class Structure implements IToolTip {
 
     public boolean build(float percent) {
         buildPercent += percent;
-        if (buildPercent > 1f)
+        if (buildPercent > 1f){
             buildPercent = 1f;
+            World.THEWORLD.hud.AddNotification("A "+ name +" was built");
+
+        }
 
         return buildPercent == 1f;
 

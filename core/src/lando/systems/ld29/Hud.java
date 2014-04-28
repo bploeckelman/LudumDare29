@@ -1,6 +1,8 @@
 package lando.systems.ld29;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Queue;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -51,6 +53,8 @@ public class Hud {
     private HudBlock[] blocks;
     private World world;
     private BeliefMeter beliefMeter; 
+    
+    private List<HUDNotification> notifications = new ArrayList<HUDNotification>();
         
     public Tooltip tooltip;
     
@@ -118,6 +122,21 @@ public class Hud {
         	hudBlock.update(player.belief);
         }
         
+        HUDNotification item;
+        int len = notifications.size();
+        for (int i = len; --i >= 0;) {
+            item = notifications.get(i);
+            item.targetY = Config.window_height - (i * 50);
+            item.update(dt);
+            
+            if (item.ttl <= 0) {
+            	notifications.remove(i);
+           	
+            }
+        }
+        
+      
+        
     	if (Gdx.input.isButtonPressed(Input.Buttons.LEFT) && player.inputDelay <=0 && player.xPos == player.xTarget){
             if (justClicked == false){
                 int x = (int)(player.xPos + .5f);
@@ -178,6 +197,11 @@ public class Hud {
         Assets.HUDFont.setColor(Color.WHITE);
         Assets.HUDFont.draw(batch, "Total Time : " + World.THEWORLD.dayCycle.getTotalTime(), 15, 20);
         
+        for (HUDNotification block : notifications) {
+        	block.render(batch);
+        }
+        
+        
         if (World.THEWORLD.gameWon){
         	Assets.panelBrown.setColor(new Color (1,1,1,.7f));
         	
@@ -190,6 +214,14 @@ public class Hud {
 
         	Assets.panelBrown.setColor(Color.WHITE);
         }
+    }
+    
+    public void AddNotification(String text){
+    	float y = Config.window_height;
+    	if (notifications.size() > 0){
+    		y = notifications.get(notifications.size()-1).targetY - 50;
+    	}
+    	notifications.add(new HUDNotification(null, text, y));
     }
 
     private Block getBlockForCoords(int column){

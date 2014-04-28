@@ -24,6 +24,14 @@ public class StructureManager {
         initialHouse.buildPercent = 1f;
         createStructure(i, initialHouse);
 
+        
+//        initialHouse = new HouseStructure(++i, world);
+//        initialHouse.buildPercent = 1f;
+//        createStructure(i, initialHouse);
+//        
+//         initialHouse = new HouseStructure(++i, world);
+//        initialHouse.buildPercent = 1f;
+//        createStructure(i, initialHouse);
         // FOR THE DEBUGGING
 //        SpaceshipStructure space =new SpaceshipStructure(++i, world);
 //        space.buildPercent = 1f;
