@@ -159,11 +159,17 @@ public class ScampManager {
     	// Build SpaceShip
     	
     	// Build Temple
+    	if (world.structureManager.countStructures("temple") == 0) {
+    	    	if (tryBuilding(scamp, "temple")){
+    	    		return;
+    	    	}
+        	}
     	
     	// Build Factory
     	
     	// Build Warehouse
-    	if ((1 + world.structureManager.countStructures("warehouse")) * 2 == world.structureManager.countStructures("house") ){
+    	if ((1 + world.structureManager.countStructures("warehouse")) * 2 == world.structureManager.countStructures("house") &&
+    		(1 + world.structureManager.countStructures("factory")) * 2 > world.structureManager.countStructures("warehouse")	){
 	    	if (tryBuilding(scamp, "warehouse")){
 	    		return;
 	    	}
@@ -221,7 +227,8 @@ public class ScampManager {
     	for(String key : costs.keySet()){
     		if (scampResources.getScampResourceCount(key.toUpperCase()) < costs.get(key)) {
     			missingresource = true;
-    			if (world.rManager.CountofType(world.rManager.getResourceFromProduct(key)) > 0){
+    			if (world.rManager.CountofType(world.rManager.getResourceFromProduct(key)) > 0 && 
+    					costs.get(key) < world.structureManager.getMaxAmount(scampResources.getType(key.toUpperCase()))){
     				gatherResource(scamp, world.rManager.getResourceFromProduct(key));
     				scamp.setState(key);
     				System.out.println("Looking for " + key);
