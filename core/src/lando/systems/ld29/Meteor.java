@@ -3,6 +3,7 @@ package lando.systems.ld29;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import lando.systems.ld29.core.Assets;
 
 public class Meteor {
 
@@ -35,6 +36,7 @@ public class Meteor {
 		Vector2 vDist = new Vector2(targetX - xPos, targetY - yPos);
 		if (vDist.len2() < move.len2()){
 			// Do stuff
+            Assets.meteorCrash.play();
 			World.THEWORLD.rManager.makeMeteorRes(targetBlock);
 			World.THEWORLD.grid.meteor = null;
             World.THEWORLD.causeEarthquake();
