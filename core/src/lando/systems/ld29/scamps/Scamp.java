@@ -1,8 +1,13 @@
 package lando.systems.ld29.scamps;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
+
 import lando.systems.ld29.Global;
 import lando.systems.ld29.World;
 import lando.systems.ld29.blocks.Block;
@@ -47,6 +52,23 @@ public class Scamp {
         GETONSHIP,
         EATING
     }
+    
+    static Map<String, ScampState> scampStates = new HashMap<String, ScampState>()
+    {{
+    	put("wood", ScampState.WOOD);
+    	put("stone", ScampState.STONE);
+    	put("iron", ScampState.IRON);
+    	put("marble", ScampState.MARBLE);
+    	put("gold", ScampState.GOLD);
+    }};
+    
+    static ScampState[] resourceGatherState = {
+    	ScampState.WOOD,
+    	ScampState.STONE,
+    	ScampState.IRON,
+    	ScampState.MARBLE,
+    	ScampState.GOLD
+    };
 
     int skinID;
     public float position;
@@ -63,6 +85,10 @@ public class Scamp {
     public Structure buildingStructure;
     TextureRegion texture;
     ScampState currentState = ScampState.IDLE;
+    boolean isGatheringResources;    
+    Color thoughtColor = new Color(1, 1, 1, 0);
+    float displayLastState;
+    
     float hungerAmount = 0;
 
 
@@ -85,6 +111,10 @@ public class Scamp {
 
 
     public void update(float dt) {
+    	if (displayLastState > 0) {
+    		displayLastState -= dt;
+    	}
+    	
         hungerAmount += dt / 60; // 1 hunger a minute
 
         // Update based on current state
@@ -163,7 +193,19 @@ public class Scamp {
                 texture.getRegionX(), texture.getRegionY(),           // texel x,y
                 texture.getRegionWidth(), texture.getRegionHeight(),  // texel w,h
                 !walkRight, false);                                   // flipx, flipy
-        Assets.thoughtBubble.draw(batch, position * Block.BLOCK_WIDTH , Global.GROUND_LEVEL + SCAMP_SIZE, SCAMP_SIZE, 30);
+        
+        if (isGatheringResources || displayLastState > 0) {
+        	thoughtColor.a = (isGatheringResources) ? 1 : (displayLastState / 2f);
+        	Assets.thoughtBubble.setColor(thoughtColor);
+        	Assets.thoughtBubble.draw(batch, position * Block.BLOCK_WIDTH , Global.GROUND_LEVEL + SCAMP_SIZE, SCAMP_SIZE, 30);
+        	
+        	if (isGatheringResources) {
+        		TextureRegion icon = Assets.icons.get(currentState.toString());
+        		if (icon != null) {        		
+        			batch.draw(icon, position * Block.BLOCK_WIDTH  + 4, Global.GROUND_LEVEL + SCAMP_SIZE + 10, SCAMP_SIZE - 8, 15);
+        		}
+        	}
+        }
     }
 
     public boolean isIdle() { return currentState == ScampState.IDLE; }
@@ -174,22 +216,31 @@ public class Scamp {
     public boolean isGatherReady() { return gatherReady; }
 
     public void setState(ScampState state) { 
+    	
+    	if (currentState == state) return;
+    	
+    	boolean wasGatheringResources = isGatheringResources;
+    	isGatheringResources = isResourceGather(state);
+    	
     	currentState = state; 
+    	
+    	displayLastState = (wasGatheringResources) ? 2f : 0;
+    }
+    
+    private boolean isResourceGather(ScampState state) {
+    	boolean isResourceGather = false;
+    	for (int i = 0; i < resourceGatherState.length; i++) {
+    		if (resourceGatherState[i] == state) {
+    			isResourceGather = true;
+    			break;
+    		}
     	}
-
-    public void setState(String text){
-    	switch (text) {
-    	case "wood" : currentState = ScampState.WOOD;
-    		break;
-    	case "stone" : currentState = ScampState.STONE;
-    	break;
-    	case "iron": currentState = ScampState.IRON;
-    	break;
-    	case "marble" : currentState = ScampState.MARBLE;
-    	break;
-    	case "gold" : currentState = ScampState.GOLD;
-    	break;
-    	}
+    	return isResourceGather;
+    }
+    
+    public void setState(String text) {
+    	ScampState state = scampStates.get(text);
+    	setState(state != null ? state : ScampState.IDLE);
     }
     public void setTarget(float position) { this.targetPosition = position; }
     public void setTarget(Block block) { this.targetPosition = block.getX(); }
