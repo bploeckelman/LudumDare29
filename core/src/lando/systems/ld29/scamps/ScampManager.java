@@ -170,6 +170,11 @@ public class ScampManager {
         	}
     	
     	// Build Factory
+    	if ((1 + world.structureManager.countStructures("factory")) * 2 == world.structureManager.countStructures("warehouse")){
+    	    	if (tryBuilding(scamp, "factory")){
+    	    		return;
+    	    	}
+        	}
     	
     	// Build Warehouse
     	if ((1 + world.structureManager.countStructures("warehouse")) * 2 == world.structureManager.countStructures("house") &&
@@ -285,6 +290,11 @@ public class ScampManager {
     
     public int getCurrentPopulation(){
     	return scamps.size;
+    }
+    
+    public boolean spaceForMoreScamps(){
+    	return !(scamps.size == world.structureManager.getMaxPopulation());
+    	
     }
     
     private void gatherResource(Scamp scamp, String resourceName){

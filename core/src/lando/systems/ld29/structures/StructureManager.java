@@ -68,6 +68,10 @@ public class StructureManager {
     	return max;
     }
     
+    public int getMaxPopulation(){
+    	return countStructures("house") * 4;
+    }
+    
     public int getRandomAvilSpot(){
     	int point = Assets.random.nextInt(World.gameWidth);
     	while (structures[point] != null){
