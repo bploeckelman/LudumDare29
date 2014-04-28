@@ -16,11 +16,13 @@ public class StructureManager {
         // Add one for testing
         // TODO: Remove this...
         int i = World.gameWidth/2;
-        createStructure(i,   new HouseStructure(i, world));
-        createStructure(++i, new WarehouseStructure(i, world));
-        createStructure(++i, new TempleStructure(i, world));
-        createStructure(++i, new FactoryStructure(i, world));
-        createStructure(++i, new SpaceshipStructure(i, world));
+        HouseStructure initialHouse = new HouseStructure(i, world);
+        initialHouse.buildPercent = 1f;
+        createStructure(i, initialHouse);
+//        createStructure(++i, new WarehouseStructure(i, world));
+//        createStructure(++i, new TempleStructure(i, world));
+//        createStructure(++i, new FactoryStructure(i, world));
+//        createStructure(++i, new SpaceshipStructure(i, world));
     }
     
     public int countStructures(String name){

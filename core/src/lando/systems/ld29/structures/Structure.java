@@ -19,6 +19,7 @@ public class Structure {
     ArrayList<Scamp> scamps;
 
     public float x;
+    public float buildPercent;
     
     String name = "CHANGE ME";
     
@@ -26,9 +27,8 @@ public class Structure {
         this.x = x;
         this.world = world;
         this.maxCapacity = 0;
+        this.buildPercent = 0;
     }
-
-
 
 	public void setSprite(Sprite sprite){
         sprite.setPosition(x * Block.BLOCK_WIDTH, Global.GROUND_LEVEL);
@@ -64,6 +64,7 @@ public class Structure {
         scamps.remove(scamp);
         scamp.setState(Scamp.ScampState.IDLE);
     }
+
     public void evict(){
         if(maxCapacity > 0) {
             Iterator<Scamp> iterator = scamps.iterator();
@@ -79,6 +80,16 @@ public class Structure {
     }
 
     public void render(SpriteBatch batch){
+        getSprite().setScale(buildPercent, buildPercent);
+        getSprite().setAlpha(buildPercent);
         getSprite().draw(batch);
+    }
+
+    public boolean build(float percent) {
+        buildPercent += percent;
+        if (buildPercent > 1f)
+            buildPercent = 1f;
+
+        return buildPercent == 1f;
     }
 }
