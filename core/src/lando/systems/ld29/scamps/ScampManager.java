@@ -178,7 +178,13 @@ public class ScampManager {
 	    	}
     	}
 
-    	
+    	// get food?
+    	if (scampResources.getScampResourceCount(ScampResourceType.FOOD) < world.structureManager.getMaxAmount(ScampResourceType.FOOD) &&
+    			world.rManager.CountofType("field") > 0) {
+			scamp.setState(ScampState.FOOD);
+			gatherResource(scamp, "field");
+			return;
+    	}
     	
     	// get grapes?
     	if (scampResources.getScampResourceCount(ScampResourceType.GRAPES) < world.structureManager.getMaxAmount(ScampResourceType.GRAPES) &&
@@ -197,13 +203,36 @@ public class ScampManager {
     	}
     	
     	// get Stone?
-    	if (scampResources.getScampResourceCount(ScampResourceType.STONE) < world.structureManager.getMaxAmount(ScampResourceType.WOOD) &&
+    	if (scampResources.getScampResourceCount(ScampResourceType.STONE) < world.structureManager.getMaxAmount(ScampResourceType.STONE) &&
     			world.rManager.CountofType("quarry") > 0) {
     		scamp.setState(ScampState.STONE);
 			gatherResource(scamp, "quarry");
 			return;
     	}
     	
+    	// get Margble?
+    	if (scampResources.getScampResourceCount(ScampResourceType.MARBLE) < world.structureManager.getMaxAmount(ScampResourceType.MARBLE) &&
+    			world.rManager.CountofType("marblequarry") > 0) {
+    		scamp.setState(ScampState.MARBLE);
+			gatherResource(scamp, "marblequarry");
+			return;
+    	}
+    	
+    	// get Iron?
+    	if (scampResources.getScampResourceCount(ScampResourceType.IRON) < world.structureManager.getMaxAmount(ScampResourceType.IRON) &&
+    			world.rManager.CountofType("mountain") > 0) {
+    		scamp.setState(ScampState.IRON);
+			gatherResource(scamp, "mountain");
+			return;
+    	}
+    	
+    	// get Gold?
+    	if (scampResources.getScampResourceCount(ScampResourceType.GOLD) < world.structureManager.getMaxAmount(ScampResourceType.GOLD) &&
+    			world.rManager.CountofType("goldmine") > 0) {
+    		scamp.setState(ScampState.GOLD);
+			gatherResource(scamp, "goldmine");
+			return;
+    	}
     	
     	//Nothing else Walk Around
     	scamp.currentState = ScampState.STROLLING;
@@ -304,6 +333,7 @@ public class ScampManager {
     	
     	return false;
     }
+    
     
     public int getCurrentPopulation(){
     	return scamps.size;

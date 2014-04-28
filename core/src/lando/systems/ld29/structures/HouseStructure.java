@@ -48,7 +48,7 @@ public class HouseStructure extends Structure implements IResourceGenerator {
 
     public void evict(){
         // Maybe create a baby? 
-    	if(getCapacity() >= 2 && Assets.random.nextFloat() > .5f && getWorld().scampManager.spaceForMoreScamps()){   		
+    	if(getCapacity() >= 1 && Assets.random.nextFloat() > .25f && getWorld().scampManager.spaceForMoreScamps()){   		
         	World world = getWorld();
             world.scampManager.addScamps(new Scamp(x));
             world.displayResourceGather(this,  1);

@@ -93,6 +93,7 @@ public class Scamp implements IResourceGenerator {
     boolean inHouse;
     boolean isGathering;
     boolean isBuilding;
+    boolean resourceDepleted;
 
     boolean dead;
 
@@ -239,7 +240,10 @@ public class Scamp implements IResourceGenerator {
 
     private void updateGathering(float dt) {
         if (workingResource == null) return;
-
+        if (!World.THEWORLD.rManager.containsResource(workingResource)) {
+        	setState(ScampState.IDLE);
+        	return;
+        }
         targetPosition = workingResource.getX();
         // If scamp is at gathering site...
         if (position == targetPosition) {
@@ -247,12 +251,13 @@ public class Scamp implements IResourceGenerator {
             gatherAccum += dt;
             if (gatherAccum > GATHER_RATE) {
                 gatherAccum = 0;
-
+                
                 ScampResources resources = World.THEWORLD.scampManager.scampResources;
                 ScampResourceType type = resources.getType(workingResource.resourceName().toUpperCase());
 
                 // If there's anything to gather, gather one
                 int numResourcesGathered = 0;
+                
                 if (resources.getScampResourceCount(type) < World.THEWORLD.structureManager.getMaxAmount(type)) {
                     numResourcesGathered = World.THEWORLD.rManager.takeResource((int) workingResource.getX(), 1);
                 }
@@ -304,7 +309,7 @@ public class Scamp implements IResourceGenerator {
         	Assets.thoughtBubble.setColor(thoughtColor);
         	Assets.thoughtBubble.draw(batch, position * Block.BLOCK_WIDTH , Global.GROUND_LEVEL + SCAMP_SIZE, SCAMP_SIZE, 30);
         	
-            if (isGathering || isBuilding) {
+            if (isGathering || isBuilding ) {
         		TextureRegion icon = getResourceIcon();
         		if (icon != null) {   
         			Rectangle resourceBounds = getResourceBounds();

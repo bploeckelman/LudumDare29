@@ -40,7 +40,7 @@ public class World {
         dayCycle = new DayCycle(this);
         player = new Player(this);
         hud = new Hud(this);
-        dayCycle.Scale = 30;
+        dayCycle.Scale = 10;
         rManager = new ResourceManager(this);
         scampManager = new ScampManager(this);
         structureManager = new StructureManager(this);

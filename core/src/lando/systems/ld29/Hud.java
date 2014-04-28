@@ -16,8 +16,8 @@ import lando.systems.ld29.screens.GameScreen;
 import lando.systems.ld29.util.Config;
 
 public class Hud {
-    private static String[] blockNames = Assets.blocks.keySet().toArray(new String[Assets.blocks.size()]);
-
+    //private static String[] blockNames = Assets.blocks.keySet().toArray(new String[Assets.blocks.size()]);
+	private static String[] blockNames=  { "dirt", "wheat", "stone", "acorn", "grapes", "marble", "iron", "gold" };
     private ScampResourceType[] types = {
         ScampResourceType.FOOD,
         ScampResourceType.WOOD,

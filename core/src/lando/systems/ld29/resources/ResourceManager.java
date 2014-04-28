@@ -56,6 +56,14 @@ public class ResourceManager {
         }
     }
 
+    public boolean containsResource(Resource res){
+    	boolean found = false;
+    	for (int i = 0; i < resources.length; i++){
+    		if (resources[i] == res) found = true;
+    	}
+    	return found;
+    }
+    
     public void update(float dt){
         for (Resource resource : resources){
             if(resource == null){

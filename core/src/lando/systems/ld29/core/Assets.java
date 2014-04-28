@@ -73,13 +73,13 @@ public class Assets {
         costs = new HashMap<String, Integer>();
         costs.put("dirt", new Integer(3));
         costs.put("acorn", new Integer(6));
-        costs.put("gold", new Integer(10));
-        costs.put("grapes", new Integer(15));        
+        costs.put("gold", new Integer(20));
+        costs.put("grapes", new Integer(10));        
         costs.put("iron", new Integer(10));
         costs.put("stone", new Integer(6));
-        costs.put("marble", new Integer(6));
-        costs.put("lava", new Integer(20));
-        costs.put("water", new Integer(20));
+        costs.put("marble", new Integer(10));
+//        costs.put("lava", new Integer(20));
+//        costs.put("water", new Integer(20));
         costs.put("wheat", new Integer(3));
         
 
