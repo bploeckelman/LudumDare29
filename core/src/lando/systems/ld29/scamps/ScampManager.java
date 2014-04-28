@@ -113,6 +113,7 @@ public class ScampManager {
         if (scamp.isGatherReady()) {
             int numResourcesGathered = world.rManager.takeResource((int) scamp.workingResource.getX(), 1);
             if (numResourcesGathered > 0) {
+            	world.displayResourceGather(scamp, numResourcesGathered);
                 scampResources.addScampResources(scampResources.getType(scamp.workingResource.resourceName().toUpperCase()), numResourcesGathered);
                 System.out.println("update() | scamp " + scamp.toString() + " gathered " + numResourcesGathered + " resources of type '" + scamp.workingResource.resourceName() + "'");
             } else {

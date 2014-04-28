@@ -21,6 +21,8 @@ public class Plaque implements IToolTip {
 	private final Rectangle _bounds;
 	private final String _icon;
 	
+	private float _highlightTime;
+	
 	public Plaque(ScampResourceType resource, float width, float height) {
 		_resource = resource;
 		_icon = resource.toString();
@@ -36,11 +38,14 @@ public class Plaque implements IToolTip {
 		if (_value != value) {
 			_value = value;
 			_textValue = "" + value;
+			_highlightTime = 1f;
 		}
 	}
 	
-	public void update(ScampManager scampManager) {
+	public void update(ScampManager scampManager, float dt) {
 		setValue(scampManager.scampResources.getScampResourceCount(_resource));
+		
+		_highlightTime -= dt;		
 	}
 
     public String getTextValue() { return _textValue; }
@@ -64,9 +69,15 @@ public class Plaque implements IToolTip {
         float icony = _bounds.y + 5;
         batch.draw(icon, iconx, icony);
 
+        float x = iconx + icon.getRegionWidth() + ICON_SPACING;
+        float y = _bounds.y + _bounds.height - background.getPadTop()/2 - 2;
         Assets.HUDFont.setColor(Color.WHITE);
-		Assets.HUDFont.draw(batch, _textValue, iconx + icon.getRegionWidth() + ICON_SPACING,
-                _bounds.y + _bounds.height - background.getPadTop()/2 - 2);
+		Assets.HUDFont.draw(batch, _textValue, x, y);
+		
+		if (_highlightTime > 0) {
+		    Assets.HUDFont.setColor(new Color(1, 0, 0, _highlightTime));
+			Assets.HUDFont.draw(batch, _textValue, x, y);		
+		}
 	}
 
 	@Override

@@ -1,12 +1,17 @@
 package lando.systems.ld29;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 
 import lando.systems.ld29.blocks.Block;
 import lando.systems.ld29.core.Assets;
 import lando.systems.ld29.resources.ResourceManager;
+import lando.systems.ld29.scamps.Scamp;
 import lando.systems.ld29.scamps.ScampManager;
 import lando.systems.ld29.screens.GameScreen;
 import lando.systems.ld29.structures.StructureManager;
@@ -26,6 +31,8 @@ public class World {
     public static final int gameWidth = 30;
     public static final int gameHeight = 5;
     public static World THEWORLD;
+    
+    private final ArrayList<ResourceIndicator> _resIndicators = new ArrayList<ResourceIndicator>(10);
 
     public World() {
     	THEWORLD = this;
@@ -39,6 +46,13 @@ public class World {
         structureManager = new StructureManager(this);
         particleSystem = new ParticleSystem();
     }
+    
+    public void displayResourceGather(Scamp scamp, int numResourcesGathered)
+    {
+    	TextureRegion icon = scamp.getResourceIcon();
+    	Rectangle resourcePos = scamp.getResourceBounds();
+    	_resIndicators.add(new ResourceIndicator(icon, resourcePos, numResourcesGathered));
+    }
 
     public void update(float dt){
         // It is getting too late in the night  remove all of this
@@ -48,6 +62,17 @@ public class World {
 //            particleSystem.addFirework(Assets.random.nextFloat() * World.gameWidth * 64, 100 + Block.BLOCK_WIDTH * 6);
 //        }
         // To here
+    	for (ResourceIndicator resIndicator : _resIndicators) {
+    		resIndicator.update(dt);
+    	}
+    	
+    	for (int i = _resIndicators.size() - 1; i >= 0; i--) {
+    		_resIndicators.get(i).update(dt);
+    		if (_resIndicators.get(i).isComplete()) {
+    			_resIndicators.remove(i);
+    		}
+    	}
+    	
         grid.update(dt);
         dayCycle.update(dt);
         player.update(dt);
@@ -67,9 +92,13 @@ public class World {
         // Draw Structure Layer
         structureManager.render(batch);
 		
-		// Draw AI Layer
+     // Draw AI Layer
         scampManager.renderScamps(batch);
 
+        for (ResourceIndicator resIndicator : _resIndicators) {
+    		resIndicator.render(batch);
+    	}
+		
         // Draw Grid
         grid.render(batch);
 

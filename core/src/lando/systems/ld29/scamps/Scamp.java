@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Rectangle;
 
 import lando.systems.ld29.Global;
 import lando.systems.ld29.World;
@@ -194,17 +195,26 @@ public class Scamp {
                 !walkRight, false);                                   // flipx, flipy
         
         if (isGatheringResources || displayLastState > 0) {
-        	thoughtColor.a = (isGatheringResources) ? 1 : (displayLastState / 2f);
+        	thoughtColor.a = (isGatheringResources) ? 1 : (displayLastState / 4f);
         	Assets.thoughtBubble.setColor(thoughtColor);
         	Assets.thoughtBubble.draw(batch, position * Block.BLOCK_WIDTH , Global.GROUND_LEVEL + SCAMP_SIZE, SCAMP_SIZE, 30);
         	
         	if (isGatheringResources) {
-        		TextureRegion icon = Assets.icons.get(currentState.toString());
-        		if (icon != null) {        		
-        			batch.draw(icon, position * Block.BLOCK_WIDTH  + 4, Global.GROUND_LEVEL + SCAMP_SIZE + 10, SCAMP_SIZE - 8, 15);
+        		TextureRegion icon = getResourceIcon();
+        		if (icon != null) {   
+        			Rectangle resourceBounds = getResourceBounds();
+        			batch.draw(icon, resourceBounds.x, resourceBounds.y, resourceBounds.width, resourceBounds.height);
         		}
         	}
         }
+    }
+    
+    public TextureRegion getResourceIcon() {
+    	return Assets.icons.get(currentState.toString());
+    }
+    
+    public Rectangle getResourceBounds() {
+    	return new Rectangle(position * Block.BLOCK_WIDTH  + 4, Global.GROUND_LEVEL + SCAMP_SIZE + 10, SCAMP_SIZE - 8, 15);
     }
 
     public boolean isIdle() { return currentState == ScampState.IDLE; }

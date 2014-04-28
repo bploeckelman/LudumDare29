@@ -109,7 +109,7 @@ public class Hud {
         beliefMeter.setValue(player.belief);
         
         for (Plaque plaque : resources) {
-        	plaque.update(world.scampManager);
+        	plaque.update(world.scampManager, dt);
         }
         
         for (HudBlock hudBlock : blocks) {
