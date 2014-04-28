@@ -363,11 +363,20 @@ public class Scamp implements IResourceGenerator {
         if (!isRefining) {
             // Find and enter nearest open factory
             Structure nearestFactory = World.THEWORLD.structureManager.getNearestStructure("factory", (int) position);
-            if (nearestFactory == null) return;
+            
+            if (nearestFactory == null) {
+            	currentState = ScampState.IDLE;
+            	return;
+            }
             refiningStructure = nearestFactory;
             refiningStructure.enter(this);
 
             // Remove raw resource if we haven't already
+            if (resources.getScampResourceCount(rawType) == 0){
+            	// OOPs can't work now
+            	currentState = ScampState.IDLE;
+            	return;
+            }
             resources.removeScampResource(rawType, 1);
         }
         isRefining = true;

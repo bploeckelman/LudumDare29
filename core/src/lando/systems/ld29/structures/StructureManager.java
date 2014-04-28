@@ -85,6 +85,18 @@ public class StructureManager {
         }
         return structure;
     }
+    
+    public boolean emptyFactory(){
+    	boolean empty = false;
+        Structure structure = null;
+        for(Structure s : structures) {
+            if (s == null) continue;
+            if (s.getName().equals("factory") && s.getCapacity() > 0) {
+            	empty = true;
+            }
+        }
+        return empty;
+    }
 
     public int getMaxAmount(ScampResourceType type){
     	int max = 0;

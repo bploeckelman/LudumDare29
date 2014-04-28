@@ -282,7 +282,8 @@ public class ScampManager {
     				missingresource = true;
     				String raw = FactoryStructure.getRawName(key);
     				// Have raw? refine it
-    				if (scampResources.getScampResourceCount(raw.toUpperCase()) > 0){
+    				if (scampResources.getScampResourceCount(raw.toUpperCase()) > 0 && 
+    						World.THEWORLD.structureManager.emptyFactory()){
     					scamp.setState(key);
     					System.out.println("Refining " + key);
     					return true;
