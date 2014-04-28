@@ -92,15 +92,15 @@ public class Assets {
 
         Texture resourceSpritesheet = new Texture("art/resource_spritesheet.png");
         resources = new HashMap<String,TextureRegion>();
-        resources.put("barren",         new TextureRegion(resourceSpritesheet, 0, Block.BLOCK_WIDTH * 1, 64, 64));
-        resources.put("field",          new TextureRegion(resourceSpritesheet, 0, Block.BLOCK_WIDTH * 2, 64, 64));
-        resources.put("forrest",        new TextureRegion(resourceSpritesheet, 0, Block.BLOCK_WIDTH * 4, 64, 64));
-        resources.put("marblequarry",  new TextureRegion(resourceSpritesheet, 0, Block.BLOCK_WIDTH * 5, 64, 64));
-        resources.put("meteor",         new TextureRegion(resourceSpritesheet, 0, Block.BLOCK_WIDTH * 6, 64, 64));
-        resources.put("goldmine",  new TextureRegion(resourceSpritesheet, 0, Block.BLOCK_WIDTH * 8, 64, 64));
-        resources.put("mountain",  new TextureRegion(resourceSpritesheet, 0, Block.BLOCK_WIDTH * 10, 64, 64));
-        resources.put("quarry",   new TextureRegion(resourceSpritesheet, 0, Block.BLOCK_WIDTH * 11, 64, 64));
-        resources.put("vinyard",       new TextureRegion(resourceSpritesheet, 0, Block.BLOCK_WIDTH * 12, 64, 64));
+        resources.put("barren",         new TextureRegion(resourceSpritesheet, 0, Block.BLOCK_WIDTH * 0, 64, 64));
+        resources.put("field",          new TextureRegion(resourceSpritesheet, 0, Block.BLOCK_WIDTH * 1, 64, 64));
+        resources.put("forrest",        new TextureRegion(resourceSpritesheet, 0, Block.BLOCK_WIDTH * 2, 64, 128));
+        resources.put("marblequarry",   new TextureRegion(resourceSpritesheet, 0, Block.BLOCK_WIDTH * 4, 64, 64));
+        resources.put("meteor",         new TextureRegion(resourceSpritesheet, 0, Block.BLOCK_WIDTH * 5, 64, 64));
+        resources.put("goldmine",       new TextureRegion(resourceSpritesheet, 0, Block.BLOCK_WIDTH * 6, 64, 128));
+        resources.put("mountain",       new TextureRegion(resourceSpritesheet, 0, Block.BLOCK_WIDTH * 8, 64, 128));
+        resources.put("quarry",         new TextureRegion(resourceSpritesheet, 0, Block.BLOCK_WIDTH * 10, 64, 64));
+        resources.put("vinyard",        new TextureRegion(resourceSpritesheet, 0, Block.BLOCK_WIDTH * 11, 64, 64));
 
         Texture structureSpritesheet = new Texture("art/structures-spritesheet.png");
         structures = new HashMap<String,TextureRegion>();
