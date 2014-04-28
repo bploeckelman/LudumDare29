@@ -8,12 +8,12 @@ import lando.systems.ld29.resources.MarbleQuarry;
 import lando.systems.ld29.resources.Resource;
 
 public class MarbleBlock extends Block {
-    private static TextureRegion img = Assets.blocks.get("stone");
+    private static TextureRegion img = Assets.blocks.get("marble");
 
     public MarbleBlock(float x, float y) {
         super(x, y);
         this.blockType = "marble";
-        toolTipString = "another building material";
+        toolTipString = "a classy building material";
         setSprite(new Sprite(img));
     }
     

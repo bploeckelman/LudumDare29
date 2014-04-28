@@ -9,7 +9,7 @@ import lando.systems.ld29.resources.Forrest;
 import lando.systems.ld29.resources.Resource;
 
 public class WheatBlock extends Block {
-    private static TextureRegion img = Assets.blocks.get("dirt");
+    private static TextureRegion img = Assets.blocks.get("wheat");
 
     public WheatBlock(float x, float y) {
         super(x, y);
