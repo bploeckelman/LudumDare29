@@ -235,6 +235,7 @@ public class Scamp implements IResourceGenerator {
         if (World.THEWORLD.dayCycle.isDay()) {
             currentState = ScampState.IDLE;
             inHouse = false;
+            actuallyinHouse = false;
             return true;
         } else {
             if (!inHouse) {
