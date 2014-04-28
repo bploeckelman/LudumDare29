@@ -58,6 +58,7 @@ public class Scamp implements IResourceGenerator {
     
     static Map<String, ScampState> scampStates = new HashMap<String, ScampState>()
     {{
+        put("food", ScampState.FOOD);
         put("wood", ScampState.WOOD);
         put("stone", ScampState.STONE);
         put("iron", ScampState.IRON);
@@ -67,6 +68,7 @@ public class Scamp implements IResourceGenerator {
     }};
     
     static ScampState[] resourceGatherState = {
+        ScampState.FOOD,
         ScampState.WOOD,
         ScampState.STONE,
         ScampState.IRON,
@@ -144,6 +146,7 @@ public class Scamp implements IResourceGenerator {
             case STROLLING: updateStrolling(dt); break;
 
             // Gathering
+            case FOOD:
             case WOOD:
             case STONE:
             case IRON:
