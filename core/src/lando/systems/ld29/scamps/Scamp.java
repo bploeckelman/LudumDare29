@@ -91,7 +91,9 @@ public class Scamp implements IResourceGenerator {
 
     boolean walkRight;
     boolean inHouse;
-    
+    boolean isGathering;
+    boolean isBuilding;
+
     boolean dead;
 
     String name;
@@ -99,7 +101,6 @@ public class Scamp implements IResourceGenerator {
     public Structure buildingStructure;
     TextureRegion texture;
     ScampState currentState = ScampState.IDLE;
-    boolean isGatheringResources;    
     Color thoughtColor = new Color(1, 1, 1, 0);
     float displayLastState;
     
@@ -264,7 +265,7 @@ public class Scamp implements IResourceGenerator {
                 } else {
                     // Resource used up, go about your business
                     workingResource = null;
-                    isGatheringResources = false;
+                    isGathering = false;
                     currentState = ScampState.IDLE;
                 }
             }
@@ -274,6 +275,7 @@ public class Scamp implements IResourceGenerator {
     private void updateBuilding(float dt) {
         if (buildingStructure == null) return;
 
+        isBuilding = true;
         targetPosition = buildingStructure.x;
         // If scamp is at building site...
         if (position == targetPosition) {
@@ -283,6 +285,7 @@ public class Scamp implements IResourceGenerator {
                 buildAccum = 0;
                 if (buildingStructure.build(BUILD_PERCENT)) {
                     currentState = ScampState.IDLE;
+                    isBuilding = false;
                 }
             }
         }
@@ -296,12 +299,12 @@ public class Scamp implements IResourceGenerator {
                 texture.getRegionWidth(), texture.getRegionHeight(),  // texel w,h
                 !walkRight, false);                                   // flipx, flipy
         
-        if (isGatheringResources || displayLastState > 0) {
-        	thoughtColor.a = (isGatheringResources) ? 1 : (displayLastState / 2f);
+        if (isGathering || isBuilding || displayLastState > 0) {
+            thoughtColor.a = (isGathering || isBuilding) ? 1 : (displayLastState / 2f);
         	Assets.thoughtBubble.setColor(thoughtColor);
         	Assets.thoughtBubble.draw(batch, position * Block.BLOCK_WIDTH , Global.GROUND_LEVEL + SCAMP_SIZE, SCAMP_SIZE, 30);
         	
-        	if (isGatheringResources) {
+            if (isGathering || isBuilding) {
         		TextureRegion icon = getResourceIcon();
         		if (icon != null) {   
         			Rectangle resourceBounds = getResourceBounds();
@@ -315,7 +318,9 @@ public class Scamp implements IResourceGenerator {
     public boolean isWalkingRight() { return (targetPosition - position >= 0); }
 
     public TextureRegion getResourceIcon() {
-    	return (dead) ? Assets.icons.get("PEOPLE") : Assets.icons.get(currentState.toString());
+        if (dead) return Assets.icons.get("PEOPLE");
+        if (isBuilding) return Assets.icons.get("BUILD");
+        else return Assets.icons.get(currentState.toString());
     }
     
     public Rectangle getResourceBounds() {
@@ -325,12 +330,13 @@ public class Scamp implements IResourceGenerator {
     public void setState(ScampState state) {
         if (currentState == state) return;
 
-        boolean wasGatheringResources = isGatheringResources;
-        isGatheringResources = isResourceGather(state);
+        boolean wasGathering = isGathering;
+        boolean wasBuilding  = isBuilding;
+        isGathering = isResourceGather(state);
 
         currentState = state;
 
-        displayLastState = (wasGatheringResources) ? 2f : 0;
+        displayLastState = (wasGathering || wasBuilding) ? 2f : 0;
     }
     
     private boolean isResourceGather(ScampState state) {
@@ -343,7 +349,7 @@ public class Scamp implements IResourceGenerator {
         }
         return isResourceGather;
     }
-    
+
     public void setState(String text) {
         ScampState state = scampStates.get(text);
         setState(state != null ? state : ScampState.IDLE);

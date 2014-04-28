@@ -128,6 +128,7 @@ public class Assets {
         icons.put("METEOR",   iconRegions[1][3]);
         icons.put("STEEL",    iconRegions[1][4]);
         icons.put("PEOPLE",   iconRegions[1][5]);
+        icons.put("BUILD",    iconRegions[2][0]);
 
 //        sound = Gdx.audio.newSound("audio/sound.wav");
 //        music = Gdx.audio.newMusic("audio/music.mp3");
