@@ -1,8 +1,7 @@
 package lando.systems.ld29.resources;
 
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.Texture.TextureFilter;
-import com.badlogic.gdx.graphics.g2d.*;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import lando.systems.ld29.core.Assets;
 
 /**
@@ -24,6 +23,11 @@ public class Forrest extends Resource {
 
     public void update(){
 
+    }
+
+    public void createSprite(TextureRegion img){
+        sprite = new Sprite(img);
+        sprite.setSize(Resource.RESOURCE_WIDTH, 128);
     }
 
     public String getName() { return "forrest"; }
