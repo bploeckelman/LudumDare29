@@ -6,7 +6,6 @@ import java.util.Map;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.MathUtils;
 
 import lando.systems.ld29.Global;
 import lando.systems.ld29.World;
@@ -15,7 +14,6 @@ import lando.systems.ld29.core.Assets;
 import lando.systems.ld29.resources.Resource;
 import lando.systems.ld29.structures.HouseStructure;
 import lando.systems.ld29.structures.Structure;
-import lando.systems.ld29.util.Utils;
 
 /**
  * Author: Ian McNamara <ian.mcnamara@doit.wisc.edu>
@@ -31,8 +29,8 @@ public class Scamp {
     public static final float BUILD_PERCENT = 0.1f;
 
     public enum ScampState {
-    	IDLE,
-    	STROLLING,
+        IDLE,
+        STROLLING,
         FOOD,
         WOOD,
         STONE,
@@ -57,19 +55,19 @@ public class Scamp {
     
     static Map<String, ScampState> scampStates = new HashMap<String, ScampState>()
     {{
-    	put("wood", ScampState.WOOD);
-    	put("stone", ScampState.STONE);
-    	put("iron", ScampState.IRON);
-    	put("marble", ScampState.MARBLE);
-    	put("gold", ScampState.GOLD);
+        put("wood", ScampState.WOOD);
+        put("stone", ScampState.STONE);
+        put("iron", ScampState.IRON);
+        put("marble", ScampState.MARBLE);
+        put("gold", ScampState.GOLD);
     }};
     
     static ScampState[] resourceGatherState = {
-    	ScampState.WOOD,
-    	ScampState.STONE,
-    	ScampState.IRON,
-    	ScampState.MARBLE,
-    	ScampState.GOLD
+        ScampState.WOOD,
+        ScampState.STONE,
+        ScampState.IRON,
+        ScampState.MARBLE,
+        ScampState.GOLD
     };
 
     int skinID;
@@ -117,68 +115,20 @@ public class Scamp {
 
 
     public void update(float dt) {
-    	if (displayLastState > 0) {
-    		displayLastState -= dt;
-    	}
-    	
+        if (displayLastState > 0) {
+            displayLastState -= dt;
+        }
+
         hungerAmount += dt / 60; // 1 hunger a minute
 
         // Update based on current state
         // ---------------------------------------------------------------------
         switch(currentState) {
-            case SLEEP: {
-                if (World.THEWORLD.dayCycle.isDay()) {
-                    currentState = ScampState.IDLE;
-                    inHouse = false;
-                    return;
-                } else {
-                    if (!inHouse) {
-                        // If night, find an unoccupied house and enter it
-                        for (Structure structure : World.THEWORLD.structureManager.structures) {
-                            if (structure instanceof HouseStructure && structure.getCapacity() > 0) {
-                                targetPosition = structure.x;
-                                structure.enter(this);
-                                inHouse = true;
-                            }
-                        }
-                    }
-                }
-            } break;
-            case EATING: {
-                if (World.THEWORLD.scampManager.scampResources.getScampResourceCount(ScampResources.ScampResourceType.FOOD) > 0) {
-                    targetPosition = position;
 
-                    // Eat the food if we haven't yet
-                    if (eatAccum == 0) {
-                        World.THEWORLD.scampManager.scampResources.removeScampResource(ScampResources.ScampResourceType.FOOD, 1);
-                    }
+            case SLEEP:      updateSleeping(dt);      break;
+            case EATING:     updateEating(dt);        break;
+            case BUILDHOUSE: updateBuildingHouse(dt); break;
 
-                    // Wait to finish eating before resetting state
-                    eatAccum += dt;
-                    if (eatAccum > EAT_TIME) {
-                        eatAccum = 0;
-                        hungerAmount = 0;
-                        currentState = ScampState.IDLE;
-                    }
-                }
-            } break;
-            case BUILDHOUSE: 
-            case BUILDWAREHOUSE: {
-                if (buildingStructure == null) break;
-
-                targetPosition = buildingStructure.x;
-                // If scamp is at building site...
-                if (position == targetPosition) {
-                    // Update build timer, and build if its time
-                    buildAccum += dt;
-                    if (buildAccum > BUILD_RATE) {
-                        buildAccum = 0;
-                        if (buildingStructure.build(BUILD_PERCENT)) {
-                            currentState = ScampState.IDLE;
-                        }
-                    }
-                }
-            }
 //            case BUILD_XXXX:
 //                move to building target: buildingStructure
 //                add a dt to buildingStructure
@@ -201,18 +151,75 @@ public class Scamp {
                 }
             }
         } else { // we are walking not working yet
+
         	gatherReady = false;
         	walkRight = isWalkingRight();
+
             // Move you sluggard!
-        	float dist= SCAMP_SPEED * dt;
-        	if (dist > Math.abs(targetPosition - position)){
-        		position = targetPosition;
-        	} else {
-        		position += (walkRight ? SCAMP_SPEED : -SCAMP_SPEED) * dt;
-        	}
+            float dist= SCAMP_SPEED * dt;
+            if (dist > Math.abs(targetPosition - position)){
+                position = targetPosition;
+            } else {
+                position += (walkRight ? SCAMP_SPEED : -SCAMP_SPEED) * dt;
+            }
         } 
     }
 
+    private boolean updateSleeping(float dt) {
+        if (World.THEWORLD.dayCycle.isDay()) {
+            currentState = ScampState.IDLE;
+            inHouse = false;
+            return true;
+        } else {
+            if (!inHouse) {
+                // If night, find an unoccupied house and enter it
+                for (Structure structure : World.THEWORLD.structureManager.structures) {
+                    if (structure instanceof HouseStructure && structure.getCapacity() > 0) {
+                        targetPosition = structure.x;
+                        structure.enter(this);
+                        inHouse = true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    private void updateEating(float dt) {
+        if (World.THEWORLD.scampManager.scampResources.getScampResourceCount(ScampResources.ScampResourceType.FOOD) > 0) {
+            targetPosition = position;
+
+            // Eat the food if we haven't yet
+            if (eatAccum == 0) {
+                World.THEWORLD.scampManager.scampResources.removeScampResource(ScampResources.ScampResourceType.FOOD, 1);
+            }
+
+            // Wait to finish eating before resetting state
+            eatAccum += dt;
+            if (eatAccum > EAT_TIME) {
+                eatAccum = 0;
+                hungerAmount = 0;
+                currentState = ScampState.IDLE;
+            }
+        }
+    }
+
+    private void updateBuildingHouse(float dt) {
+        if (buildingStructure == null) return;
+
+        targetPosition = buildingStructure.x;
+        // If scamp is at building site...
+        if (position == targetPosition) {
+            // Update build timer, and build if its time
+            buildAccum += dt;
+            if (buildAccum > BUILD_RATE) {
+                buildAccum = 0;
+                if (buildingStructure.build(BUILD_PERCENT)) {
+                    currentState = ScampState.IDLE;
+                }
+            }
+        }
+    }
 
     public void render(SpriteBatch batch) {
         batch.draw(texture.getTexture(),
@@ -223,16 +230,16 @@ public class Scamp {
                 !walkRight, false);                                   // flipx, flipy
         
         if (isGatheringResources || displayLastState > 0) {
-        	thoughtColor.a = (isGatheringResources) ? 1 : (displayLastState / 2f);
-        	Assets.thoughtBubble.setColor(thoughtColor);
-        	Assets.thoughtBubble.draw(batch, position * Block.BLOCK_WIDTH , Global.GROUND_LEVEL + SCAMP_SIZE, SCAMP_SIZE, 30);
-        	
-        	if (isGatheringResources) {
-        		TextureRegion icon = Assets.icons.get(currentState.toString());
-        		if (icon != null) {        		
-        			batch.draw(icon, position * Block.BLOCK_WIDTH  + 4, Global.GROUND_LEVEL + SCAMP_SIZE + 10, SCAMP_SIZE - 8, 15);
-        		}
-        	}
+            thoughtColor.a = (isGatheringResources) ? 1 : (displayLastState / 2f);
+            Assets.thoughtBubble.setColor(thoughtColor);
+            Assets.thoughtBubble.draw(batch, position * Block.BLOCK_WIDTH , Global.GROUND_LEVEL + SCAMP_SIZE, SCAMP_SIZE, 30);
+
+            if (isGatheringResources) {
+                TextureRegion icon = Assets.icons.get(currentState.toString());
+                if (icon != null) {
+                    batch.draw(icon, position * Block.BLOCK_WIDTH  + 4, Global.GROUND_LEVEL + SCAMP_SIZE + 10, SCAMP_SIZE - 8, 15);
+                }
+            }
         }
     }
 
@@ -244,31 +251,31 @@ public class Scamp {
     public boolean isGatherReady() { return gatherReady; }
 
     public void setState(ScampState state) { 
-    	
-    	if (currentState == state) return;
-    	
-    	boolean wasGatheringResources = isGatheringResources;
-    	isGatheringResources = isResourceGather(state);
-    	
-    	currentState = state; 
-    	
-    	displayLastState = (wasGatheringResources) ? 2f : 0;
+
+        if (currentState == state) return;
+
+        boolean wasGatheringResources = isGatheringResources;
+        isGatheringResources = isResourceGather(state);
+
+        currentState = state;
+
+        displayLastState = (wasGatheringResources) ? 2f : 0;
     }
     
     private boolean isResourceGather(ScampState state) {
-    	boolean isResourceGather = false;
-    	for (int i = 0; i < resourceGatherState.length; i++) {
-    		if (resourceGatherState[i] == state) {
-    			isResourceGather = true;
-    			break;
-    		}
-    	}
-    	return isResourceGather;
+        boolean isResourceGather = false;
+        for (int i = 0; i < resourceGatherState.length; i++) {
+            if (resourceGatherState[i] == state) {
+                isResourceGather = true;
+                break;
+            }
+        }
+        return isResourceGather;
     }
     
     public void setState(String text) {
-    	ScampState state = scampStates.get(text);
-    	setState(state != null ? state : ScampState.IDLE);
+        ScampState state = scampStates.get(text);
+        setState(state != null ? state : ScampState.IDLE);
     }
     public void setTarget(float position) { this.targetPosition = position; }
     public void setTarget(Block block) { this.targetPosition = block.getX(); }
@@ -309,29 +316,29 @@ public class Scamp {
 
     public String getCurrentStateName() {
         switch(currentState) {
-        case STROLLING: 	return "Strolling";
-            case IDLE:       return "Idling";
-            case FOOD: 	return "Harvesting";
-            case WOOD:     return "Chopping wood";
-            case STONE:   return "Cutting Stone";
-            case IRON:  return "Mining Iron";
-            case MARBLE:       return "Cutting Marble";
-            case GOLD: 	return "Mining Gold";
-            case GRAPES:     return "Picking Grapes";
-            case FUEL:   return "Making Fuel";
-            case CIRCUITS:  return "Making Circuits";
-            case SPACEROCK:       return "Collecting Meteor";
-            case STEEL: 	return "Forging Steel";
-            case BUILDHOUSE:     return "Building a House";
-            case BUILDWAREHOUSE:   return "Building a Warehouse";
-            case BUILDTEMPLE:  return "Building a Temple";
+            case STROLLING:          return "Strolling";
+            case IDLE:               return "Idling";
+            case FOOD:               return "Harvesting";
+            case WOOD:               return "Chopping wood";
+            case STONE:              return "Cutting Stone";
+            case IRON:               return "Mining Iron";
+            case MARBLE:             return "Cutting Marble";
+            case GOLD:               return "Mining Gold";
+            case GRAPES:             return "Picking Grapes";
+            case FUEL:               return "Making Fuel";
+            case CIRCUITS:           return "Making Circuits";
+            case SPACEROCK:          return "Collecting Meteor";
+            case STEEL:              return "Forging Steel";
+            case BUILDHOUSE:         return "Building a House";
+            case BUILDWAREHOUSE:     return "Building a Warehouse";
+            case BUILDTEMPLE:        return "Building a Temple";
             case BUILDFACTORY:       return "Building a Factory";
-            case BUILDSPACESHIP: 	return "Building a Spaceship";
-            case PRAY:     return "Praying";
-            case SLEEP:   return "Sleeping";
-            case GETONSHIP:  return "Leaving the Planet";
-            case EATING:  return "Eating";
-            default:         return "???";
+            case BUILDSPACESHIP:     return "Building a Spaceship";
+            case PRAY:               return "Praying";
+            case SLEEP:              return "Sleeping";
+            case GETONSHIP:          return "Leaving the Planet";
+            case EATING:             return "Eating";
+            default:                 return "???";
         }
     }
 
