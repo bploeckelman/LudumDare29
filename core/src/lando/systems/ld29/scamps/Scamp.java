@@ -95,6 +95,7 @@ public class Scamp implements IResourceGenerator {
 
     boolean walkRight;
     boolean inHouse;
+    boolean actuallyinHouse;
     boolean isGathering;
     boolean isBuilding;
     boolean resourceDepleted;
@@ -227,6 +228,11 @@ public class Scamp implements IResourceGenerator {
                     }
                 }
             }
+            if (targetPosition == position){
+            	actuallyinHouse = true;
+            } else {
+            	actuallyinHouse = false;
+            }
         }
         return false;
     }
@@ -316,6 +322,7 @@ public class Scamp implements IResourceGenerator {
 
     public void render(SpriteBatch batch) {
     	if (onShip) return;
+    	if (actuallyinHouse) return;
         batch.draw(texture.getTexture(),
                 position * Block.BLOCK_WIDTH, Global.GROUND_LEVEL,    // screen position x,y
                 SCAMP_SIZE, SCAMP_SIZE,                               // pixel width/height
