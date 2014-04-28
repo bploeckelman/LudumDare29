@@ -4,22 +4,17 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import lando.systems.ld29.World;
 import lando.systems.ld29.core.Assets;
-import lando.systems.ld29.scamps.Scamp;
 
-import java.util.ArrayList;
-
-public class HouseStructure extends Structure {
-    private static TextureRegion dayImg = Assets.structures.get("house-day");
-    private static TextureRegion nightImg = Assets.structures.get("house-night");
+public class FactoryStructure extends Structure {
+    private static TextureRegion dayImg = Assets.structures.get("factory-day");
+    private static TextureRegion nightImg = Assets.structures.get("factory-night");
     private Sprite day;
     private Sprite night;
     boolean isDaySprite  = true;
 
-    public HouseStructure(float x, World world){
+    public FactoryStructure(float x, World world) {
         super(x, world);
 
-        setMaxCapacity(5);
-        scamps = new ArrayList<Scamp>(getMaxCapacity());
         day = new Sprite(dayImg);
         night = new Sprite(nightImg);
         setSprite(day);
@@ -27,10 +22,6 @@ public class HouseStructure extends Structure {
 
     public void update(float dt){
         super.update(dt);
-
-        if(getWorld().dayCycle.hasNightEnded()){
-            evict();
-        }
 
         if(getWorld().dayCycle.isDay() != isDaySprite) {
             if (isDaySprite) {

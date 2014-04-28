@@ -85,10 +85,13 @@ public class Assets {
 
         Texture structureSpritesheet = new Texture("art/structures-spritesheet.png");
         structures = new HashMap<String,TextureRegion>();
-        structures.put("house-day"  , new TextureRegion(structureSpritesheet,   0, 0, 64, 64));
-        structures.put("house-night", new TextureRegion(structureSpritesheet,  64, 0, 64, 64));
-        structures.put("temple"     , new TextureRegion(structureSpritesheet, 128, 0, 64, 64));
-        structures.put("warehouse"  , new TextureRegion(structureSpritesheet, 192, 0, 64, 64));
+        structures.put("house-day"  , new TextureRegion(structureSpritesheet,   0, 192, 64, 64));
+        structures.put("house-night", new TextureRegion(structureSpritesheet,  64, 192, 64, 64));
+        structures.put("temple"     , new TextureRegion(structureSpritesheet, 128, 192, 64, 64));
+        structures.put("warehouse"  , new TextureRegion(structureSpritesheet, 192, 192, 64, 64));
+        structures.put("factory-day", new TextureRegion(structureSpritesheet, 256, 192, 64, 64));
+        structures.put("factory-night", new TextureRegion(structureSpritesheet, 320, 192, 64, 64));
+        structures.put("spaceship"  , new TextureRegion(structureSpritesheet, 384,   0, 64, 256));
 
         Texture iconSpritesheet = new Texture("art/icon-spritesheet.png");
         icons = new HashMap<String,TextureRegion>();
