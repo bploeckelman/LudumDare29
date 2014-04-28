@@ -42,7 +42,7 @@ public class Plaque {
 		Assets.HUDFont.setColor(Color.WHITE);
 		Assets.HUDFont.draw(batch, _textValue, 
 				_bounds.x + _bounds.height, _bounds.y + _bounds.height - background.getPadTop()/2 - 2);
-		
+		batch.draw(Assets.icons.get(_icon), _bounds.x, _bounds.y);
 		
 		/*
 		Assets.HUDFont.setColor(Color.WHITE);
