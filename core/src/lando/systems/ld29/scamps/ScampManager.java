@@ -118,6 +118,7 @@ public class ScampManager {
     		return;
     	}
     	
+   	
     	if (scamp.hungerAmount > 3 && 
     		scampResources.getScampResourceCount(ScampResourceType.FOOD) < scamps.size &&
     		world.rManager.CountofType("field") > 0){

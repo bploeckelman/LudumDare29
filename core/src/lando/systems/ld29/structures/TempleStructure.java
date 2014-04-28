@@ -18,6 +18,7 @@ public class TempleStructure extends Structure {
     	aMap.put("wood", 15);
     	aMap.put("stone", 10);
     	aMap.put("marble", 6);
+    	aMap.put("meteor", 1);
     	buildCost = Collections.unmodifiableMap(aMap);
     }
     

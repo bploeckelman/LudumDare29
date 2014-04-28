@@ -43,7 +43,7 @@ public class Scamp implements IResourceGenerator {
         GRAPES,
         FUEL,
         CIRCUITS,
-        SPACEROCK,
+        METEOR,
         STEEL,
         BUILDHOUSE,
         BUILDWAREHOUSE,
@@ -65,6 +65,7 @@ public class Scamp implements IResourceGenerator {
         put("marble", ScampState.MARBLE);
         put("gold", ScampState.GOLD);
         put("grapes", ScampState.GRAPES);
+        put("meteor", ScampState.METEOR);
         
         put("fuel", ScampState.FUEL);
         put("circuits", ScampState.CIRCUITS);
@@ -78,7 +79,8 @@ public class Scamp implements IResourceGenerator {
         ScampState.IRON,
         ScampState.MARBLE,
         ScampState.GOLD,
-        ScampState.GRAPES
+        ScampState.GRAPES,
+        ScampState.METEOR
         // TODO : METEOR??
     };
 
@@ -163,7 +165,7 @@ public class Scamp implements IResourceGenerator {
             case GOLD:
             case GRAPES:
             case MARBLE:
-            case SPACEROCK:
+            case METEOR:
                 updateGathering(dt);
                 break;
 
@@ -410,7 +412,7 @@ public class Scamp implements IResourceGenerator {
             case GRAPES:             return "Picking Grapes";
             case FUEL:               return "Making Fuel";
             case CIRCUITS:           return "Making Circuits";
-            case SPACEROCK:          return "Collecting Meteor";
+            case METEOR:          return "Collecting Meteor";
             case STEEL:              return "Forging Steel";
             case BUILDHOUSE:         return "Building a House";
             case BUILDWAREHOUSE:     return "Building a Warehouse";
