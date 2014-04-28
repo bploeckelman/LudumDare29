@@ -127,6 +127,9 @@ public class Hud {
         } else {
             justClicked = false;
         }
+        for(Plaque plaque : resources) {
+            plaque.setValue(world.scampManager.scampResources.getScampResourceCount(plaque.getIconName()));
+        }
     }
 
     public void render(SpriteBatch batch) {
