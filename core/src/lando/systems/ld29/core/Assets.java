@@ -27,6 +27,7 @@ public class Assets {
     public static Map<String,TextureRegion> resources;
     public static Map<String,TextureRegion> structures;
     public static Map<String,TextureRegion> icons;
+    public static Map<String,Integer> costs;
 
     public static Texture scamps_spritesheet;
     public static Array<TextureRegion> scamps;
@@ -66,6 +67,19 @@ public class Assets {
         blocks.put("stone",  new TextureRegion(blocksSpritesheet, 80, 0, 16, 16));
         blocks.put("lava",   new TextureRegion(blocksSpritesheet, 96, 0, 16, 16));
         blocks.put("water",  new TextureRegion(blocksSpritesheet, 112, 0, 16, 16));
+        
+        costs = new HashMap<String, Integer>();
+        costs.put("dirt", new Integer(3));
+        costs.put("acorn", new Integer(6));
+        costs.put("gold", new Integer(10));
+        costs.put("grapes", new Integer(15));        
+        costs.put("iron", new Integer(10));
+        costs.put("stone", new Integer(6));
+        //costs.put("marble", new Integer(6));
+        costs.put("lava", new Integer(20));
+        costs.put("water", new Integer(20));
+        //costs.put("lava", new Integer(3));
+        
 
         scamps_spritesheet = new Texture("art/scamps-spritesheet.png");
         scamps = new Array<TextureRegion>();

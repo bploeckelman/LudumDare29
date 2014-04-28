@@ -17,7 +17,6 @@ public class WheatBlock extends Block {
         toolTipString = "Grows a field";
         fountainColor = new Color(.5f, .3f, .1f, 1);
         setSprite(new Sprite(img));
-        cost = 3;
     }
     
 	public Resource MakeResource(){

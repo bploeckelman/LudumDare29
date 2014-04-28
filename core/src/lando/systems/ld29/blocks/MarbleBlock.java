@@ -15,7 +15,6 @@ public class MarbleBlock extends Block {
         this.blockType = "marble";
         //toolTipString = "another building material";
         setSprite(new Sprite(img));
-        cost = 6;
     }
     
 	public Resource MakeResource(){

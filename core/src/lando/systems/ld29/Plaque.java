@@ -2,6 +2,7 @@ package lando.systems.ld29;
 
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+
 import lando.systems.ld29.core.Assets;
 import lando.systems.ld29.scamps.ScampManager;
 import lando.systems.ld29.scamps.ScampResources.ScampResourceType;
@@ -67,9 +68,19 @@ public class Plaque implements IToolTip {
 		Assets.HUDFont.draw(batch, _textValue, iconx + icon.getRegionWidth() + ICON_SPACING,
                 _bounds.y + _bounds.height - background.getPadTop()/2 - 2);
 	}
-		
+
 	@Override
 	public Rectangle getToolTipBounds() {
-			return _bounds;
+		return _bounds;
 	}
+
+	@Override
+	public String getTitle() {
+		return "Resource";
+	}
+
+	@Override
+	public String getText() {
+		return getIconName();
+	}		
 }

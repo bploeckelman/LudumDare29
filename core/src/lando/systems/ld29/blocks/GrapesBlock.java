@@ -17,7 +17,6 @@ public class GrapesBlock extends Block {
         toolTipString = "for grapejuice?";
         fountainColor = new Color (1,0,1,1);
         setSprite(new Sprite(img));
-        cost = 15;
     }
     
 	public Resource MakeResource(){
