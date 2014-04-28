@@ -199,7 +199,11 @@ public class ScampManager {
     }
     
     private void gatherResource(Scamp scamp, String resourceName){
-		Resource resource = world.rManager.getResource(resourceName);
+		Resource resource = world.rManager.getResource(resourceName, (int)scamp.position);
+		if (resource == null){
+			int i =0;
+			i++;
+		}
 		scamp.setTarget(resource.getX());
 		scamp.setWorkingResource(resource);
     }

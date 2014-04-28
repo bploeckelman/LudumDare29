@@ -55,6 +55,8 @@ public class Hud {
     private BeliefMeter beliefMeter; 
         
     public Tooltip tooltip;
+    
+    private ArrayList<IToolTip> items = new ArrayList<IToolTip>();
 
     public Hud(World world) {
         this.world = world;
@@ -95,11 +97,12 @@ public class Hud {
     			x = left + hGap;
     		}    		
     		
-    		Plaque p = new Plaque(types[i].toString(), plaqueWidth, plaqueHeight);
+    		Plaque p = new Plaque(types[i], plaqueWidth, plaqueHeight);
     		p.setPosition(x,  y);
     		x += plaqueWidth + hGap;
     		
-    		resources.add(p);    		
+    		resources.add(p);
+    		items.add(p);
     	}    	
     }
     
@@ -107,7 +110,12 @@ public class Hud {
     
     public void update(float dt, Player player){
         tooltip.update(dt);
-        beliefMeter.setValue(world.player.belief);
+        beliefMeter.setValue(player.belief);
+        
+        for (Plaque plaque : resources) {
+        	plaque.update(world.scampManager);
+        }
+        
     	if (Gdx.input.isButtonPressed(Input.Buttons.LEFT) && player.inputDelay <=0 && player.xPos == player.xTarget){
             if (justClicked == false){
                 int x = (int)(player.xPos + .5f);
@@ -127,6 +135,9 @@ public class Hud {
         } else {
             justClicked = false;
         }
+        for(Plaque plaque : resources) {
+            plaque.setValue(world.scampManager.scampResources.getScampResourceCount(plaque.getIconName()));
+        }
     }
 
     public void render(SpriteBatch batch) {
@@ -145,11 +156,11 @@ public class Hud {
             block.draw(batch);
         }
         
-        tooltip.render(batch);
-        
         for (Plaque p : resources) {
-        	p.render(batch);
+            p.render(batch);
         }
+
+        tooltip.render(batch);
     }
 
     private Block getBlockForCoords(int column){
@@ -178,6 +189,15 @@ public class Hud {
         }
 
         return ret;
+    }
+
+    public Plaque getPlaqueFromPos(float x, float y) {
+        for(Plaque plaque : resources) {
+            if (plaque.getBounds().contains(x,y)) {
+                return plaque;
+            }
+        }
+        return null;
     }
 
 }

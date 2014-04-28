@@ -54,7 +54,7 @@ public class ScampResources {
     }
 
     public ScampResourceType getType(String resourceName) {
-        return resourceNameToType.get(resourceName);
+        return resourceNameToType.get(resourceName.toUpperCase());
     }
 
     public void addScampResource(ScampResourceType scampResourceType) {
