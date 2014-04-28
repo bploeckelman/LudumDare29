@@ -1,5 +1,9 @@
 package lando.systems.ld29;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
@@ -10,6 +14,8 @@ import com.badlogic.gdx.math.Vector3;
 
 import lando.systems.ld29.blocks.*;
 import lando.systems.ld29.core.Assets;
+import lando.systems.ld29.scamps.ScampManager;
+import lando.systems.ld29.scamps.ScampResources.ScampResourceType;
 import lando.systems.ld29.screens.GameScreen;
 import lando.systems.ld29.util.Config;
 
@@ -18,9 +24,12 @@ public class Hud {
         "dirt", "stone", "iron", "acorn", "grapes"
     };
 
+    private ScampResourceType[] types = { ScampResourceType.FOOD, ScampResourceType.GRAPE, ScampResourceType.IRON, ScampResourceType.STONE, ScampResourceType.WOOD };
+    private ArrayList<Plaque> resources = new ArrayList<Plaque>();
+    
     static final float HUD_BLOCK_WIDTH = 32;
-    static final float HUDX = Config.window_half_width -
-                              ((blockNames.length * HUD_BLOCK_WIDTH) / 2);
+    static final float HUD_WIDTH = blockNames.length * HUD_BLOCK_WIDTH;
+    static final float HUDX = (Config.window_width - HUD_WIDTH) / 2;                              
     
     static final NinePatch Panel = Assets.panelBrown;
     
@@ -30,8 +39,8 @@ public class Hud {
     
     private Sprite[] blocks;
     private World world;
-    private BeliefMeter beliefMeter;   
-    
+    private BeliefMeter beliefMeter; 
+        
     public Tooltip tooltip;
 
     public Hud(World world) {
@@ -51,8 +60,36 @@ public class Hud {
         float height = 25;
         beliefMeter = new BeliefMeter(width, height);
         beliefMeter.setPosition(10, Global.UNDERGROUND_LEVEL - (height + 1));
+        
+        addResources(types, HUDX + HUD_WIDTH + Panel.getPadRight(), height, width);
     }
 
+    private void addResources(ScampResourceType[] types, float left, float plaqueHeight, float totalWidth)
+    {
+    	float vGap = (Global.UNDERGROUND_LEVEL - (plaqueHeight*2)) /2;
+    	
+    	int columns = (int)Math.ceil(types.length / 2.0);
+    	
+    	float hGap = Panel.getPadLeft();
+    	float plaqueWidth = (totalWidth - ((columns + 1)* hGap)) / columns;
+    	
+    	float x = left + hGap;
+    	float y = Global.UNDERGROUND_LEVEL - (plaqueHeight + 1);
+    	
+    	for (int i = 0; i < types.length; i++) {
+    		if (i == columns) {
+    			y -= (plaqueHeight + vGap);
+    			x = left + hGap;
+    		}    		
+    		
+    		Plaque p = new Plaque(types[i].toString(), plaqueWidth, plaqueHeight);
+    		p.setPosition(x,  y);
+    		x += plaqueWidth + hGap;
+    		
+    		resources.add(p);    		
+    	}    	
+    }
+    
     boolean justClicked = true;
     
     public void update(float dt, Player player){
@@ -96,6 +133,10 @@ public class Hud {
         }
         
         tooltip.render(batch);
+        
+        for (Plaque p : resources) {
+        	p.render(batch);
+        }
     }
 
     private Block getBlockForCoords(int column){

@@ -26,6 +26,7 @@ public class Assets {
     public static Map<String,TextureRegion> blocks;
     public static Map<String,TextureRegion> resources;
     public static Map<String,TextureRegion> structures;
+    public static Map<String,TextureRegion> icons;
 
     public static Texture scamps_spritesheet;
     public static Array<TextureRegion> scamps;
@@ -91,6 +92,22 @@ public class Assets {
         structures.put("factory-day", new TextureRegion(structureSpritesheet, 256, 192, 64, 64));
         structures.put("factory-night", new TextureRegion(structureSpritesheet, 320, 192, 64, 64));
         structures.put("spaceship"  , new TextureRegion(structureSpritesheet, 384,   0, 64, 256));
+
+        Texture iconSpritesheet = new Texture("art/icon-spritesheet.png");
+        icons = new HashMap<String,TextureRegion>();
+        TextureRegion[][] iconRegions = TextureRegion.split(iconSpritesheet, 12, 12);
+        icons.put("food",     iconRegions[0][0]);
+        icons.put("wood",     iconRegions[0][1]);
+        icons.put("stone",    iconRegions[0][2]);
+        icons.put("iron",     iconRegions[0][3]);
+        icons.put("marble",   iconRegions[0][4]);
+        icons.put("gold",     iconRegions[0][5]);
+        icons.put("grapes",   iconRegions[0][6]);
+        icons.put("fuel",     iconRegions[1][0]);
+        icons.put("circuits", iconRegions[1][1]);
+        icons.put("meteor",   iconRegions[1][2]);
+        icons.put("steel",    iconRegions[1][3]);
+        icons.put("people",   iconRegions[1][4]);
 
 //        sound = Gdx.audio.newSound("audio/sound.wav");
 //        music = Gdx.audio.newMusic("audio/music.mp3");
