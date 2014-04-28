@@ -1,5 +1,9 @@
 package lando.systems.ld29.structures;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import lando.systems.ld29.World;
@@ -12,12 +16,22 @@ public class FactoryStructure extends Structure {
     private Sprite night;
     boolean isDaySprite  = true;
 
+    public static final Map<String, Integer> buildCost;
+    static {
+    	Map<String, Integer> aMap = new HashMap<String, Integer>();
+    	aMap.put("wood", 15);
+    	aMap.put("stone", 10);
+    	aMap.put("marble", 6);
+    	buildCost = Collections.unmodifiableMap(aMap);
+    }
+    
     public FactoryStructure(float x, World world) {
         super(x, world);
 
         day = new Sprite(dayImg);
         night = new Sprite(nightImg);
         setSprite(day);
+        name = "factory";
     }
 
     public void update(float dt){

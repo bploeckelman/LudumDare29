@@ -195,7 +195,7 @@ public class ScampManager {
     	// get Wood?
     	if (scampResources.getScampResourceCount(ScampResourceType.WOOD) < world.structureManager.getMaxAmount(ScampResourceType.WOOD) &&
     			world.rManager.CountofType("forrest") > 0) {
-			scamp.currentState = ScampState.WOOD;
+    		scamp.setState(ScampState.WOOD);
 			gatherResource(scamp, "forrest");
 			return;
     	}
@@ -220,6 +220,9 @@ public class ScampManager {
     		break;
     	case "temple":
     		costs = TempleStructure.buildCost;
+    		break;
+    	case "factory":
+    		costs = FactoryStructure.buildCost;
     		break;
     	}
     	
@@ -249,6 +252,12 @@ public class ScampManager {
 			break;
     		case "temple": struct = new TempleStructure(world.structureManager.getRandomAvilSpot(), world);
 				scamp.currentState = ScampState.BUILDTEMPLE;
+			break;
+    		case "factory": struct = new FactoryStructure(world.structureManager.getRandomAvilSpot(), world);
+				scamp.currentState = ScampState.BUILDFACTORY;
+			break;
+    		case "spaceship": struct = new SpaceshipStructure(world.structureManager.getRandomAvilSpot(), world);
+				scamp.currentState = ScampState.BUILDSPACESHIP;
 			break;
     		default : struct = new HouseStructure(world.structureManager.getRandomAvilSpot(), world);
     			

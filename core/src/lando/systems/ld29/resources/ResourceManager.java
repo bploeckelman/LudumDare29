@@ -34,18 +34,17 @@ public class ResourceManager {
     }
 
     public int takeResource(int pos, int resourcesAsked ){
-        if (resources[pos] == null ||
-                resources[pos] instanceof Barren) return 0;
+        if (resources[pos] == null) return 0;
 
         int rCount = resources[pos].getResourceCount();
         if(resourcesAsked > rCount){
-            resources[pos] = new Barren(pos);
+            resources[pos] = null;
             parentWorld.particleSystem.addFirework(pos * Block.BLOCK_WIDTH + Block.BLOCK_WIDTH / 2, Global.GROUND_LEVEL);
             return rCount;
         }else{
             int rLeftOver = rCount - resourcesAsked;
             if(rLeftOver == 0){
-                resources[pos] = new Barren(pos);
+                resources[pos] = null;
                 parentWorld.particleSystem.addFirework(pos * Block.BLOCK_WIDTH + Block.BLOCK_WIDTH / 2, Global.GROUND_LEVEL);
             }else{
                 resources[pos].setResourceCount(rLeftOver);
