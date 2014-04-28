@@ -1,11 +1,8 @@
 package lando.systems.ld29;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import lando.systems.ld29.blocks.Block;
 import lando.systems.ld29.resources.*;
-
-import java.util.HashMap;
 
 /**
  * Created by jhoopes on 4/26/14.
@@ -27,6 +24,12 @@ public class ResourceManager {
         resources = new Resource[parentWorld.gameWidth];
         width = world.gameWidth;
         height = world.gameHeight;
+
+        // Fill the resource array with empties.
+        for (int i = 0; i < world.gameWidth; i++) {
+            resources[i] = new Empty(i * Block.BLOCK_WIDTH, Global.GROUND_LEVEL);
+        }
+
     }
 
     public int takeResource(int pos, int resourcesAsked ){
@@ -83,8 +86,9 @@ public class ResourceManager {
         return resource;
     }
 
-    public Resource getNewResource(String blockName, int x, int y){
+    private Resource getNewResource(String blockName, int x, int y){
         switch(blockName){
+            case "empty":   return new Empty(x, y);
             case "dirt":   return new Field(x, y);
             case "stone":  return new Quarry(x, y);
             case "iron":   return new Mountain(x, y);
