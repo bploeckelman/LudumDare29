@@ -89,7 +89,7 @@ public class Assets {
         for(int i = 0; i < scamp_regions.length; ++i) {
             scamps.addAll(scamp_regions[i], 0, scamp_regions[i].length);
         }
-        num_scamps = 81; // 9 rows of unusable scamp images at the moment (9 images per row)
+        num_scamps = 72; // 9 rows with 8 images per row
 
         Texture resourceSpritesheet = new Texture("art/resource_spritesheet.png");
         resources = new HashMap<String,TextureRegion>();
