@@ -124,6 +124,14 @@ public class ScampManager {
 
     private void GiveScampJob(Scamp scamp){
     	
+    	if (world.structureManager.countStructures("spaceship") > 0){
+    		Structure ship = world.structureManager.findStructure("spaceship");
+    		if (ship.buildPercent >= 1)
+    			scamp.currentState = ScampState.GETONSHIP;
+    		// TODO target spaceship?
+    		return;
+    	}
+    	
     	if (scamp.hungerAmount > 5 && scampResources.getScampResourceCount(ScampResourceType.FOOD) > 0){
     		scamp.currentState = ScampState.EATING;
     		return;
@@ -139,13 +147,7 @@ public class ScampManager {
     			return;
     	}
     	
-    	if (world.structureManager.countStructures("spaceship") > 0){
-    		Structure ship = world.structureManager.findStructure("spaceship");
-    		if (ship.buildPercent >= 1)
-    			scamp.currentState = ScampState.GETONSHIP;
-    		// TODO target spaceship?
-    		return;
-    	}
+
     	
     	if (!world.dayCycle.isDay()){
     		scamp.currentState = ScampState.SLEEP;
