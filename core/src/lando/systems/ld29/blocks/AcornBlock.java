@@ -4,6 +4,8 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import lando.systems.ld29.core.Assets;
+import lando.systems.ld29.resources.Forrest;
+import lando.systems.ld29.resources.Resource;
 
 public class AcornBlock extends Block {
     private static TextureRegion img = Assets.blocks.get("acorn");
@@ -16,4 +18,9 @@ public class AcornBlock extends Block {
         setSprite(new Sprite(img));
         cost = 6;
     }
+    
+	public Resource MakeResource(){
+
+		return new Forrest(x);
+	}
 }

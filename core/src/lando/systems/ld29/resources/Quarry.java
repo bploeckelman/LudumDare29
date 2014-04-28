@@ -9,8 +9,8 @@ import lando.systems.ld29.core.Assets;
 public class Quarry extends Resource {
     protected TextureRegion img = Assets.resources.get("quarry");
 
-    public Quarry(float x, float y) {
-        super(x, y);
+    public Quarry(float x) {
+        super(x);
 
         this.createSprite(this.img);
     }

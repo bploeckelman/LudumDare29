@@ -19,6 +19,8 @@ public class Structure {
     ArrayList<Scamp> scamps;
 
     float x;
+    
+    String name = "CHANGE ME";
 
     public Structure(float x, World world){
         this.x = x;

@@ -19,6 +19,16 @@ public class StructureManager {
         structures[++i] = new WarehouseStructure(i, world);
         structures[++i] = new TempleStructure(i, world);
     }
+    
+    public int countStructures(String name){
+    	int count = 0;
+        for(Structure structure : structures){
+            if(structure != null && structure.name == name) {
+                count++;
+            }
+        }
+    	return count;
+    }
 
     public void createStructure(int column, Structure structure){
         structures[column] = structure;

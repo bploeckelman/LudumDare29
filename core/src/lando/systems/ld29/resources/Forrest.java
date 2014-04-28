@@ -12,8 +12,8 @@ public class Forrest extends Resource {
 
     protected TextureRegion img = Assets.resources.get("forrest");
 
-    public Forrest(float x, float y) {
-        super(x, y);
+    public Forrest(float x) {
+        super(x);
 
        this.createSprite(this.img);
     }

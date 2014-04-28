@@ -21,11 +21,28 @@ public class Scamp {
     public static final float GATHER_RATE = 5f; // in seconds
 
     public enum ScampState {
-        IDLE,
-        HARVESTING,
-        EATING,
-        SLEEPING,
-        MURDERING
+    	IDLE,
+    	STROLLING,
+        FOOD,
+        WOOD,
+        STONE,
+        IRON,
+        MARBLE,
+        GOLD,
+        GRAPES,
+        FUEL,
+        CIRCUITS,
+        SPACEROCK,
+        STEEL,
+        BUILDHOUSE,
+        BUILDWAREHOUSE,
+        BUILDTEMPLE,
+        BUILDFACTORY,
+        BUILDSPACESHIP,
+        PRAY,
+        SLEEP,
+        GETONSHIP,
+        EATING
     }
 
     int skinID;
@@ -40,6 +57,7 @@ public class Scamp {
     Resource workingResource;
     TextureRegion texture;
     ScampState currentState = ScampState.IDLE;
+    float hungerAmount = 0;
 
     public Scamp(float startingPosition) {
         this.name = Assets.randomName();
@@ -55,38 +73,39 @@ public class Scamp {
         this.gatherReady = false;
     }
 
-    public boolean atTarget = false;
+
     public void update(float dt) {
+    	hungerAmount += dt / 60; // 1 hunger a minute
+    	
         // Have we reached our target yet?
-        if( Utils.isBetween(position, targetPosition - 0.2f, targetPosition + 0.8f) ) {
-            atTarget = true;
+        if( targetPosition == position ) {
 
-            // If idling, pick a new random target position
-            if (currentState == ScampState.IDLE) {
-                atTarget = false;
-                targetPosition = Assets.random.nextInt(World.gameWidth);
+
+            // If just strolling, go idle
+            if (currentState == ScampState.STROLLING) {
+            	currentState = ScampState.IDLE;
+                
             } else {
-                if (!atTarget) {
-                    System.out.println("non-idle scamp " + this.toString()
-                            + " arrived at target: target(" + targetPosition + "), "
-                            + "pos(" + position + ")");
+            	// Update gathering timer/state
+                gatherAccum += dt;
+                if (gatherAccum > GATHER_RATE) {
+                    gatherAccum %= GATHER_RATE;
+                    gatherReady = true;
                 }
+
             }
 
-            walkRight = isWalkingRight();
-        }
-
-        if (!atTarget) {
+            
+        } else { // we are walking not working yet
+        	walkRight = isWalkingRight();
             // Move you sluggard!
-            position += (walkRight ? SCAMP_SPEED : -SCAMP_SPEED) * dt;
-        } else {
-            // Update gathering timer/state
-            gatherAccum += dt;
-            if (gatherAccum > GATHER_RATE) {
-                gatherAccum %= GATHER_RATE;
-                gatherReady = true;
-            }
-        }
+        	float dist= SCAMP_SPEED * dt;
+        	if (dist > Math.abs(targetPosition - position)){
+        		position = targetPosition;
+        	} else {
+        		position += (walkRight ? SCAMP_SPEED : -SCAMP_SPEED) * dt;
+        	}
+        } 
     }
 
 
@@ -101,17 +120,15 @@ public class Scamp {
     }
 
     public boolean isIdle() { return currentState == ScampState.IDLE; }
-    public boolean isEating() { return currentState == ScampState.EATING; }
-    public boolean isSleeping() { return currentState == ScampState.SLEEPING; }
-    public boolean isMurdering() { return currentState == ScampState.MURDERING; }
-    public boolean isHarvesting() { return currentState == ScampState.HARVESTING; }
 
     public boolean isWalkingRight() { return (targetPosition - position >= 0); }
 
     public void didGather() { gatherReady = false; }
     public boolean isGatherReady() { return gatherReady; }
 
-    public void setState(ScampState state) { currentState = state; }
+    public void setState(ScampState state) { 
+    	currentState = state; 
+    	}
 
     public void setTarget(float position) { this.targetPosition = position; }
     public void setTarget(Block block) { this.targetPosition = block.getX(); }
@@ -152,11 +169,28 @@ public class Scamp {
 
     public String getCurrentStateName() {
         switch(currentState) {
+        case STROLLING: 	return "Strolling";
             case IDLE:       return "Idling";
-            case HARVESTING: return "Harvesting";
-            case EATING:     return "Eating";
-            case SLEEPING:   return "Sleeping";
-            case MURDERING:  return "Murdering!!";
+            case FOOD: 	return "Harvesting";
+            case WOOD:     return "Chopping wood";
+            case STONE:   return "Cutting Stone";
+            case IRON:  return "Mining Iron";
+            case MARBLE:       return "Cutting Marble";
+            case GOLD: 	return "Mining Gold";
+            case GRAPES:     return "Picking Grapes";
+            case FUEL:   return "Making Fuel";
+            case CIRCUITS:  return "Making Circuits";
+            case SPACEROCK:       return "Collecting Meteor";
+            case STEEL: 	return "Forging Steel";
+            case BUILDHOUSE:     return "Building a House";
+            case BUILDWAREHOUSE:   return "Building a Warehouse";
+            case BUILDTEMPLE:  return "Building a Temple";
+            case BUILDFACTORY:       return "Building a Factory";
+            case BUILDSPACESHIP: 	return "Building a Spaceship";
+            case PRAY:     return "Praying";
+            case SLEEP:   return "Sleeping";
+            case GETONSHIP:  return "Leaving the Planet";
+            case EATING:  return "Eating";
             default:         return "???";
         }
     }
