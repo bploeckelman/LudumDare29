@@ -20,7 +20,7 @@ public class Structure {
 
     public float x;
     
-    String name = "CHANGE ME";
+    public String name = "CHANGE ME";
     
     public Structure(float x, World world){
         this.x = x;
@@ -80,5 +80,9 @@ public class Structure {
 
     public void render(SpriteBatch batch){
         getSprite().draw(batch);
+    }
+    
+    public String getName(){
+    	return name;
     }
 }

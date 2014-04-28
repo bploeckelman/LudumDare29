@@ -19,7 +19,7 @@ public class StructureManager {
         // TODO: Remove this...
         int i = World.gameWidth/2;
         createStructure(i,   new HouseStructure(i, world));
-        createStructure(++i, new WarehouseStructure(i, world));
+        //createStructure(++i, new WarehouseStructure(i, world));
         createStructure(++i, new TempleStructure(i, world));
         createStructure(++i, new FactoryStructure(i, world));
         createStructure(++i, new SpaceshipStructure(i, world));
@@ -28,7 +28,7 @@ public class StructureManager {
     public int countStructures(String name){
     	int count = 0;
         for(Structure structure : structures){
-            if(structure != null && structure.name == name) {
+            if(structure != null && structure.getName() == name) {
                 count++;
             }
         }

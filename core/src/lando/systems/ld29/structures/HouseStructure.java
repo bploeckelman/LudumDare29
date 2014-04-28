@@ -17,6 +17,7 @@ public class HouseStructure extends Structure {
     private Sprite day;
     private Sprite night;
     boolean isDaySprite  = true;
+
     
     public static final Map<String, Integer> buildCost;
     static {
@@ -24,6 +25,7 @@ public class HouseStructure extends Structure {
     	aMap.put("wood", 3);
     	aMap.put("stone", 3);
     	buildCost = Collections.unmodifiableMap(aMap);
+    	
     }
     
     public HouseStructure(float x, World world){
@@ -34,6 +36,7 @@ public class HouseStructure extends Structure {
         day = new Sprite(dayImg);
         night = new Sprite(nightImg);
         setSprite(day);
+        name = "house";
     }
 
 

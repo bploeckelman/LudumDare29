@@ -12,6 +12,7 @@ import lando.systems.ld29.core.Assets;
 public class WarehouseStructure extends Structure {
     private static TextureRegion img = Assets.structures.get("warehouse");
 
+   
     public static final Map<String, Integer> buildCost;
     static {
     	Map<String, Integer> aMap = new HashMap<String, Integer>();
@@ -24,5 +25,6 @@ public class WarehouseStructure extends Structure {
         super(x, world);
 
         setSprite(new Sprite(img));
+        name = "warehouse";
     }
 }
