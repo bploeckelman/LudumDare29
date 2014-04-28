@@ -36,7 +36,7 @@ public class HouseStructure extends Structure implements IResourceGenerator {
     public HouseStructure(float x, World world){
         super(x, world);
 
-        setMaxCapacity(5);
+        setMaxCapacity(4);
         scamps = new ArrayList<Scamp>(getMaxCapacity());
         day = new Sprite(dayImg);
         night = new Sprite(nightImg);
@@ -46,12 +46,12 @@ public class HouseStructure extends Structure implements IResourceGenerator {
 
 
     public void evict(){
-        // Maybe create a baby?
-        if(getCapacity() >= 2 && Assets.random.nextFloat() > .75f){
+        // Maybe create a baby? 
+    	if(getCapacity() >= 2 && Assets.random.nextFloat() > .5f && getWorld().scampManager.spaceForMoreScamps()){   		
         	World world = getWorld();
             world.scampManager.addScamps(new Scamp(x));
             world.displayResourceGather(this,  1);
-        }
+    	}
 
         super.evict();
     }

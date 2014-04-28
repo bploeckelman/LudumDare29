@@ -74,6 +74,10 @@ public class ScampManager {
             addScamps(new Scamp( Assets.random.nextInt(world.gameWidth) ));
         }
     }
+    
+    public void killScamp(Scamp scamp){
+    	scamps.removeValue(scamp, true);
+    }
 
     public Scamp getScampFromPos(float x, float y) {
         Scamp scamp = null;
@@ -167,6 +171,11 @@ public class ScampManager {
         	}
     	
     	// Build Factory
+    	if ((1 + world.structureManager.countStructures("factory")) * 2 == world.structureManager.countStructures("warehouse")){
+    	    	if (tryBuilding(scamp, "factory")){
+    	    		return;
+    	    	}
+        	}
     	
     	// Build Warehouse
     	if ((1 + world.structureManager.countStructures("warehouse")) * 2 == world.structureManager.countStructures("house") &&
@@ -225,6 +234,9 @@ public class ScampManager {
     	case "factory":
     		costs = FactoryStructure.buildCost;
     		break;
+    	case "spaceship":
+    		costs = SpaceshipStructure.buildCost;
+    		break;
     	}
     	
     	boolean missingresource = false;
@@ -279,6 +291,11 @@ public class ScampManager {
     
     public int getCurrentPopulation(){
     	return scamps.size;
+    }
+    
+    public boolean spaceForMoreScamps(){
+    	return !(scamps.size == world.structureManager.getMaxPopulation());
+    	
     }
     
     private void gatherResource(Scamp scamp, String resourceName){
