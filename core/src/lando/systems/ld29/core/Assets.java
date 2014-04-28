@@ -58,6 +58,7 @@ public class Assets {
     public static Sound build;
     public static Sound fireworkLaunch;
     public static Sound fireworkPop;
+    public static Sound babyBorn;
 
     //public static Music music;
     public static Music dayAmbient;
@@ -193,6 +194,7 @@ public class Assets {
         build = Gdx.audio.newSound(Gdx.files.internal("audio/build.wav"));
         fireworkLaunch = Gdx.audio.newSound(Gdx.files.internal("audio/firework_launch.wav"));
         fireworkPop = Gdx.audio.newSound(Gdx.files.internal("audio/firework_pop.wav"));
+        babyBorn = Gdx.audio.newSound(Gdx.files.internal("audio/baby_born.wav"));
 
 //        music = Gdx.audio.newMusic("audio/music.mp3");
         dayAmbient = Gdx.audio.newMusic(Gdx.files.internal("audio/day_birds.mp3"));
