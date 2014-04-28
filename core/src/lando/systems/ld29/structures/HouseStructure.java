@@ -25,6 +25,15 @@ public class HouseStructure extends Structure {
         setSprite(day);
     }
 
+    public void evict(){
+        // Maybe create a baby?
+        if(getCapacity() >= 2 && Assets.random.nextFloat() > .75f){
+            getWorld().scampManager.scamps.add(new Scamp(x));
+        }
+
+        super.evict();
+    }
+
     public void update(float dt){
         super.update(dt);
 
