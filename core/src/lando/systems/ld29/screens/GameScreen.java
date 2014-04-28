@@ -78,7 +78,7 @@ public class GameScreen implements Screen {
     @Override
     public void render(float delta) {
     	delta = Math.min(delta, 1/20.0f); // Limit big lag spikes
-    	delta *=3;
+    	//delta *=3;
         update(delta);
 
 

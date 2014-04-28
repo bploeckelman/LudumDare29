@@ -17,6 +17,7 @@ import lando.systems.ld29.screens.GameScreen;
 import lando.systems.ld29.structures.SpaceshipStructure;
 import lando.systems.ld29.structures.Structure;
 import lando.systems.ld29.structures.StructureManager;
+import lando.systems.ld29.util.Config;
 
 public class World {
 
@@ -29,6 +30,7 @@ public class World {
     public ScampManager scampManager;
     public StructureManager structureManager;
     public ParticleSystem particleSystem;
+    public boolean preGame;
 
     public static final int gameWidth = 30;
     public static final int gameHeight = 5;
@@ -48,6 +50,7 @@ public class World {
         scampManager = new ScampManager(this);
         structureManager = new StructureManager(this);
         particleSystem = new ParticleSystem();
+        preGame = true;
     }
     
     public void displayResourceGather(IResourceGenerator resGen, int numResourcesGathered)
@@ -58,9 +61,17 @@ public class World {
     }
 
     public void update(float dt){
+    	
+
         hud.update(dt, player);
         particleSystem.update(dt);
     	
+    	if (preGame){
+    		if (Gdx.input.justTouched())
+    		preGame = false;
+    		return;
+    	}
+        
     	if (scampManager.allInShip()){
     		gameWon = true;
     		SpaceshipStructure space = (SpaceshipStructure) structureManager.findStructure("spaceship");
@@ -123,6 +134,11 @@ public class World {
         hudBatch.begin();
         // Draw Hud
         hud.render(hudBatch);
+        
+        if (preGame){
+        	Assets.panelBrown.draw(hudBatch, Config.window_half_width - 300, Config.window_half_height - 200, 600, 400);
+        	Assets.gameFont.drawWrapped(hudBatch, Assets.introText, Config.window_half_width - 200, Config.window_half_height + 150, 400);
+        }
         
         hudBatch.end();
         batch.begin();
