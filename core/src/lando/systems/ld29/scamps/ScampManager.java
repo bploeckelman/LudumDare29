@@ -170,7 +170,8 @@ public class ScampManager {
         	}
     	
     	// Build Factory
-    	if ((1 + world.structureManager.countStructures("factory")) * 2 == world.structureManager.countStructures("warehouse")){
+    	if ((1 + world.structureManager.countStructures("factory")) * 2 == world.structureManager.countStructures("warehouse") &&
+    			world.structureManager.countStructures("factory") < 2 ){
     	    	if (tryBuilding(scamp, "factory")){
     	    		return;
     	    	}

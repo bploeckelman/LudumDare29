@@ -20,8 +20,8 @@ public class FactoryStructure extends Structure {
     static {
     	Map<String, Integer> aMap = new HashMap<String, Integer>();
     	aMap.put("wood", 15);
-    	aMap.put("stone", 10);
-    	aMap.put("marble", 6);
+    	aMap.put("stone", 15);
+    	aMap.put("iron", 10);
     	buildCost = Collections.unmodifiableMap(aMap);
     }
     
