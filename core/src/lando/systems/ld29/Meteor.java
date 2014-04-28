@@ -37,6 +37,7 @@ public class Meteor {
 			// Do stuff
 			World.THEWORLD.rManager.makeMeteorRes(targetBlock);
 			World.THEWORLD.grid.meteor = null;
+            World.THEWORLD.causeEarthquake();
 		}
 		
 		xPos += move.x;

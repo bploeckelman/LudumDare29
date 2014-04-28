@@ -140,4 +140,8 @@ public class World {
         }
         return item;
 	}
+
+    public void causeEarthquake() {
+        grid.startEarthquake();
+    }
 }

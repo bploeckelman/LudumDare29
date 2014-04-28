@@ -60,12 +60,12 @@ public class GameGrid {
 				}
 			}
 		}
-		
-		
+
+
 		if (Assets.random.nextFloat() > .9995 && earthQuakeTime <= -3){
-			earthQuakeTime = EARTHQUAKEMAXTIME;
+            startEarthquake();
 		}
-		
+
 		if (meteorTime < 0){
 			meteor = new Meteor(Assets.random.nextInt(World.gameWidth));
 			
@@ -154,4 +154,8 @@ public class GameGrid {
 
 		return true;
 	}
+
+    public void startEarthquake() {
+        earthQuakeTime = EARTHQUAKEMAXTIME;
+    }
 }
