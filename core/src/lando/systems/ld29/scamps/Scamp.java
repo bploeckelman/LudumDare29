@@ -61,6 +61,7 @@ public class Scamp {
         put("iron", ScampState.IRON);
         put("marble", ScampState.MARBLE);
         put("gold", ScampState.GOLD);
+        put("grapes", ScampState.GRAPES);
     }};
     
     static ScampState[] resourceGatherState = {
@@ -232,7 +233,7 @@ public class Scamp {
                 !walkRight, false);                                   // flipx, flipy
         
         if (isGatheringResources || displayLastState > 0) {
-        	thoughtColor.a = (isGatheringResources) ? 1 : (displayLastState / 4f);
+        	thoughtColor.a = (isGatheringResources) ? 1 : (displayLastState / 2f);
         	Assets.thoughtBubble.setColor(thoughtColor);
         	Assets.thoughtBubble.draw(batch, position * Block.BLOCK_WIDTH , Global.GROUND_LEVEL + SCAMP_SIZE, SCAMP_SIZE, 30);
         	
