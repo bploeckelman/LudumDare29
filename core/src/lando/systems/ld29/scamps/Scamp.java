@@ -20,7 +20,7 @@ public class Scamp {
 
     public static final int SCAMP_SIZE = 32;
     public static final float SCAMP_SPEED = 1.0f;
-    public static final float GATHER_RATE = 5f; // in seconds
+    public static final float GATHER_RATE = 2f; // in seconds
     public static final float EAT_TIME = 3f; // in seconds
 
     public enum ScampState {
@@ -56,9 +56,11 @@ public class Scamp {
 
     boolean walkRight;
     boolean gatherReady;
+    boolean inHouse;
 
     String name;
     Resource workingResource;
+    public Structure buildingStructure;
     TextureRegion texture;
     ScampState currentState = ScampState.IDLE;
     float hungerAmount = 0;
@@ -78,6 +80,7 @@ public class Scamp {
         this.gatherReady = false;
 
         this.eatAccum = 0f;
+        this.inHouse = false;
     }
 
 
@@ -90,13 +93,17 @@ public class Scamp {
             case SLEEP: {
                 if (World.THEWORLD.dayCycle.isDay()) {
                     currentState = ScampState.IDLE;
+                    inHouse = false;
                     return;
                 } else {
-                    // If night, find an unoccupied house and enter it
-                    for (Structure structure : World.THEWORLD.structureManager.structures) {
-                        if (structure instanceof HouseStructure && structure.getCapacity() > 0) {
-                            targetPosition = structure.x;
-                            structure.enter(this);
+                    if (!inHouse) {
+                        // If night, find an unoccupied house and enter it
+                        for (Structure structure : World.THEWORLD.structureManager.structures) {
+                            if (structure instanceof HouseStructure && structure.getCapacity() > 0) {
+                                targetPosition = structure.x;
+                                structure.enter(this);
+                                inHouse = true;
+                            }
                         }
                     }
                 }
@@ -107,7 +114,7 @@ public class Scamp {
 
                     // Eat the food if we haven't yet
                     if (eatAccum == 0) {
-                        World.THEWORLD.scampManager.scampResources.removeScampResource(ScampResources.ScampResourceType.FOOD);
+                        World.THEWORLD.scampManager.scampResources.removeScampResource(ScampResources.ScampResourceType.FOOD, 1);
                     }
 
                     // Wait to finish eating before resetting state

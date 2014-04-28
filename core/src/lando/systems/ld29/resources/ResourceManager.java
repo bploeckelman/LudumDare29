@@ -1,13 +1,9 @@
 package lando.systems.ld29.resources;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import lando.systems.ld29.Global;
 import lando.systems.ld29.World;
 import lando.systems.ld29.blocks.Block;
-import lando.systems.ld29.resources.*;
-
-import java.util.HashMap;
 
 /**
  * Created by jhoopes on 4/26/14.
@@ -29,6 +25,12 @@ public class ResourceManager {
         resources = new Resource[parentWorld.gameWidth];
         width = world.gameWidth;
         height = world.gameHeight;
+
+        // Fill the whole world with barren-ness
+        for (int i = 0; i < parentWorld.gameWidth; i++) {
+            resources[i] = new Barren(i);
+        }
+
     }
 
     public int takeResource(int pos, int resourcesAsked ){

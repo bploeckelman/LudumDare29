@@ -15,8 +15,8 @@ public class DayCycle
 {
 	private final float Dawn = 0;
 	private final float Daylight = 120;
-	private final float Dusk = 780;
-	private final float Night = 900;
+	private final float Dusk = 1080;
+	private final float Night = 1200;
 	
 	private final Color DayColor = new Color(0.53f, 0.81f, 0.92f, 1);
 	private final Color NightColor = Color.BLACK;
@@ -95,7 +95,7 @@ public class DayCycle
 		skySprite.setColor(_color);
 	    skySprite.draw(batch);
 		
-		float sunX = ((_time) / 900) * World.gameWidth * 64 ; 
+		float sunX = ((_time) / Night) * World.gameWidth * 64 ; 
 		float sunY =   400 + (float) (250 * Math.sin((sunX)  * Math.PI / (World.gameWidth * 64)));
 		
 		sunSprite.setPosition(sunX, sunY);

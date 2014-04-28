@@ -9,6 +9,7 @@ import lando.systems.ld29.resources.Resource;
 import lando.systems.ld29.scamps.ScampResources.ScampResourceType;
 import lando.systems.ld29.scamps.Scamp.*;
 import lando.systems.ld29.structures.HouseStructure;
+import lando.systems.ld29.structures.Structure;
 import lando.systems.ld29.util.Utils;
 
 import java.util.HashMap;
@@ -173,7 +174,9 @@ public class ScampManager {
     	
     	//Nothing else Walk Around
     	scamp.currentState = ScampState.STROLLING;
-    	scamp.setTarget(Assets.random.nextInt(World.gameWidth));
+    	int pos = (int)scamp.position - 5 + Assets.random.nextInt(10);
+    	while (pos < 0 || pos >= World.gameWidth) pos = (int)scamp.position - 5 + Assets.random.nextInt(10);
+    	scamp.setTarget(pos);
  	
     }
     
@@ -185,15 +188,39 @@ public class ScampManager {
     		break;
     	}
     	
+    	boolean missingresource = false;
     	for(String key : costs.keySet()){
-    		if (scampResources.getScampResourceCount(key.toUpperCase()) < costs.get(key) &&
-    			world.rManager.CountofType(world.rManager.getResourceFromProduct(key)) > 0){
+    		if (scampResources.getScampResourceCount(key.toUpperCase()) < costs.get(key)) {
+    			missingresource = true;
+    			if (world.rManager.CountofType(world.rManager.getResourceFromProduct(key)) > 0){
     				gatherResource(scamp, world.rManager.getResourceFromProduct(key));
     				scamp.setState(key);
     				System.out.println("Looking for " + key);
     				return true;
+    			}
     		}
     	}
+    	
+    	// All Costs are satisfied
+    	if (!missingresource){
+    		Structure struct;
+    		switch(name){
+    		case "house": struct = new HouseStructure(world.structureManager.getRandomAvilSpot(), world);
+    			scamp.currentState = ScampState.BUILDHOUSE;
+    		break;
+    		default : struct = new HouseStructure(world.structureManager.getRandomAvilSpot(), world);
+    			
+    		}
+    		
+    		scamp.buildingStructure = struct;
+    		world.structureManager.createStructure((int)struct.x, struct);
+    		
+        	for(String key : costs.keySet()){
+        		scampResources.removeScampResource(key.toUpperCase(), costs.get(key));
+        	}
+    		return true;
+    	}
+    	
     	
     	return false;
     }

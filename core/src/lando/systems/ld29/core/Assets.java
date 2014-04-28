@@ -3,14 +3,14 @@ package lando.systems.ld29.core;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.Texture.*;
-import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Array;
+import lando.systems.ld29.blocks.Block;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -36,7 +36,7 @@ public class Assets {
     public static NinePatch panelBrown;
     public static NinePatch thoughtBubble;
     public static NinePatch panelGreen;
-    
+
     public static BitmapFont gameFont;
     public static BitmapFont TooltipHeaderFont;
     public static BitmapFont TooltipTextFont;
@@ -44,7 +44,7 @@ public class Assets {
     public static BitmapFont HUDFont;
 
     public static String[] scampNames;
-    
+
     //public static Sound sound;
     //public static Music music;
 
@@ -89,13 +89,17 @@ public class Assets {
         }
         num_scamps = 81; // 9 rows of unusable scamp images at the moment (9 images per row)
 
-        Texture resourceSpritesheet = new Texture("art/resources-spritesheet.png");
+        Texture resourceSpritesheet = new Texture("art/resource_spritesheet.png");
         resources = new HashMap<String,TextureRegion>();
-        resources.put("field",   new TextureRegion(resourceSpritesheet, 0, 0, 32, 32));
-        resources.put("forrest",  new TextureRegion(resourceSpritesheet, 32, 0, 32, 32));
-        resources.put("mountain",   new TextureRegion(resourceSpritesheet, 64, 0, 32, 32));
-        resources.put("quarry", new TextureRegion(resourceSpritesheet, 96, 0, 32, 32));
-        resources.put("vinyard",   new TextureRegion(resourceSpritesheet, 128, 0, 32, 32));
+        resources.put("barren",         new TextureRegion(resourceSpritesheet, 0, Block.BLOCK_WIDTH * 1, 64, 64));
+        resources.put("field",          new TextureRegion(resourceSpritesheet, 0, Block.BLOCK_WIDTH * 2, 64, 64));
+        resources.put("forrest",        new TextureRegion(resourceSpritesheet, 0, Block.BLOCK_WIDTH * 4, 64, 64));
+        resources.put("marblequarry",  new TextureRegion(resourceSpritesheet, 0, Block.BLOCK_WIDTH * 5, 64, 64));
+        resources.put("meteor",         new TextureRegion(resourceSpritesheet, 0, Block.BLOCK_WIDTH * 6, 64, 64));
+        resources.put("goldmine",  new TextureRegion(resourceSpritesheet, 0, Block.BLOCK_WIDTH * 8, 64, 64));
+        resources.put("mountain",  new TextureRegion(resourceSpritesheet, 0, Block.BLOCK_WIDTH * 10, 64, 64));
+        resources.put("quarry",   new TextureRegion(resourceSpritesheet, 0, Block.BLOCK_WIDTH * 11, 64, 64));
+        resources.put("vinyard",       new TextureRegion(resourceSpritesheet, 0, Block.BLOCK_WIDTH * 12, 64, 64));
 
         Texture structureSpritesheet = new Texture("art/structures-spritesheet.png");
         structures = new HashMap<String,TextureRegion>();
@@ -127,32 +131,32 @@ public class Assets {
 //        music = Gdx.audio.newMusic("audio/music.mp3");
 
         panelBrown = new NinePatch(
-            new Texture("art/panel_brown.png"),
-            10, 10, 10 , 10
+                new Texture("art/panel_brown.png"),
+                10, 10, 10 , 10
         );
-        
+
 
         panelBrown.setColor(new Color(153, 102, 51, 1));
-        
+
         panelGreen = new NinePatch(
-                new Texture("art/greenbar.png"), 
+                new Texture("art/greenbar.png"),
                 7, 7, 7, 7
-            );
-        
+        );
+
         thoughtBubble = new NinePatch(
                 new Texture("art/thought.png"),
                 4, 5, 4 , 9
-            );
-        
+        );
+
         gameFont = new BitmapFont(Gdx.files.internal("fonts/ariel.fnt"),Gdx.files.internal("fonts/ariel.png"),false);
         TooltipHeaderFont = new BitmapFont(Gdx.files.internal("fonts/ariel.fnt"),Gdx.files.internal("fonts/ariel.png"),false);
 
         TooltipTextFont = new BitmapFont(Gdx.files.internal("fonts/ariel.fnt"),Gdx.files.internal("fonts/ariel.png"),false);
         TooltipTextFont.setScale(.7f);
-       
+
         HUDFont = new BitmapFont(Gdx.files.internal("fonts/ariel.fnt"),Gdx.files.internal("fonts/ariel.png"),false);
         HUDFont.setScale(.5f);
-        
+
         scampNames = Gdx.files.internal("text/scamp-names.txt").readString().split("\r\n|\r|\n");
     }
 
