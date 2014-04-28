@@ -1,6 +1,7 @@
 package lando.systems.ld29.core;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
@@ -48,6 +49,8 @@ public class Assets {
     public static String[] scampNames;
 
     //public static Sound sound;
+    public static Sound addBlock;
+
     //public static Music music;
 
     public static void load() {
@@ -133,6 +136,8 @@ public class Assets {
         icons.put("BUILD",    iconRegions[2][0]);
 
 //        sound = Gdx.audio.newSound("audio/sound.wav");
+        addBlock = Gdx.audio.newSound(Gdx.files.internal("audio/add_block.wav"));
+
 //        music = Gdx.audio.newMusic("audio/music.mp3");
 
         panelBrown = new NinePatch(
@@ -173,6 +178,7 @@ public class Assets {
         libgdx.dispose();
         // todo : dispose the rest of the things
 //        sound.dispose();
+        addBlock.dispose();
 //        music.dispose();
         batch.dispose();
         hudBatch.dispose();
