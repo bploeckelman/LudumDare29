@@ -27,8 +27,19 @@ public class StructureManager {
 //        createStructure(++i, new WarehouseStructure(i, world));
 //        createStructure(++i, new TempleStructure(i, world));
 //        createStructure(++i, new FactoryStructure(i, world));
-//        createStructure(++i, new SpaceshipStructure(i, world));
+//        SpaceshipStructure space =new SpaceshipStructure(i, world);
+//        space.buildPercent = 1f;
+//        createStructure(i++, space);
 
+    }
+    
+    public Structure findStructure(String name){
+        for(Structure structure : structures){
+            if(structure != null && structure.getName() == name) {
+                return structure;
+            }
+        }
+        return null;
     }
     
     public int countStructures(String name){

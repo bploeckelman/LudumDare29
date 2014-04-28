@@ -92,6 +92,16 @@ public class ScampManager {
         }
         return scamp;
     }
+    
+    public boolean allInShip(){
+    	boolean ready = true;
+    	for (Scamp scamp: scamps){
+    		if (!scamp.onShip){
+    			ready = false;
+    		}
+    	}
+    	return ready;
+    }
 
     public void update(float dt) {
 //        accum += dt;
@@ -129,7 +139,9 @@ public class ScampManager {
     	}
     	
     	if (world.structureManager.countStructures("spaceship") > 0){
-    		scamp.currentState = ScampState.GETONSHIP;
+    		Structure ship = world.structureManager.findStructure("spaceship");
+    		if (ship.buildPercent >= 1)
+    			scamp.currentState = ScampState.GETONSHIP;
     		// TODO target spaceship?
     		return;
     	}

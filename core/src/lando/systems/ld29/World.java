@@ -14,6 +14,8 @@ import lando.systems.ld29.resources.ResourceManager;
 import lando.systems.ld29.scamps.Scamp;
 import lando.systems.ld29.scamps.ScampManager;
 import lando.systems.ld29.screens.GameScreen;
+import lando.systems.ld29.structures.SpaceshipStructure;
+import lando.systems.ld29.structures.Structure;
 import lando.systems.ld29.structures.StructureManager;
 
 public class World {
@@ -55,6 +57,15 @@ public class World {
     }
 
     public void update(float dt){
+        hud.update(dt, player);
+        particleSystem.update(dt);
+    	
+    	if (scampManager.allInShip()){
+    		SpaceshipStructure space = (SpaceshipStructure) structureManager.findStructure("spaceship");
+    		space.liftOff(dt);
+    		
+    		return;
+    	}
         // It is getting too late in the night  remove all of this
 //        Vector3 clickPoint = GameScreen.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
 //        particleSystem.fuckingCrazy(clickPoint.x, clickPoint.y, 30);
@@ -79,8 +90,7 @@ public class World {
         scampManager.update(dt);
         rManager.update(dt);
         structureManager.update(dt);
-        hud.update(dt, player);
-        particleSystem.update(dt);
+
 	}
 	
 	public void render(SpriteBatch batch, SpriteBatch hudBatch){

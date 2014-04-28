@@ -98,6 +98,7 @@ public class Scamp implements IResourceGenerator {
     boolean isGathering;
     boolean isBuilding;
     boolean resourceDepleted;
+    boolean onShip;
 
     boolean dead;
 
@@ -130,10 +131,12 @@ public class Scamp implements IResourceGenerator {
         this.buildingStructure = null;
         this.buildAccum = 0f;
         this.mySpeed = SCAMP_SPEED + (Assets.random.nextFloat() * .5f);
+        this.onShip= false;
     }
 
 
     public void update(float dt) {
+    	if (onShip) return;
         if (displayLastState > 0) {
             displayLastState -= dt;
         }
@@ -180,9 +183,18 @@ public class Scamp implements IResourceGenerator {
             case BUILDSPACESHIP:
                 updateBuilding(dt);
                 break;
+                
+            case GETONSHIP:
+            	updateWin(dt);
         }
     }
 
+    private void updateWin(float dt){
+    	Structure ship = World.THEWORLD.structureManager.findStructure("spaceship");
+    	targetPosition = ship.x;
+    	if( targetPosition == position ) onShip = true;
+    }
+    
     private void updateMovement(float dt) {
         // Have we reached our target yet?
         if( targetPosition != position ) {
@@ -303,6 +315,7 @@ public class Scamp implements IResourceGenerator {
     }
 
     public void render(SpriteBatch batch) {
+    	if (onShip) return;
         batch.draw(texture.getTexture(),
                 position * Block.BLOCK_WIDTH, Global.GROUND_LEVEL,    // screen position x,y
                 SCAMP_SIZE, SCAMP_SIZE,                               // pixel width/height
