@@ -101,7 +101,7 @@ public class Player {
 		inputDelay = Math.max(0, inputDelay - dt);
 		xPos = Utils.clamp(xPos, 0, world.gameWidth-1);
 		animationTime += dt;
-		belief += 1 * dt;
+		belief += world.scampManager.getCurrentPopulation() / 4.0f * dt;
 		belief = Utils.clamp(belief, 0, 100);
 		
 	}

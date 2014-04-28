@@ -69,7 +69,7 @@ public class StructureManager {
     }
     
     public int getMaxPopulation(){
-    	return countStructures("house") * 4;
+    	return countStructures("house") * HouseStructure.HouseLimit;
     }
     
     public int getRandomAvilSpot(){
