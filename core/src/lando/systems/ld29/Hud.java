@@ -70,6 +70,7 @@ public class Hud {
         float height = 25;
         beliefMeter = new BeliefMeter(width, height);
         beliefMeter.setPosition(10, Global.UNDERGROUND_LEVEL - (height + 1));
+        toolTipItems.add(beliefMeter);
         
         addResources(types, HUDX + HUD_WIDTH + Panel.getPadRight(), height, width);
     }
