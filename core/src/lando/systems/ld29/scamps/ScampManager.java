@@ -76,7 +76,8 @@ public class ScampManager {
     }
     
     public void killScamp(Scamp scamp){
-    	scamps.removeValue(scamp, true);
+    	scamp.kill();
+    	removeScamps(scamp);
     }
 
     public Scamp getScampFromPos(float x, float y) {
@@ -140,6 +141,12 @@ public class ScampManager {
     	
     	
     	// Build SpaceShip
+    	if (world.structureManager.countStructures("factory") > 1) {
+	    	if (tryBuilding(scamp, "spaceship")){
+	    		return;
+	    	}
+    	}
+    	
     	
     	// Build Temple
     	if (world.structureManager.countStructures("temple") == 0) {
@@ -227,15 +234,37 @@ public class ScampManager {
     	}
     	
     	boolean missingresource = false;
-    	for(String key : costs.keySet()){
-    		if (scampResources.getScampResourceCount(key.toUpperCase()) < costs.get(key)) {
-    			missingresource = true;
-    			if (world.rManager.CountofType(world.rManager.getResourceFromProduct(key)) > 0 && 
-    					costs.get(key) < world.structureManager.getMaxAmount(scampResources.getType(key.toUpperCase()))){
-    				gatherResource(scamp, world.rManager.getResourceFromProduct(key));
-    				scamp.setState(key);
-    				System.out.println("Looking for " + key);
-    				return true;
+    	if (name == "spaceship"){
+    		for(String key : costs.keySet()){
+    			if (scampResources.getScampResourceCount(key.toUpperCase()) < costs.get(key)) {
+    				missingresource = true;
+    				String raw = FactoryStructure.getRawName(key);
+    				// Have raw? refine it
+    				if (scampResources.getScampResourceCount(raw.toUpperCase()) > 0){
+    					scamp.setState(key);
+    					System.out.println("Refining " + key);
+    					return true;
+    				}
+    				// Find raw
+    				if (world.rManager.CountofType(world.rManager.getResourceFromProduct(raw)) > 0){
+    					gatherResource(scamp, world.rManager.getResourceFromProduct(raw));
+    					scamp.setState(raw);
+    					System.out.println("Looking for " + raw);
+    					return true;
+    				}
+    			}
+    		}
+    	} else {
+    		for(String key : costs.keySet()){
+    			if (scampResources.getScampResourceCount(key.toUpperCase()) < costs.get(key)) {
+    				missingresource = true;
+    				if (world.rManager.CountofType(world.rManager.getResourceFromProduct(key)) > 0 && 
+    						costs.get(key) < world.structureManager.getMaxAmount(scampResources.getType(key.toUpperCase()))){
+    					gatherResource(scamp, world.rManager.getResourceFromProduct(key));
+    					scamp.setState(key);
+    					System.out.println("Looking for " + key);
+    					return true;
+    				}
     			}
     		}
     	}
@@ -303,6 +332,7 @@ public class ScampManager {
 	public void removeScamps(Scamp scamp) {
 		scamps.removeValue(scamp,  true);
 		scampResources.removeScampResource(ScampResourceType.PEOPLE, 1);
+		world.displayResourceGather(scamp,  -1);
 	}
 
 //    public void determinePriorities() {

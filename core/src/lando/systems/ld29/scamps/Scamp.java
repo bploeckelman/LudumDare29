@@ -65,6 +65,10 @@ public class Scamp implements IResourceGenerator {
         put("marble", ScampState.MARBLE);
         put("gold", ScampState.GOLD);
         put("grapes", ScampState.GRAPES);
+        
+        put("fuel", ScampState.FUEL);
+        put("circuits", ScampState.CIRCUITS);
+        put("steel", ScampState.STEEL);
     }};
     
     static ScampState[] resourceGatherState = {
@@ -87,6 +91,8 @@ public class Scamp implements IResourceGenerator {
 
     boolean walkRight;
     boolean inHouse;
+    
+    boolean dead;
 
     String name;
     Resource workingResource;
@@ -132,7 +138,9 @@ public class Scamp implements IResourceGenerator {
     private void updateHunger(float dt) {
         hungerAmount += dt / 60; // 1 hunger a minute
         if (hungerAmount > 10 && World.THEWORLD.scampManager.getCurrentPopulation() > 1){
-        	World.THEWORLD.scampManager.removeScamps(this);
+
+            World.THEWORLD.scampManager.killScamp(this);
+
         }
     }
 
@@ -307,11 +315,11 @@ public class Scamp implements IResourceGenerator {
     public boolean isWalkingRight() { return (targetPosition - position >= 0); }
 
     public TextureRegion getResourceIcon() {
-    	return Assets.icons.get(currentState.toString());
+    	return (dead) ? Assets.icons.get("PEOPLE") : Assets.icons.get(currentState.toString());
     }
     
     public Rectangle getResourceBounds() {
-    	return new Rectangle(position * Block.BLOCK_WIDTH  + 4, Global.GROUND_LEVEL + SCAMP_SIZE + 10, SCAMP_SIZE - 8, 15);
+    	return new Rectangle(position * Block.BLOCK_WIDTH  + 9, Global.GROUND_LEVEL + SCAMP_SIZE + 10, 15, 15);
     }
 
     public void setState(ScampState state) {
@@ -404,5 +412,10 @@ public class Scamp implements IResourceGenerator {
             default:                 return "???";
         }
     }
+
+
+	public void kill() {
+		dead = true;
+	}
 
 }

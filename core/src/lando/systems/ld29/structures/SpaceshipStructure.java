@@ -15,9 +15,10 @@ public class SpaceshipStructure extends Structure {
     public static final Map<String, Integer> buildCost;
     static {
     	Map<String, Integer> aMap = new HashMap<String, Integer>();
-    	aMap.put("wood", 15);
-    	aMap.put("stone", 10);
-    	aMap.put("marble", 6);
+    	aMap.put("steel", 30);
+    	aMap.put("fuel", 3);
+    	aMap.put("circuits", 30);
+    	
     	buildCost = Collections.unmodifiableMap(aMap);
     }
     

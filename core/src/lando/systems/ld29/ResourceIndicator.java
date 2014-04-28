@@ -24,7 +24,7 @@ public class ResourceIndicator {
 		_bounds = bounds;
 		_initialY = _bounds.y;
 		_initialX = _bounds.x;
-		_count = "+" + count;
+		_count = ((count > 0) ? "+" : "") + count;
 	}
 	
 	public void update(float dt) {
