@@ -9,7 +9,7 @@ import lando.systems.ld29.resources.GoldMine;
 import lando.systems.ld29.resources.Resource;
 
 public class GoldBlock extends Block {
-    private static TextureRegion img = Assets.blocks.get("iron");
+    private static TextureRegion img = Assets.blocks.get("gold");
 
     public GoldBlock(float x, float y) {
         super(x, y);
