@@ -149,7 +149,8 @@ public class ScampManager {
         	}
     	
     	// Build Factory
-    	if ((1 + world.structureManager.countStructures("factory")) * 2 == world.structureManager.countStructures("warehouse")){
+    	if ((1 + world.structureManager.countStructures("factory")) * 2 == world.structureManager.countStructures("warehouse") &&
+    			world.structureManager.countStructures("factory") < 2 ){
     	    	if (tryBuilding(scamp, "factory")){
     	    		return;
     	    	}
@@ -185,6 +186,14 @@ public class ScampManager {
     			world.rManager.CountofType("forrest") > 0) {
     		scamp.setState(ScampState.WOOD);
 			gatherResource(scamp, "forrest");
+			return;
+    	}
+    	
+    	// get Stone?
+    	if (scampResources.getScampResourceCount(ScampResourceType.STONE) < world.structureManager.getMaxAmount(ScampResourceType.WOOD) &&
+    			world.rManager.CountofType("quarry") > 0) {
+    		scamp.setState(ScampState.STONE);
+			gatherResource(scamp, "quarry");
 			return;
     	}
     	
