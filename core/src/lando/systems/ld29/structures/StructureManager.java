@@ -2,6 +2,7 @@ package lando.systems.ld29.structures;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import lando.systems.ld29.World;
+import lando.systems.ld29.core.Assets;
 
 public class StructureManager {
 
@@ -44,6 +45,14 @@ public class StructureManager {
         }
     }
 
+    public int getRandomAvilSpot(){
+    	int point = Assets.random.nextInt(World.gameWidth);
+    	while (structures[point] != null){
+    		point = Assets.random.nextInt(World.gameWidth);
+    	}
+    	return point;
+    }
+    
     public void render(SpriteBatch batch){
         for(Structure structure : structures){
             if(structure != null) {
