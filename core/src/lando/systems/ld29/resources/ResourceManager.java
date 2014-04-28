@@ -98,6 +98,20 @@ public class ResourceManager {
         }
         return count;
     }
+    
+    public String getResourceFromProduct(String item){
+    	switch (item){
+    	case "food" : return "field";
+    	case "wood" : return "forrest";
+    	case "stone" : return "quarry";
+    	case "gold" :return "goldmine";
+    	case "marble": return "marblequarry";
+    	case "iron" : return "mountain";
+    	case "meteor" : return "meteorcrash";
+    	case "grapes" : return "vinyard";
+    	default: return "";
+    	}
+    }
 
 //    public Resource getNewResource(String blockName, int x, int y){
 //        switch(blockName){

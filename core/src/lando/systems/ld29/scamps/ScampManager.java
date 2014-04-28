@@ -8,6 +8,7 @@ import lando.systems.ld29.core.Assets;
 import lando.systems.ld29.resources.Resource;
 import lando.systems.ld29.scamps.ScampResources.ScampResourceType;
 import lando.systems.ld29.scamps.Scamp.*;
+import lando.systems.ld29.structures.HouseStructure;
 import lando.systems.ld29.util.Utils;
 
 import java.util.HashMap;
@@ -160,7 +161,9 @@ public class ScampManager {
     	// Build Warehouse
     	
     	// Build House
-    	if (tryBuilding(scamp, "house"));
+    	if (tryBuilding(scamp, "house")){
+    		return;
+    	}
 
     	
     	
@@ -175,7 +178,18 @@ public class ScampManager {
     }
     
     private boolean tryBuilding(Scamp scamp, String name){
-    	
+    	Map<String, Integer> costs = new HashMap<String, Integer>();
+    	switch(name){
+    	case "house":
+    		costs = HouseStructure.buildCost;
+    		break;
+    	}
+    	for(String key : costs.keySet()){
+    		if (scampResources.getScampResourceCount(key) < costs.get(key) &&
+    			world.rManager.CountofType(world.rManager.getResourceFromProduct(key))){
+    				gatherResource(scamp, key);
+    		}
+    	}
     	
     	return false;
     }

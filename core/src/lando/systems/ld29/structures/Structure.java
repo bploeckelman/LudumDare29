@@ -7,8 +7,8 @@ import lando.systems.ld29.World;
 import lando.systems.ld29.blocks.Block;
 import lando.systems.ld29.scamps.Scamp;
 
-import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.*;
+
 
 public class Structure {
 
@@ -21,14 +21,16 @@ public class Structure {
     float x;
     
     String name = "CHANGE ME";
-
+    
     public Structure(float x, World world){
         this.x = x;
         this.world = world;
         this.maxCapacity = 0;
     }
 
-    public void setSprite(Sprite sprite){
+
+
+	public void setSprite(Sprite sprite){
         sprite.setPosition(x * Block.BLOCK_WIDTH, Global.GROUND_LEVEL);
         this.sprite = sprite;
     }
