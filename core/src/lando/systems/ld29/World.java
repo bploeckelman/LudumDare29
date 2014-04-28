@@ -137,7 +137,7 @@ public class World {
         
         if (preGame){
         	Assets.panelBrown.draw(hudBatch, Config.window_half_width - 300, Config.window_half_height - 200, 600, 400);
-        	Assets.gameFont.drawWrapped(hudBatch, Assets.introText, Config.window_half_width - 200, Config.window_half_height + 150, 400);
+        	Assets.gameFont.drawWrapped(hudBatch, Assets.introText, Config.window_half_width - 275, Config.window_half_height + 150, 550);
         }
         
         hudBatch.end();
