@@ -22,7 +22,7 @@ public class HouseStructure extends Structure implements IResourceGenerator {
     private Sprite day;
     private Sprite night;
     boolean isDaySprite  = true;
-    public static int HouseLimit =3;
+    public static int HouseLimit =2;
 
     
     public static final Map<String, Integer> buildCost;
@@ -48,7 +48,7 @@ public class HouseStructure extends Structure implements IResourceGenerator {
 
     public void evict(){
         // Maybe create a baby? 
-    	if(getCapacity() >= 1 && Assets.random.nextFloat() > .25f && getWorld().scampManager.spaceForMoreScamps()){   		
+    	if(getWorld().scampManager.spaceForMoreScamps()){   		
         	World world = getWorld();
             world.scampManager.addScamps(new Scamp(x));
             world.displayResourceGather(this,  1);
