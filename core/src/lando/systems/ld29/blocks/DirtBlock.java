@@ -18,7 +18,7 @@ public class DirtBlock extends Block {
         setSprite(new Sprite(img));
     }
 
-    public Resource makeResource() {
+    public Resource MakeResource() {
         return new Barren(x);
     }
 }
