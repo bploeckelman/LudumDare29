@@ -187,7 +187,7 @@ public class ScampManager {
     	// get grapes?
     	if (scampResources.getScampResourceCount(ScampResourceType.GRAPES) < world.structureManager.getMaxAmount(ScampResourceType.GRAPES) &&
     			world.rManager.CountofType("vinyard") > 0) {
-			scamp.currentState = ScampState.GRAPES;
+			scamp.setState(ScampState.GRAPES);
 			gatherResource(scamp, "vinyard");
 			return;
     	}
