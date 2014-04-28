@@ -56,6 +56,7 @@ public class Scamp {
 
     boolean walkRight;
     boolean gatherReady;
+    boolean inHouse;
 
     String name;
     Resource workingResource;
@@ -79,6 +80,7 @@ public class Scamp {
         this.gatherReady = false;
 
         this.eatAccum = 0f;
+        this.inHouse = false;
     }
 
 
@@ -91,13 +93,17 @@ public class Scamp {
             case SLEEP: {
                 if (World.THEWORLD.dayCycle.isDay()) {
                     currentState = ScampState.IDLE;
+                    inHouse = false;
                     return;
                 } else {
-                    // If night, find an unoccupied house and enter it
-                    for (Structure structure : World.THEWORLD.structureManager.structures) {
-                        if (structure instanceof HouseStructure && structure.getCapacity() > 0) {
-                            targetPosition = structure.x;
-                            structure.enter(this);
+                    if (!inHouse) {
+                        // If night, find an unoccupied house and enter it
+                        for (Structure structure : World.THEWORLD.structureManager.structures) {
+                            if (structure instanceof HouseStructure && structure.getCapacity() > 0) {
+                                targetPosition = structure.x;
+                                structure.enter(this);
+                                inHouse = true;
+                            }
                         }
                     }
                 }
