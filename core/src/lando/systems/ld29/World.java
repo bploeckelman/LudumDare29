@@ -116,4 +116,11 @@ public class World {
         batch.begin();
     }
 
+	public IToolTip getToolTipItemFromPos(Vector3 gameClickPoint, Vector3 hudClickPoint) {
+		IToolTip item = hud.getToolTipItemFromPos(hudClickPoint.x, hudClickPoint.y);
+        if (item == null) {
+           item = structureManager.getStructureFromPos(gameClickPoint.x, gameClickPoint.y);
+        }
+        return item;
+	}
 }

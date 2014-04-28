@@ -2,7 +2,10 @@ package lando.systems.ld29.structures;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Rectangle;
+
 import lando.systems.ld29.Global;
+import lando.systems.ld29.IToolTip;
 import lando.systems.ld29.World;
 import lando.systems.ld29.blocks.Block;
 import lando.systems.ld29.scamps.Scamp;
@@ -10,7 +13,7 @@ import lando.systems.ld29.scamps.Scamp;
 import java.util.*;
 
 
-public class Structure {
+public class Structure implements IToolTip {
 
     private World world;
     private Sprite sprite;
@@ -98,4 +101,19 @@ public class Structure {
         return buildPercent == 1f;
 
     }
+
+	@Override
+	public Rectangle getToolTipBounds() {
+		return (sprite != null) ? sprite.getBoundingRectangle() : new Rectangle();
+	}
+
+	@Override
+	public String getTitle() {
+		return "STRUCTURE";
+	}
+
+	@Override
+	public String getText() {
+		return name;
+	}
 }

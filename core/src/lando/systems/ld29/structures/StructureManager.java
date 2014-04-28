@@ -1,6 +1,8 @@
 package lando.systems.ld29.structures;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
+import lando.systems.ld29.IToolTip;
 import lando.systems.ld29.World;
 import lando.systems.ld29.core.Assets;
 import lando.systems.ld29.scamps.ScampResources;
@@ -81,4 +83,15 @@ public class StructureManager {
             }
         }
     }
+
+	public IToolTip getStructureFromPos(float x, float y) {
+		IToolTip structureToolTip = null;
+		for(Structure structure : structures) {
+			if(structure != null && structure.getSprite().getBoundingRectangle().contains(x, y)) {
+            	structureToolTip = structure;
+            	break;
+            }
+        }
+		return structureToolTip;
+	}
 }

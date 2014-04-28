@@ -55,12 +55,8 @@ public class Tooltip {
                 text = scamp.getCurrentStateName();
                 show = true;
             } else {
-            	IToolTip item = world.hud.getToolTipItemFromPos(hudClickPoint.x, hudClickPoint.y);
-                if (item != null) {
-                    header = item.getTitle();
-                    text = item.getText();
-                    show = true;
-                }
+            	// null checks inside
+            	showItem(world.getToolTipItemFromPos(gameClickPoint, hudClickPoint));
             }
         }
 
@@ -87,6 +83,14 @@ public class Tooltip {
 			alpha -= dt * 3;
 		}
 		alpha = Utils.clamp(alpha, 0, .7f);
+	}
+	
+	private void showItem(IToolTip toolTip) {
+		show = toolTip != null;
+		if (show) {
+			header = toolTip.getTitle();
+			text = toolTip.getText();
+		}
 	}
 	
 	public void render(SpriteBatch batch){
