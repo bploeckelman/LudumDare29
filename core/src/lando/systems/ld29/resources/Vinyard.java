@@ -10,8 +10,8 @@ public class Vinyard extends Resource{
 
     protected TextureRegion img = Assets.resources.get("vinyard");
 
-    public Vinyard(float x, float y) {
-        super(x, y);
+    public Vinyard(float x) {
+        super(x);
 
         this.createSprite(this.img);
     }

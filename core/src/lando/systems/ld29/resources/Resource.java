@@ -1,5 +1,8 @@
 package lando.systems.ld29.resources;
 
+import lando.systems.ld29.Global;
+import lando.systems.ld29.blocks.Block;
+
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.*;
@@ -16,9 +19,12 @@ public abstract class Resource {
     protected int resourceCount;
     float alpha = 0;
 
-    public Resource(float x, float y){
-        this.x = x;
-        this.y = y;
+    public Resource(float x){
+    	
+        // set pixel x and y
+    	this.x = x * Block.BLOCK_WIDTH;
+    	this.y = (int) Global.GROUND_LEVEL;
+        
         alpha = 0;
         // Generate resource count
         this.resourceCount = (int) Math.ceil(Math.random()*10);

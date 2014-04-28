@@ -86,25 +86,50 @@ public class ResourceManager {
         }
         return resource;
     }
-
-    public Resource getNewResource(String blockName, int x, int y){
-        switch(blockName){
-            case "dirt":   return new Field(x, y);
-            case "stone":  return new Quarry(x, y);
-            case "iron":   return new Mountain(x, y);
-            case "acorn":  return new Forrest(x, y);
-            case "grapes": return new Vinyard(x, y);
-            default:       return null;
+    
+    public int CountofType(String type){
+    	int count = 0;
+        for(int i = 0; i < resources.length; ++i) {
+            if (resources[i] == null) {
+                continue;
+            } else if (type.equals(resources[i].getName())) {
+                count++;
+            }
         }
+        return count;
     }
+    
+    public String getResourceFromProduct(String item){
+    	switch (item){
+    	case "food" : return "field";
+    	case "wood" : return "forrest";
+    	case "stone" : return "quarry";
+    	case "gold" :return "goldmine";
+    	case "marble": return "marblequarry";
+    	case "iron" : return "mountain";
+    	case "meteor" : return "meteorcrash";
+    	case "grapes" : return "vinyard";
+    	default: return "";
+    	}
+    }
+
+//    public Resource getNewResource(String blockName, int x, int y){
+//        switch(blockName){
+//            case "wheat":   return new Field(x, y);
+//            case "stone":  return new Quarry(x, y);
+//            case "iron":   return new Mountain(x, y);
+//            case "acorn":  return new Forrest(x, y);
+//            case "grapes": return new Vinyard(x, y);
+//            default:       return null;
+//        }
+//    }
 
     public boolean createResource(Block block, int x){
         // set pixel x and y
         int xpx = x * Block.BLOCK_WIDTH;
         int ypx = (int) Global.GROUND_LEVEL;
 
-        String blockName = block.blockType;
-        resources[x] = this.getNewResource(blockName, xpx, ypx);
+        resources[x] = block.MakeResource();
         parentWorld.particleSystem.createFountain(xpx + (Block.BLOCK_WIDTH / 2), ypx, block.fountainColor);
 
         return true;

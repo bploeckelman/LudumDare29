@@ -4,6 +4,9 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import lando.systems.ld29.core.Assets;
+import lando.systems.ld29.resources.Forrest;
+import lando.systems.ld29.resources.Mountain;
+import lando.systems.ld29.resources.Resource;
 
 public class IronBlock extends Block {
     private static TextureRegion img = Assets.blocks.get("iron");
@@ -16,4 +19,10 @@ public class IronBlock extends Block {
         setSprite(new Sprite(img));
         cost = 10;
     }
+    
+	public Resource MakeResource(){
+
+		return new Mountain(x);
+	}
+    
 }

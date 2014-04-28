@@ -5,22 +5,24 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import lando.systems.ld29.core.Assets;
 import lando.systems.ld29.resources.Forrest;
+import lando.systems.ld29.resources.GoldMine;
 import lando.systems.ld29.resources.Resource;
 
-public class AcornBlock extends Block {
-    private static TextureRegion img = Assets.blocks.get("acorn");
+public class GoldBlock extends Block {
+    private static TextureRegion img = Assets.blocks.get("iron");
 
-    public AcornBlock(float x, float y) {
+    public GoldBlock(float x, float y) {
         super(x, y);
-        this.blockType = "acorn";
-        toolTipString = "I want to become a tree!";
-        fountainColor = Color.GREEN;
+        this.blockType = "gold";
+        toolTipString = "Used for making circuits";
+        fountainColor = Color.GRAY;
         setSprite(new Sprite(img));
-        cost = 6;
+        cost = 10;
     }
     
 	public Resource MakeResource(){
 
-		return new Forrest(x);
+		return new GoldMine(x);
 	}
+    
 }

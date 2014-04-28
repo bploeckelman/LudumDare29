@@ -10,8 +10,8 @@ public class Field extends Resource {
 
     protected TextureRegion img = Assets.resources.get("field");
 
-    public Field(float x, float y) {
-        super(x, y);
+    public Field(float x) {
+        super(x);
 
         this.createSprite(this.img);
     }

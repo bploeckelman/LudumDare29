@@ -1,26 +1,25 @@
 package lando.systems.ld29.blocks;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import lando.systems.ld29.core.Assets;
 import lando.systems.ld29.resources.Forrest;
+import lando.systems.ld29.resources.MarbleQuarry;
 import lando.systems.ld29.resources.Resource;
 
-public class AcornBlock extends Block {
-    private static TextureRegion img = Assets.blocks.get("acorn");
+public class MarbleBlock extends Block {
+    private static TextureRegion img = Assets.blocks.get("stone");
 
-    public AcornBlock(float x, float y) {
+    public MarbleBlock(float x, float y) {
         super(x, y);
-        this.blockType = "acorn";
-        toolTipString = "I want to become a tree!";
-        fountainColor = Color.GREEN;
+        this.blockType = "marble";
+        //toolTipString = "another building material";
         setSprite(new Sprite(img));
         cost = 6;
     }
     
 	public Resource MakeResource(){
 
-		return new Forrest(x);
+		return new MarbleQuarry(x);
 	}
 }

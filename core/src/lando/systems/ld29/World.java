@@ -25,9 +25,10 @@ public class World {
 
     public static final int gameWidth = 30;
     public static final int gameHeight = 5;
+    public static World THEWORLD;
 
     public World() {
-
+    	THEWORLD = this;
         grid = new GameGrid(this);
         dayCycle = new DayCycle(this);
         player = new Player(this);

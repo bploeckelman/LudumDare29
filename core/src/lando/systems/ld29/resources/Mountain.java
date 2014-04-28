@@ -10,8 +10,8 @@ public class Mountain extends Resource{
 
     protected TextureRegion img = Assets.resources.get("mountain");
 
-    public Mountain(float x, float y) {
-        super(x, y);
+    public Mountain(float x) {
+        super(x);
 
         this.createSprite(this.img);
     }
