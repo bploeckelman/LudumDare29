@@ -85,6 +85,8 @@ public class Scamp implements IResourceGenerator {
     boolean walkRight;
     boolean gatherReady;
     boolean inHouse;
+    
+    boolean dead;
 
     String name;
     Resource workingResource;
@@ -126,7 +128,7 @@ public class Scamp implements IResourceGenerator {
 
         hungerAmount += dt / 60; // 1 hunger a minute
         if (hungerAmount > 10 && World.THEWORLD.scampManager.getCurrentPopulation() > 1){
-        	World.THEWORLD.scampManager.killScamp(this);
+            World.THEWORLD.scampManager.killScamp(this);
         }
         // Update based on current state
         // ---------------------------------------------------------------------
@@ -268,11 +270,11 @@ public class Scamp implements IResourceGenerator {
     }
     
     public TextureRegion getResourceIcon() {
-    	return Assets.icons.get(currentState.toString());
+    	return (dead) ? Assets.icons.get("PEOPLE") : Assets.icons.get(currentState.toString());
     }
     
     public Rectangle getResourceBounds() {
-    	return new Rectangle(position * Block.BLOCK_WIDTH  + 4, Global.GROUND_LEVEL + SCAMP_SIZE + 10, SCAMP_SIZE - 8, 15);
+    	return new Rectangle(position * Block.BLOCK_WIDTH  + 9, Global.GROUND_LEVEL + SCAMP_SIZE + 10, 15, 15);
     }
 
     public boolean isIdle() { return currentState == ScampState.IDLE; }
@@ -373,5 +375,10 @@ public class Scamp implements IResourceGenerator {
             default:                 return "???";
         }
     }
+
+
+	public void kill() {
+		dead = true;
+	}
 
 }
