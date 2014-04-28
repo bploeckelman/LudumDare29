@@ -58,7 +58,7 @@ public class Scamp implements IResourceGenerator {
         EATING
     }
     
-    static Map<String, ScampState> scampStates = new HashMap<String, ScampState>()
+    public static Map<String, ScampState> scampStates = new HashMap<String, ScampState>()
     {{
         put("food", ScampState.FOOD);
         put("wood", ScampState.WOOD);
