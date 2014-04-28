@@ -141,6 +141,12 @@ public class ScampManager {
     	
     	
     	// Build SpaceShip
+    	if (world.structureManager.countStructures("factory") > 1) {
+	    	if (tryBuilding(scamp, "spaceship")){
+	    		return;
+	    	}
+    	}
+    	
     	
     	// Build Temple
     	if (world.structureManager.countStructures("temple") == 0) {
