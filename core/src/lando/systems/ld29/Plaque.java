@@ -3,6 +3,8 @@ package lando.systems.ld29;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import lando.systems.ld29.core.Assets;
+import lando.systems.ld29.scamps.ScampManager;
+import lando.systems.ld29.scamps.ScampResources.ScampResourceType;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
@@ -10,14 +12,16 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
 
-public class Plaque {
+public class Plaque implements IToolTip {
 	private int _value;
 	private String _textValue = "0";
 	
+	private final ScampResourceType _resource;
 	private final Rectangle _bounds;
 	private final String _icon;
 	
-	public Plaque(String resource, float width, float height) {
+	public Plaque(ScampResourceType resource, float width, float height) {
+		_resource = resource;
 		_icon = resource.toString();
 		_bounds = new Rectangle(0, 0, width, height);
 	}
@@ -28,8 +32,14 @@ public class Plaque {
 	}
 	
 	public void setValue(int value) {
-		_value = value;
-		_textValue = "" + value;
+		if (_value != value) {
+			_value = value;
+			_textValue = "" + value;
+		}
+	}
+	
+	public void update(ScampManager scampManager) {
+		setValue(scampManager.scampResources.getScampResourceCount(_resource));
 	}
 
     public String getTextValue() { return _textValue; }
@@ -54,22 +64,12 @@ public class Plaque {
         batch.draw(icon, iconx, icony);
 
         Assets.HUDFont.setColor(Color.WHITE);
-		Assets.HUDFont.draw(batch, _textValue, 
-				iconx + icon.getRegionWidth() + ICON_SPACING,
+		Assets.HUDFont.draw(batch, _textValue, iconx + icon.getRegionWidth() + ICON_SPACING,
                 _bounds.y + _bounds.height - background.getPadTop()/2 - 2);
-
-		/*
-		Assets.HUDFont.setColor(Color.WHITE);
-		Assets.HUDFont.draw(batch, _header, 
-				_bounds.x + background.getPadLeft()/2, _bounds.y + _bounds.height - background.getPadTop()/2 - 2);
+	}
 		
-		float min = Assets.panelGreen.getPadLeft() + Assets.panelGreen.getPadRight();
-		float width = min + (_bounds.width - min - ((background.getPadLeft() + background.getPadRight())/2 + 50)) * _value;
-		
-		Assets.panelGreen.draw(batch,
-				_bounds.x + 50, _bounds.y + background.getPadBottom()/2, width, 
-				_bounds.height - ((background.getPadTop() + background.getPadBottom())/2));
-		*/
-		
+	@Override
+	public Rectangle getToolTipBounds() {
+			return _bounds;
 	}
 }
