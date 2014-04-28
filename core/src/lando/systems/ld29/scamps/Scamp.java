@@ -130,7 +130,7 @@ public class Scamp implements IResourceGenerator {
     private void updateHunger(float dt) {
         hungerAmount += dt / 60; // 1 hunger a minute
         if (hungerAmount > 10 && World.THEWORLD.scampManager.getCurrentPopulation() > 1){
-        	World.THEWORLD.scampManager.killScamp(this);
+        	World.THEWORLD.scampManager.removeScamps(this);
         }
     }
 

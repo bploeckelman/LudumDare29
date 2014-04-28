@@ -189,6 +189,14 @@ public class ScampManager {
 			return;
     	}
     	
+    	// get Stone?
+    	if (scampResources.getScampResourceCount(ScampResourceType.STONE) < world.structureManager.getMaxAmount(ScampResourceType.WOOD) &&
+    			world.rManager.CountofType("quarry") > 0) {
+    		scamp.setState(ScampState.STONE);
+			gatherResource(scamp, "quarry");
+			return;
+    	}
+    	
     	
     	//Nothing else Walk Around
     	scamp.currentState = ScampState.STROLLING;

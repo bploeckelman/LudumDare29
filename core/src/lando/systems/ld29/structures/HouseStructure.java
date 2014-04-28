@@ -22,6 +22,7 @@ public class HouseStructure extends Structure implements IResourceGenerator {
     private Sprite day;
     private Sprite night;
     boolean isDaySprite  = true;
+    public static int HouseLimit =3;
 
     
     public static final Map<String, Integer> buildCost;
@@ -36,7 +37,7 @@ public class HouseStructure extends Structure implements IResourceGenerator {
     public HouseStructure(float x, World world){
         super(x, world);
 
-        setMaxCapacity(4);
+        setMaxCapacity(HouseLimit);
         scamps = new ArrayList<Scamp>(getMaxCapacity());
         day = new Sprite(dayImg);
         night = new Sprite(nightImg);
