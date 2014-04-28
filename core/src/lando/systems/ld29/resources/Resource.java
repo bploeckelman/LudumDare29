@@ -1,14 +1,13 @@
 package lando.systems.ld29.resources;
 
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
 import lando.systems.ld29.Global;
 import lando.systems.ld29.IToolTip;
 import lando.systems.ld29.blocks.Block;
 import lando.systems.ld29.core.Assets;
-
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.Texture.TextureFilter;
-import com.badlogic.gdx.graphics.g2d.*;
-import com.badlogic.gdx.math.Rectangle;
 
 /**
  * Created by jhoopes on 4/26/14.
@@ -18,7 +17,8 @@ public abstract class Resource implements IToolTip {
     protected Sprite sprite;
     float x;
     float y;
-    static final float RESOURCE_WIDTH = 64;
+    static final float RESOURCE_WIDTH = Block.BLOCK_WIDTH;
+    public static final float RESOURCE_GROUND_LEVEL_OFFSET = (RESOURCE_WIDTH * 5) / 16;
     protected int resourceCount;
     float alpha = 0;
 
@@ -26,7 +26,7 @@ public abstract class Resource implements IToolTip {
     	
         // set pixel x and y
     	this.x = x * Block.BLOCK_WIDTH;
-    	this.y = (int) Global.GROUND_LEVEL;
+    	this.y = Global.GROUND_LEVEL - RESOURCE_GROUND_LEVEL_OFFSET;
         
         alpha = 0;
         // Generate resource count
