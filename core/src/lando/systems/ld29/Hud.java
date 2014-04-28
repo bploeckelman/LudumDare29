@@ -24,7 +24,20 @@ public class Hud {
         "dirt", "stone", "iron", "acorn", "grapes"
     };
 
-    private ScampResourceType[] types = { ScampResourceType.FOOD, ScampResourceType.GRAPE, ScampResourceType.IRON, ScampResourceType.STONE, ScampResourceType.WOOD };
+    private ScampResourceType[] types = {
+        ScampResourceType.FOOD,
+        ScampResourceType.WOOD,
+        ScampResourceType.STONE,
+        ScampResourceType.IRON,
+        ScampResourceType.MARBLE,
+        ScampResourceType.GOLD,
+        ScampResourceType.GRAPES,
+        ScampResourceType.FUEL,
+        ScampResourceType.CIRCUITS,
+        ScampResourceType.METEOR,
+        ScampResourceType.STEEL,
+        ScampResourceType.PEOPLE
+    };
     private ArrayList<Plaque> resources = new ArrayList<Plaque>();
     
     static final float HUD_BLOCK_WIDTH = 32;

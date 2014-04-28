@@ -95,19 +95,19 @@ public class Assets {
 
         Texture iconSpritesheet = new Texture("art/icon-spritesheet.png");
         icons = new HashMap<String,TextureRegion>();
-        TextureRegion[][] iconRegions = TextureRegion.split(iconSpritesheet, 12, 12);
-        icons.put("food",     iconRegions[0][0]);
-        icons.put("wood",     iconRegions[0][1]);
-        icons.put("stone",    iconRegions[0][2]);
-        icons.put("iron",     iconRegions[0][3]);
-        icons.put("marble",   iconRegions[0][4]);
-        icons.put("gold",     iconRegions[0][5]);
-        icons.put("grapes",   iconRegions[0][6]);
-        icons.put("fuel",     iconRegions[1][0]);
-        icons.put("circuits", iconRegions[1][1]);
-        icons.put("meteor",   iconRegions[1][2]);
-        icons.put("steel",    iconRegions[1][3]);
-        icons.put("people",   iconRegions[1][4]);
+        TextureRegion[][] iconRegions = TextureRegion.split(iconSpritesheet, 16, 16);
+        icons.put("FOOD",     iconRegions[0][0]);
+        icons.put("WOOD",     iconRegions[0][1]);
+        icons.put("STONE",    iconRegions[0][2]);
+        icons.put("IRON",     iconRegions[0][3]);
+        icons.put("MARBLE",   iconRegions[0][4]);
+        icons.put("GOLD",     iconRegions[0][5]);
+        icons.put("GRAPES",   iconRegions[1][0]);
+        icons.put("FUEL",     iconRegions[1][1]);
+        icons.put("CIRCUITS", iconRegions[1][2]);
+        icons.put("METEOR",   iconRegions[1][3]);
+        icons.put("STEEL",    iconRegions[1][4]);
+        icons.put("PEOPLE",   iconRegions[1][5]);
 
 //        sound = Gdx.audio.newSound("audio/sound.wav");
 //        music = Gdx.audio.newMusic("audio/music.mp3");

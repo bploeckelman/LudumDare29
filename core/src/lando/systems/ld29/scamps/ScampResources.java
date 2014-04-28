@@ -13,10 +13,17 @@ public class ScampResources {
 
     public static enum ScampResourceType {
         FOOD,
-        GRAPE,
-        IRON,
+        WOOD,
         STONE,
-        WOOD
+        IRON,
+        MARBLE,
+        GOLD,
+        GRAPES,
+        FUEL,
+        CIRCUITS,
+        METEOR,
+        STEEL,
+        PEOPLE
     }
     Map<ScampResourceType, Integer> scampResourcesByType;
     Map<String, ScampResourceType> resourceNameToType;
@@ -32,11 +39,18 @@ public class ScampResources {
         }
 
         resourceNameToType = new HashMap<String, ScampResourceType>();
-        resourceNameToType.put("food", ScampResourceType.FOOD);
-        resourceNameToType.put("stone", ScampResourceType.STONE);
-        resourceNameToType.put("wood", ScampResourceType.WOOD);
-        resourceNameToType.put("grapes", ScampResourceType.GRAPE);
-        resourceNameToType.put("iron", ScampResourceType.IRON);
+        resourceNameToType.put("FOOD",     ScampResourceType.FOOD);
+        resourceNameToType.put("WOOD",     ScampResourceType.WOOD);
+        resourceNameToType.put("STONE",    ScampResourceType.STONE);
+        resourceNameToType.put("IRON",     ScampResourceType.IRON);
+        resourceNameToType.put("MARBLE",   ScampResourceType.MARBLE);
+        resourceNameToType.put("GOLD",     ScampResourceType.GOLD);
+        resourceNameToType.put("GRAPES",   ScampResourceType.GRAPES);
+        resourceNameToType.put("FUEL",     ScampResourceType.FUEL);
+        resourceNameToType.put("CIRCUITS", ScampResourceType.CIRCUITS);
+        resourceNameToType.put("METEOR",   ScampResourceType.METEOR);
+        resourceNameToType.put("STEEL",    ScampResourceType.STEEL);
+        resourceNameToType.put("PEOPLE",   ScampResourceType.PEOPLE);
     }
 
     public ScampResourceType getType(String resourceName) {
