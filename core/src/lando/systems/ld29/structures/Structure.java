@@ -114,6 +114,6 @@ public class Structure implements IToolTip {
 
 	@Override
 	public String getText() {
-		return name;
+		return name.toUpperCase();
 	}
 }

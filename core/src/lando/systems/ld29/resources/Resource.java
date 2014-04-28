@@ -84,6 +84,6 @@ public abstract class Resource implements IToolTip {
 
 	@Override
 	public String getText() {
-		return getName();
+		return getName().toUpperCase();
 	}
 }

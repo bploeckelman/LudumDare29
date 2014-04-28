@@ -87,7 +87,7 @@ public class Plaque implements IToolTip {
 
 	@Override
 	public String getTitle() {
-		return "Resource";
+		return "RESOURCE";
 	}
 
 	@Override

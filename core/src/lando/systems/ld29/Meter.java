@@ -71,7 +71,7 @@ public class Meter implements IToolTip {
 
 	@Override
 	public String getTitle() {
-		return _header;
+		return _header.toUpperCase();
 	}
 
 	@Override
