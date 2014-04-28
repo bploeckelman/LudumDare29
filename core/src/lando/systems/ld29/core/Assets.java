@@ -54,7 +54,7 @@ public class Assets {
         hudBatch = new SpriteBatch();
         shapes = new ShapeRenderer();
 
-        libgdx = new Texture("badlogic.jpg");
+        libgdx = new Texture("art/title_screen.png");
         libgdx.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 
         Texture blocksSpritesheet = new Texture("art/blocks-spritesheet.png");
