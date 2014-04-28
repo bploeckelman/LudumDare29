@@ -73,15 +73,21 @@ public class ScampResources {
      * @return Returns true if the resource was successfully removed.  Returns FALSE if there wasn't a resource of the
      * proper type to remove.
      */
-    public boolean removeScampResource(ScampResourceType scampResourceType) {
+    public boolean removeScampResource(ScampResourceType scampResourceType, int times) {
         int resourceCount = this.scampResourcesByType.get(scampResourceType);
-        if (resourceCount < 1) {
+        if (resourceCount < times) {
             return false;
         } else {
-            this.scampResourcesByType.put(scampResourceType, resourceCount - 1);
+            this.scampResourcesByType.put(scampResourceType, resourceCount - times);
             return true;
         }
     }
+    
+    public boolean removeScampResource(String Type, int times) {
+    	return removeScampResource(resourceNameToType.get(Type.toUpperCase()), times);
+    }
+    
+
 
     public int getScampResourceCount(ScampResourceType scampResourceType) {
         return this.scampResourcesByType.get(scampResourceType);

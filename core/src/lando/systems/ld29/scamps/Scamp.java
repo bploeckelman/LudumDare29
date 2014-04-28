@@ -20,7 +20,7 @@ public class Scamp {
 
     public static final int SCAMP_SIZE = 32;
     public static final float SCAMP_SPEED = 1.0f;
-    public static final float GATHER_RATE = 5f; // in seconds
+    public static final float GATHER_RATE = 2f; // in seconds
     public static final float EAT_TIME = 3f; // in seconds
 
     public enum ScampState {
@@ -108,7 +108,7 @@ public class Scamp {
 
                     // Eat the food if we haven't yet
                     if (eatAccum == 0) {
-                        World.THEWORLD.scampManager.scampResources.removeScampResource(ScampResources.ScampResourceType.FOOD);
+                        World.THEWORLD.scampManager.scampResources.removeScampResource(ScampResources.ScampResourceType.FOOD, 1);
                     }
 
                     // Wait to finish eating before resetting state

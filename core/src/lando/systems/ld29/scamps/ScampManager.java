@@ -174,7 +174,9 @@ public class ScampManager {
     	
     	//Nothing else Walk Around
     	scamp.currentState = ScampState.STROLLING;
-    	scamp.setTarget(Assets.random.nextInt(World.gameWidth));
+    	int pos = (int)scamp.position - 5 + Assets.random.nextInt(10);
+    	while (pos < 0 || pos >= World.gameWidth) pos = (int)scamp.position - 5 + Assets.random.nextInt(10);
+    	scamp.setTarget(pos);
  	
     }
     
@@ -212,6 +214,10 @@ public class ScampManager {
     		
     		scamp.buildingStructure = struct;
     		world.structureManager.createStructure((int)struct.x, struct);
+    		
+        	for(String key : costs.keySet()){
+        		scampResources.removeScampResource(key.toUpperCase(), costs.get(key));
+        	}
     		return true;
     	}
     	
