@@ -47,4 +47,13 @@ public class FactoryStructure extends Structure {
             }
         }
     }
+    
+    public static String getRawName(String refined){
+    	switch (refined){
+    	case "fuel" : return "meteor";
+    	case "circuits": return "gold";
+    	case "steel" : return "iron";
+    	}
+    	return "";
+    }
 }

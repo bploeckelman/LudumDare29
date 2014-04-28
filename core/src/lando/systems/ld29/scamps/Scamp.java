@@ -64,6 +64,10 @@ public class Scamp implements IResourceGenerator {
         put("marble", ScampState.MARBLE);
         put("gold", ScampState.GOLD);
         put("grapes", ScampState.GRAPES);
+        
+        put("fuel", ScampState.FUEL);
+        put("circuits", ScampState.CIRCUITS);
+        put("steel", ScampState.STEEL);
     }};
     
     static ScampState[] resourceGatherState = {
