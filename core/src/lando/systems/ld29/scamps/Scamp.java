@@ -318,7 +318,15 @@ public class Scamp implements IResourceGenerator {
                 // If we gathered any, display it and store the gathered resource
                 if (numResourcesGathered > 0) {
 
-                    Assets.gatherFood.play(0.5f);
+                    switch(workingResource.resourceName()) {
+                        case "wood":
+                        case "grapes":
+                        case "food":
+                            Assets.gatherFood.play(0.5f);
+                            break;
+                        default:
+                            Assets.gatherOther.play(0.5f);
+                    }
 
                     World.THEWORLD.displayResourceGather(this, numResourcesGathered);
                     resources.addScampResources(resources.getType(workingResource.resourceName().toUpperCase()), numResourcesGathered);
