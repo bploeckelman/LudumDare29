@@ -30,6 +30,8 @@ public class Scamp implements IResourceGenerator {
     public static final float EAT_TIME = 3f; // in seconds
     public static final float BUILD_RATE = 1f; // in seconds
     public static final float BUILD_PERCENT = 0.1f;
+    
+    private float mySpeed;
 
     public enum ScampState {
         IDLE,
@@ -127,6 +129,7 @@ public class Scamp implements IResourceGenerator {
 
         this.buildingStructure = null;
         this.buildAccum = 0f;
+        this.mySpeed = SCAMP_SPEED + (Assets.random.nextFloat() * .5f);
     }
 
 
@@ -187,11 +190,11 @@ public class Scamp implements IResourceGenerator {
             walkRight = isWalkingRight();
 
             // Move you sluggard!
-            float dist = SCAMP_SPEED * dt;
+            float dist = mySpeed * dt;
             if (dist > Math.abs(targetPosition - position)){
                 position = targetPosition;
             } else {
-                position += (walkRight ? SCAMP_SPEED : -SCAMP_SPEED) * dt;
+                position += (walkRight ? mySpeed : -mySpeed) * dt;
             }
         }
     }
