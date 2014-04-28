@@ -32,6 +32,10 @@ public class Plaque {
 		_textValue = "" + value;
 	}
 
+    public String getTextValue() { return _textValue; }
+    public String getIconName() { return _icon; }
+    public Rectangle getBounds() { return _bounds; }
+
     private static final float ICON_SPACING = 10;
 	public void render(SpriteBatch batch) {
 		NinePatch background = Assets.panelBrown;

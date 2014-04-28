@@ -145,11 +145,11 @@ public class Hud {
             block.draw(batch);
         }
         
-        tooltip.render(batch);
-        
         for (Plaque p : resources) {
-        	p.render(batch);
+            p.render(batch);
         }
+
+        tooltip.render(batch);
     }
 
     private Block getBlockForCoords(int column){
@@ -178,6 +178,15 @@ public class Hud {
         }
 
         return ret;
+    }
+
+    public Plaque getPlaqueFromPos(float x, float y) {
+        for(Plaque plaque : resources) {
+            if (plaque.getBounds().contains(x,y)) {
+                return plaque;
+            }
+        }
+        return null;
     }
 
 }
