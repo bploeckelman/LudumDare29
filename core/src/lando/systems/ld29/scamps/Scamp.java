@@ -59,6 +59,7 @@ public class Scamp {
 
     String name;
     Resource workingResource;
+    public Structure buildingStructure;
     TextureRegion texture;
     ScampState currentState = ScampState.IDLE;
     float hungerAmount = 0;
