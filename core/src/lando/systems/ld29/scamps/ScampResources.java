@@ -87,4 +87,8 @@ public class ScampResources {
         return this.scampResourcesByType.get(scampResourceType);
     }
 
+    public int getScampResourceCount(String scampResourcesTypeString) {
+        return this.scampResourcesByType.get(resourceNameToType.get(scampResourcesTypeString));
+    }
+
 }
