@@ -1,6 +1,7 @@
 package lando.systems.ld29.core;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -50,8 +51,11 @@ public class Assets {
 
     //public static Sound sound;
     public static Sound addBlock;
+    public static Sound newDay;
 
     //public static Music music;
+    public static Music dayAmbient;
+    public static Music nightAmbient;
 
     public static void load() {
         random = new Random();
@@ -135,11 +139,6 @@ public class Assets {
         icons.put("PEOPLE",   iconRegions[1][5]);
         icons.put("BUILD",    iconRegions[2][0]);
 
-//        sound = Gdx.audio.newSound("audio/sound.wav");
-        addBlock = Gdx.audio.newSound(Gdx.files.internal("audio/add_block.wav"));
-
-//        music = Gdx.audio.newMusic("audio/music.mp3");
-
         panelBrown = new NinePatch(
                 new Texture("art/panel_brown.png"),
                 10, 10, 10 , 10
@@ -172,6 +171,18 @@ public class Assets {
         gameOverFont.setColor(1,1,1,.7f);
 
         scampNames = Gdx.files.internal("text/scamp-names.txt").readString().split("\r\n|\r|\n");
+
+
+//        sound = Gdx.audio.newSound("audio/sound.wav");
+        addBlock = Gdx.audio.newSound(Gdx.files.internal("audio/add_block.wav"));
+        newDay = Gdx.audio.newSound(Gdx.files.internal("audio/new_day.wav"));
+
+//        music = Gdx.audio.newMusic("audio/music.mp3");
+        dayAmbient = Gdx.audio.newMusic(Gdx.files.internal("audio/day_birds.mp3"));
+        nightAmbient = Gdx.audio.newMusic(Gdx.files.internal("audio/night_frogs.mp3"));
+
+        dayAmbient.setLooping(true);
+        nightAmbient.setLooping(true);
     }
 
     public static void dispose() {

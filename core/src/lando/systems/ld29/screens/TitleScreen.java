@@ -32,6 +32,7 @@ public class TitleScreen implements Screen {
             Gdx.app.exit();
         } else if (Gdx.input.justTouched()) {
             game.setScreen(game.gameScreen);
+            Assets.dayAmbient.play();
         }
 
         accum += dt;

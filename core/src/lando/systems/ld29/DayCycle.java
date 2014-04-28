@@ -80,8 +80,13 @@ public class DayCycle
 		if (time > 1440) { 
 			time = 0;
             dayNightChanged = true;
+            Assets.newDay.play();
+            Assets.nightAmbient.stop();
+            Assets.dayAmbient.play();
 		} else if(_time <= Night && time >= Night) {
             dayNightChanged = true;
+            Assets.dayAmbient.stop();
+            Assets.nightAmbient.play();
         }
 
 		setTime(time);
