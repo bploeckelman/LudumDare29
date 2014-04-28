@@ -51,6 +51,7 @@ public class HouseStructure extends Structure implements IResourceGenerator {
     	if(getWorld().scampManager.spaceForMoreScamps()){   		
         	World world = getWorld();
             world.scampManager.addScamps(new Scamp(x));
+            Assets.babyBorn.play();
             world.hud.AddNotification("Someone was born");
             world.displayResourceGather(this,  1);
     	}
