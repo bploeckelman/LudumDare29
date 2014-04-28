@@ -33,6 +33,7 @@ public class World {
     public static final int gameWidth = 30;
     public static final int gameHeight = 5;
     public static World THEWORLD;
+    public boolean gameWon = false;
     
     private final ArrayList<ResourceIndicator> _resIndicators = new ArrayList<ResourceIndicator>(10);
 
@@ -61,6 +62,7 @@ public class World {
         particleSystem.update(dt);
     	
     	if (scampManager.allInShip()){
+    		gameWon = true;
     		SpaceshipStructure space = (SpaceshipStructure) structureManager.findStructure("spaceship");
     		space.liftOff(dt);
     		

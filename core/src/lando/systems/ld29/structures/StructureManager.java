@@ -27,9 +27,10 @@ public class StructureManager {
 //        createStructure(++i, new WarehouseStructure(i, world));
 //        createStructure(++i, new TempleStructure(i, world));
 //        createStructure(++i, new FactoryStructure(i, world));
-//        SpaceshipStructure space =new SpaceshipStructure(i, world);
+        
+//        SpaceshipStructure space =new SpaceshipStructure(++i, world);
 //        space.buildPercent = 1f;
-//        createStructure(i++, space);
+//        createStructure(i, space);
 
     }
     

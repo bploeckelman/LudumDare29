@@ -42,6 +42,8 @@ public class Assets {
     public static BitmapFont TooltipTextFont;
 
     public static BitmapFont HUDFont;
+    
+    public static BitmapFont gameOverFont;
 
     public static String[] scampNames;
 
@@ -159,6 +161,10 @@ public class Assets {
 
         HUDFont = new BitmapFont(Gdx.files.internal("fonts/ariel.fnt"),Gdx.files.internal("fonts/ariel.png"),false);
         HUDFont.setScale(.5f);
+        
+        gameOverFont = new BitmapFont(Gdx.files.internal("fonts/ariel.fnt"),Gdx.files.internal("fonts/ariel.png"),false);
+        gameOverFont.setScale(3f);
+        gameOverFont.setColor(1,1,1,.7f);
 
         scampNames = Gdx.files.internal("text/scamp-names.txt").readString().split("\r\n|\r|\n");
     }
