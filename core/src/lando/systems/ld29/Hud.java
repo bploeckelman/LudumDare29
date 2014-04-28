@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -16,8 +18,8 @@ import lando.systems.ld29.screens.GameScreen;
 import lando.systems.ld29.util.Config;
 
 public class Hud {
-    private static String[] blockNames = Assets.blocks.keySet().toArray(new String[Assets.blocks.size()]);
-
+    //private static String[] blockNames = Assets.blocks.keySet().toArray(new String[Assets.blocks.size()]);
+	private static String[] blockNames=  { "dirt", "wheat", "stone", "acorn", "grapes", "marble", "iron", "gold" };
     private ScampResourceType[] types = {
         ScampResourceType.FOOD,
         ScampResourceType.WOOD,
@@ -170,6 +172,24 @@ public class Hud {
         }
 
         tooltip.render(batch);
+        Assets.panelBrown.draw(
+                batch, 10, 2, 482, 25
+            );
+        Assets.HUDFont.setColor(Color.WHITE);
+        Assets.HUDFont.draw(batch, "Total Time : " + World.THEWORLD.dayCycle.getTotalTime(), 15, 20);
+        
+        if (World.THEWORLD.gameWon){
+        	Assets.panelBrown.setColor(new Color (1,1,1,.7f));
+        	
+            Assets.panelBrown.draw(batch, Config.window_half_width - 300, Config.window_half_height - 200, 600, 400);
+            TextBounds bounds = Assets.gameOverFont.getBounds("You Won!");
+        	Assets.gameOverFont.draw(batch, "You Won!", Config.window_half_width - bounds.width/2, Config.window_half_height + bounds.height );
+        	
+        	bounds = Assets.gameFont.getBounds("Total Time : " + World.THEWORLD.dayCycle.getTotalTime());
+        	Assets.gameFont.draw(batch, "Total Time : " + World.THEWORLD.dayCycle.getTotalTime(), Config.window_half_width - bounds.width/2, Config.window_half_height - bounds.height );
+
+        	Assets.panelBrown.setColor(Color.WHITE);
+        }
     }
 
     private Block getBlockForCoords(int column){

@@ -1,5 +1,7 @@
 package lando.systems.ld29;
 
+import java.util.Date;
+
 import lando.systems.ld29.core.Assets;
 import lando.systems.ld29.util.Config;
 
@@ -34,6 +36,8 @@ public class DayCycle
 	private final Sprite skySprite;
 	
 	private World _world;
+	
+	private float totalTime;
 
 	public DayCycle(World world) {
 		_world = world;
@@ -42,6 +46,7 @@ public class DayCycle
 		sunSprite.setSize(64,64);
 		skySprite = new Sprite(skyTex);
 		skySprite.setSize(World.gameWidth * 64, Config.window_height);
+		totalTime = 0;
 	}
 	
 	public void setTime(float time) {
@@ -58,9 +63,16 @@ public class DayCycle
     public boolean hasDayEnded() {
         return dayNightChanged && !isDay();
     }
+    
+    public String getTotalTime(){
+    	int days = (int) (totalTime/1440);
+    	int hours = ((int)totalTime/60) % 24 ;
+    	int min = ((int)totalTime) % 60 ;
+    	return days +" Days " + hours + " Hours " + min + " Min";
+    }
 	
 	public void update(float dt) {
-		
+		totalTime += (dt*Scale);
 		float time = _time + (dt * Scale);
         dayNightChanged = false;
 		if (time > 1440) { 

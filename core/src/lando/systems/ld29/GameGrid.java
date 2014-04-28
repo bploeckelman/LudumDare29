@@ -19,6 +19,8 @@ public class GameGrid {
 	float pushedDelay = .5f;
 	float earthQuakeTime = 0;
 	float EARTHQUAKEMAXTIME = 3;
+	float meteorTime =  30;
+	Meteor meteor = null;
 
 	public GameGrid(World world){
 		parentWorld = world;
@@ -63,7 +65,18 @@ public class GameGrid {
 		if (Assets.random.nextFloat() > .9995 && earthQuakeTime <= -3){
 			earthQuakeTime = EARTHQUAKEMAXTIME;
 		}
+		
+		if (meteorTime < 0){
+			meteor = new Meteor(Assets.random.nextInt(World.gameWidth));
+			
+			meteorTime = 100 + Assets.random.nextInt(200);
+		}
+		if (meteor != null){
+			meteor.update(dt);
+		}
+		
 		earthQuakeTime -= dt;
+		meteorTime -=dt;
 	}
 
 	public void render(SpriteBatch batch){
@@ -122,7 +135,7 @@ public class GameGrid {
 	}
 	
 	public boolean pushUp(Block newBlock, int x){
-		if (earthQuakeTime > EARTHQUAKEMAXTIME/2) return false;
+		if (earthQuakeTime > EARTHQUAKEMAXTIME/3) return false;
 		// Pop up what was on the top
 		pushedOutBlock = blocks[x + (height -1) * width];
 		pushedTimer = pushedDelay;

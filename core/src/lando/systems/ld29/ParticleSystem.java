@@ -46,6 +46,15 @@ public class ParticleSystem {
 		}
 	}
 	
+	public void fuckingCrazy(float x, float y, int size, Color startColor){
+		for (int i = 0; i < size; i ++){
+			Particle item = particlePool.obtain();
+			float dir = (float) (Assets.random.nextFloat() * Math.PI * 2.0);
+			item.init(x, y, (float)Math.cos(dir) * Assets.random.nextFloat() * 50, (float)Math.sin(dir)*  Assets.random.nextFloat() *50, 1.0f + Assets.random.nextFloat(), startColor, Color.CLEAR, true);
+        	activeParticles.add(item);
+		}
+	}
+	
 	public void update(float dt){
         // if you want to free dead bullets, returning them to the pool:
 		Particle item;

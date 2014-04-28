@@ -72,7 +72,7 @@ public class Structure implements IToolTip {
         if(maxCapacity > 0) {
             Iterator<Scamp> iterator = scamps.iterator();
             while(iterator.hasNext()){
-                iterator.next().setState(Scamp.ScampState.IDLE);
+                iterator.next();//.setState(Scamp.ScampState.IDLE);
                 iterator.remove();
             }
         }

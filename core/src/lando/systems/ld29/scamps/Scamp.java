@@ -30,6 +30,8 @@ public class Scamp implements IResourceGenerator {
     public static final float EAT_TIME = 3f; // in seconds
     public static final float BUILD_RATE = 1f; // in seconds
     public static final float BUILD_PERCENT = 0.1f;
+    
+    private float mySpeed;
 
     public enum ScampState {
         IDLE,
@@ -43,7 +45,7 @@ public class Scamp implements IResourceGenerator {
         GRAPES,
         FUEL,
         CIRCUITS,
-        SPACEROCK,
+        METEOR,
         STEEL,
         BUILDHOUSE,
         BUILDWAREHOUSE,
@@ -65,6 +67,7 @@ public class Scamp implements IResourceGenerator {
         put("marble", ScampState.MARBLE);
         put("gold", ScampState.GOLD);
         put("grapes", ScampState.GRAPES);
+        put("meteor", ScampState.METEOR);
         
         put("fuel", ScampState.FUEL);
         put("circuits", ScampState.CIRCUITS);
@@ -78,7 +81,8 @@ public class Scamp implements IResourceGenerator {
         ScampState.IRON,
         ScampState.MARBLE,
         ScampState.GOLD,
-        ScampState.GRAPES
+        ScampState.GRAPES,
+        ScampState.METEOR
         // TODO : METEOR??
     };
 
@@ -91,8 +95,11 @@ public class Scamp implements IResourceGenerator {
 
     boolean walkRight;
     boolean inHouse;
+    boolean actuallyinHouse;
     boolean isGathering;
     boolean isBuilding;
+    boolean resourceDepleted;
+    boolean onShip;
 
     boolean dead;
 
@@ -124,10 +131,13 @@ public class Scamp implements IResourceGenerator {
 
         this.buildingStructure = null;
         this.buildAccum = 0f;
+        this.mySpeed = SCAMP_SPEED + (Assets.random.nextFloat() * .5f);
+        this.onShip= false;
     }
 
 
     public void update(float dt) {
+    	if (onShip) return;
         if (displayLastState > 0) {
             displayLastState -= dt;
         }
@@ -162,6 +172,7 @@ public class Scamp implements IResourceGenerator {
             case GOLD:
             case GRAPES:
             case MARBLE:
+            case METEOR:
                 updateGathering(dt);
                 break;
 
@@ -173,9 +184,18 @@ public class Scamp implements IResourceGenerator {
             case BUILDSPACESHIP:
                 updateBuilding(dt);
                 break;
+                
+            case GETONSHIP:
+            	updateWin(dt);
         }
     }
 
+    private void updateWin(float dt){
+    	Structure ship = World.THEWORLD.structureManager.findStructure("spaceship");
+    	targetPosition = ship.x;
+    	if( targetPosition == position ) onShip = true;
+    }
+    
     private void updateMovement(float dt) {
         // Have we reached our target yet?
         if( targetPosition != position ) {
@@ -183,11 +203,11 @@ public class Scamp implements IResourceGenerator {
             walkRight = isWalkingRight();
 
             // Move you sluggard!
-            float dist = SCAMP_SPEED * dt;
+            float dist = mySpeed * dt;
             if (dist > Math.abs(targetPosition - position)){
                 position = targetPosition;
             } else {
-                position += (walkRight ? SCAMP_SPEED : -SCAMP_SPEED) * dt;
+                position += (walkRight ? mySpeed : -mySpeed) * dt;
             }
         }
     }
@@ -207,6 +227,11 @@ public class Scamp implements IResourceGenerator {
                         inHouse = true;
                     }
                 }
+            }
+            if (targetPosition == position){
+            	actuallyinHouse = true;
+            } else {
+            	actuallyinHouse = false;
             }
         }
         return false;
@@ -239,7 +264,10 @@ public class Scamp implements IResourceGenerator {
 
     private void updateGathering(float dt) {
         if (workingResource == null) return;
-
+        if (!World.THEWORLD.rManager.containsResource(workingResource)) {
+        	setState(ScampState.IDLE);
+        	return;
+        }
         targetPosition = workingResource.getX();
         // If scamp is at gathering site...
         if (position == targetPosition) {
@@ -247,12 +275,13 @@ public class Scamp implements IResourceGenerator {
             gatherAccum += dt;
             if (gatherAccum > GATHER_RATE) {
                 gatherAccum = 0;
-
+                
                 ScampResources resources = World.THEWORLD.scampManager.scampResources;
                 ScampResourceType type = resources.getType(workingResource.resourceName().toUpperCase());
 
                 // If there's anything to gather, gather one
                 int numResourcesGathered = 0;
+                
                 if (resources.getScampResourceCount(type) < World.THEWORLD.structureManager.getMaxAmount(type)) {
                     numResourcesGathered = World.THEWORLD.rManager.takeResource((int) workingResource.getX(), 1);
                 }
@@ -292,6 +321,8 @@ public class Scamp implements IResourceGenerator {
     }
 
     public void render(SpriteBatch batch) {
+    	if (onShip) return;
+    	if (actuallyinHouse) return;
         batch.draw(texture.getTexture(),
                 position * Block.BLOCK_WIDTH, Global.GROUND_LEVEL,    // screen position x,y
                 SCAMP_SIZE, SCAMP_SIZE,                               // pixel width/height
@@ -304,7 +335,7 @@ public class Scamp implements IResourceGenerator {
         	Assets.thoughtBubble.setColor(thoughtColor);
         	Assets.thoughtBubble.draw(batch, position * Block.BLOCK_WIDTH , Global.GROUND_LEVEL + SCAMP_SIZE, SCAMP_SIZE, 30);
         	
-            if (isGathering || isBuilding) {
+            if (isGathering || isBuilding ) {
         		TextureRegion icon = getResourceIcon();
         		if (icon != null) {   
         			Rectangle resourceBounds = getResourceBounds();
@@ -404,7 +435,7 @@ public class Scamp implements IResourceGenerator {
             case GRAPES:             return "Picking Grapes";
             case FUEL:               return "Making Fuel";
             case CIRCUITS:           return "Making Circuits";
-            case SPACEROCK:          return "Collecting Meteor";
+            case METEOR:          return "Collecting Meteor";
             case STEEL:              return "Forging Steel";
             case BUILDHOUSE:         return "Building a House";
             case BUILDWAREHOUSE:     return "Building a Warehouse";

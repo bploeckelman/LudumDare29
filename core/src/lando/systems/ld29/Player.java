@@ -101,7 +101,12 @@ public class Player {
 		inputDelay = Math.max(0, inputDelay - dt);
 		xPos = Utils.clamp(xPos, 0, world.gameWidth-1);
 		animationTime += dt;
-		belief += world.scampManager.getCurrentPopulation() / 4.0f * dt;
+		
+		float beliefDelta = (.5f + world.scampManager.getCurrentPopulation() / 10.0f) * dt;
+		if (World.THEWORLD.rManager.CountofType("temple")>0){
+			beliefDelta *= 2;
+		}
+		belief += beliefDelta;
 		belief = Utils.clamp(belief, 0, 100);
 		
 	}

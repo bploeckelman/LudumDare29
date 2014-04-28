@@ -13,6 +13,7 @@ public class MeteorCrash extends Resource {
         super(x);
 
         this.createSprite(this.img);
+        this.resourceCount = 1;
     }
 
     public String getName() { return "meteorcrash"; }
