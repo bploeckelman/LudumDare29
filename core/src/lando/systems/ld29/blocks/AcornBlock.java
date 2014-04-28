@@ -19,7 +19,6 @@ public class AcornBlock extends Block {
     }
     
 	public Resource MakeResource(){
-
 		return new Forrest(x);
 	}
 }
