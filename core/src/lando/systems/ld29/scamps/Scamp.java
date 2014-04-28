@@ -31,7 +31,7 @@ public class Scamp implements IResourceGenerator {
     public static final float BUILD_RATE = 1f; // in seconds
     public static final float BUILD_PERCENT = 0.1f;
     // TODO : different refine rates for different items?
-    public static final float REFINE_RATE = 5f;
+    public static final float REFINE_RATE = 3f;
 
     public enum ScampState {
         IDLE,

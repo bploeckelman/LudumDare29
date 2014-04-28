@@ -1,6 +1,8 @@
 package lando.systems.ld29;
 
 import lando.systems.ld29.blocks.*;
+import lando.systems.ld29.screens.GameScreen;
+import lando.systems.ld29.util.Config;
 import lando.systems.ld29.util.Utils;
 
 import com.badlogic.gdx.Gdx;
@@ -10,6 +12,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.esotericsoftware.spine.*;
 
@@ -72,13 +75,15 @@ public class Player {
 	float inputDelay = 0;
 	
 	public void update(float dt){
+		Vector3 hudClickPoint = GameScreen.hudCamera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
+
 		if (xPos == xTarget){
 			if (inputDelay <= 0){
-				if (Gdx.input.isKeyPressed(Keys.A)){
+				if (Gdx.input.isKeyPressed(Keys.A) || hudClickPoint.x < 100){
 					xTarget--;
 					animationTime = 0;
 				}
-				if (Gdx.input.isKeyPressed(Keys.D)){
+				if (Gdx.input.isKeyPressed(Keys.D) || hudClickPoint.x > Config.window_width - 100){
 					xTarget++;
 					animationTime = 0;
 				}
