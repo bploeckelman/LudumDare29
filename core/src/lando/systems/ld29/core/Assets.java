@@ -65,9 +65,10 @@ public class Assets {
         blocks.put("grapes", new TextureRegion(blocksSpritesheet, 48, 0, 16, 16));
         blocks.put("iron",   new TextureRegion(blocksSpritesheet, 64, 0, 16, 16));
         blocks.put("stone",  new TextureRegion(blocksSpritesheet, 80, 0, 16, 16));
-        blocks.put("wheat",  new TextureRegion(blocksSpritesheet, 128, 0, 16, 16));
         //blocks.put("lava",   new TextureRegion(blocksSpritesheet, 96, 0, 16, 16));
         //blocks.put("water",  new TextureRegion(blocksSpritesheet, 112, 0, 16, 16));
+        blocks.put("wheat",  new TextureRegion(blocksSpritesheet, 128, 0, 16, 16));
+        blocks.put("marble",  new TextureRegion(blocksSpritesheet, 144, 0, 16, 16));
         
         costs = new HashMap<String, Integer>();
         costs.put("dirt", new Integer(3));

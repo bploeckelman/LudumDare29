@@ -13,7 +13,7 @@ public class StoneBlock extends Block {
     public StoneBlock(float x, float y) {
         super(x, y);
         this.blockType = "stone";
-        toolTipString = "another building material";
+        toolTipString = "this is what happens to earth when it gets too hard";
         setSprite(new Sprite(img));
     }
     
