@@ -47,10 +47,10 @@ public class World {
         particleSystem = new ParticleSystem();
     }
     
-    public void displayResourceGather(Scamp scamp, int numResourcesGathered)
+    public void displayResourceGather(IResourceGenerator resGen, int numResourcesGathered)
     {
-    	TextureRegion icon = scamp.getResourceIcon();
-    	Rectangle resourcePos = scamp.getResourceBounds();
+    	TextureRegion icon = resGen.getResourceIcon();
+    	Rectangle resourcePos = resGen.getResourceBounds();
     	_resIndicators.add(new ResourceIndicator(icon, resourcePos, numResourcesGathered));
     }
 

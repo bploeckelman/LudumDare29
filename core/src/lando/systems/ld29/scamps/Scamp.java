@@ -7,7 +7,9 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
+
 import lando.systems.ld29.Global;
+import lando.systems.ld29.IResourceGenerator;
 import lando.systems.ld29.World;
 import lando.systems.ld29.blocks.Block;
 import lando.systems.ld29.core.Assets;
@@ -19,7 +21,7 @@ import lando.systems.ld29.structures.Structure;
  * Author: Ian McNamara <ian.mcnamara@doit.wisc.edu>
  * Date: 4/26/14 @ 3:58 PM
  */
-public class Scamp {
+public class Scamp implements IResourceGenerator {
 
     public static final int SCAMP_SIZE = 32;
     public static final float SCAMP_SPEED = 1.0f;

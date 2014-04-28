@@ -48,7 +48,8 @@ public class ScampManager {
 //    private final static float PRIORITY_RECOMPUTE_TIME = 10; // in seconds
 
     World world;
-    public Array<Scamp> scamps;
+    // use add/removeScamp(..) so scampResources are acurate
+    private Array<Scamp> scamps;
     public ScampResources scampResources;
 
     float accum = 0;
@@ -59,8 +60,8 @@ public class ScampManager {
 
     public ScampManager(World world) {
         this.world = world;
-        this.placeScamps();
         this.scampResources = new ScampResources();
+        this.placeScamps();
     }
 
     /**
@@ -70,7 +71,7 @@ public class ScampManager {
     private void placeScamps() {
         scamps = new Array<>();
         for (int i = 0; i < INITIAL_SCAMP_COUNT; i++) {
-            scamps.add(new Scamp( Assets.random.nextInt(world.gameWidth) ));
+            addScamps(new Scamp( Assets.random.nextInt(world.gameWidth) ));
         }
     }
 
@@ -289,6 +290,16 @@ public class ScampManager {
 		scamp.setTarget(resource.getX());
 		scamp.setWorkingResource(resource);
     }
+
+	public void addScamps(Scamp scamp) {
+		scamps.add(scamp);
+		scampResources.addScampResource(ScampResourceType.PEOPLE);
+	}
+	
+	public void removeScamps(Scamp scamp) {
+		scamps.removeValue(scamp,  true);
+		scampResources.removeScampResource(ScampResourceType.PEOPLE, 1);
+	}
 
 //    public void determinePriorities() {
 //        System.out.println("determinePriorities | called");
