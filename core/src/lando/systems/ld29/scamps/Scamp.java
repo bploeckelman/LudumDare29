@@ -21,6 +21,7 @@ public class Scamp {
     public static final int SCAMP_SIZE = 32;
     public static final float SCAMP_SPEED = 1.0f;
     public static final float GATHER_RATE = 5f; // in seconds
+    public static final float EAT_TIME = 3f; // in seconds
 
     public enum ScampState {
     	IDLE,
@@ -51,6 +52,7 @@ public class Scamp {
     public float position;
     float targetPosition;
     float gatherAccum;
+    float eatAccum;
 
     boolean walkRight;
     boolean gatherReady;
@@ -75,44 +77,65 @@ public class Scamp {
         this.workingResource = null;
         this.gatherAccum = 0f;
         this.gatherReady = false;
+
+        this.eatAccum = 0f;
     }
 
 
     public void update(float dt) {
-    	hungerAmount += dt / 60; // 1 hunger a minute
-    	if (currentState == ScampState.SLEEP) {
-            if (World.THEWORLD.dayCycle.isDay()) {
-                currentState = ScampState.IDLE;
-                return;
-            } else {
-                // If night, find an unoccupied house and enter it
-                for(Structure structure : World.THEWORLD.structureManager.structures) {
-                    if (structure instanceof HouseStructure && structure.getCapacity() > 0) {
-                        targetPosition = structure.x;
-                        structure.enter(this);
+        hungerAmount += dt / 60; // 1 hunger a minute
+
+        // Update based on current state
+        // ---------------------------------------------------------------------
+        switch(currentState) {
+            case SLEEP: {
+                if (World.THEWORLD.dayCycle.isDay()) {
+                    currentState = ScampState.IDLE;
+                    return;
+                } else {
+                    // If night, find an unoccupied house and enter it
+                    for (Structure structure : World.THEWORLD.structureManager.structures) {
+                        if (structure instanceof HouseStructure && structure.getCapacity() > 0) {
+                            targetPosition = structure.x;
+                            structure.enter(this);
+                        }
                     }
                 }
-            }
-    	}
+            } break;
+            case EATING: {
+                if (World.THEWORLD.scampManager.scampResources.getScampResourceCount(ScampResources.ScampResourceType.FOOD) > 0) {
+                    targetPosition = position;
+
+                    // Eat the food if we haven't yet
+                    if (eatAccum == 0) {
+                        World.THEWORLD.scampManager.scampResources.removeScampResource(ScampResources.ScampResourceType.FOOD);
+                    }
+
+                    // Wait to finish eating before resetting state
+                    eatAccum += dt;
+                    if (eatAccum > EAT_TIME) {
+                        eatAccum = 0;
+                        hungerAmount = 0;
+                        currentState = ScampState.IDLE;
+                    }
+                }
+            } break;
+//            case ...:
+        }
+
         // Have we reached our target yet?
         if( targetPosition == position ) {
-
-
             // If just strolling, go idle
-            if (currentState == ScampState.STROLLING) {
-            	currentState = ScampState.IDLE;
-                
+            if(currentState == ScampState.STROLLING) {
+               currentState = ScampState.IDLE;
             } else {
-            	// Update gathering timer/state
+               // Update gathering timer/state
                 gatherAccum += dt;
                 if (gatherAccum > GATHER_RATE) {
                     gatherAccum %= GATHER_RATE;
                     gatherReady = true;
                 }
-
             }
-
-            
         } else { // we are walking not working yet
         	walkRight = isWalkingRight();
             // Move you sluggard!
