@@ -35,7 +35,7 @@ public class HudBlock extends Sprite implements IToolTip {
 
 	@Override
 	public String getText() {
-		return _name + " " + _cost;
+		return _name + ":   " + _cost + " Faith";
 	}
 	
 	public boolean isEnabled() {
