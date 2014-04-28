@@ -126,58 +126,9 @@ public class Scamp {
         // Update based on current state
         // ---------------------------------------------------------------------
         switch(currentState) {
-            case SLEEP: {
-                if (World.THEWORLD.dayCycle.isDay()) {
-                    currentState = ScampState.IDLE;
-                    inHouse = false;
-                    return;
-                } else {
-                    if (!inHouse) {
-                        // If night, find an unoccupied house and enter it
-                        for (Structure structure : World.THEWORLD.structureManager.structures) {
-                            if (structure instanceof HouseStructure && structure.getCapacity() > 0) {
-                                targetPosition = structure.x;
-                                structure.enter(this);
-                                inHouse = true;
-                            }
-                        }
-                    }
-                }
-            } break;
-            case EATING: {
-                if (World.THEWORLD.scampManager.scampResources.getScampResourceCount(ScampResources.ScampResourceType.FOOD) > 0) {
-                    targetPosition = position;
-
-                    // Eat the food if we haven't yet
-                    if (eatAccum == 0) {
-                        World.THEWORLD.scampManager.scampResources.removeScampResource(ScampResources.ScampResourceType.FOOD, 1);
-                    }
-
-                    // Wait to finish eating before resetting state
-                    eatAccum += dt;
-                    if (eatAccum > EAT_TIME) {
-                        eatAccum = 0;
-                        hungerAmount = 0;
-                        currentState = ScampState.IDLE;
-                    }
-                }
-            } break;
-            case BUILDHOUSE: {
-                if (buildingStructure == null) break;
-
-                targetPosition = buildingStructure.x;
-                // If scamp is at building site...
-                if (position == targetPosition) {
-                    // Update build timer, and build if its time
-                    buildAccum += dt;
-                    if (buildAccum > BUILD_RATE) {
-                        buildAccum = 0;
-                        if (buildingStructure.build(BUILD_PERCENT)) {
-                            currentState = ScampState.IDLE;
-                        }
-                    }
-                }
-            }
+            case SLEEP:      updateSleeping(dt);      break;
+            case EATING:     updateEating(dt);        break;
+            case BUILDHOUSE: updateBuildingHouse(dt); break;
 //            case BUILD_XXXX:
 //                move to building target: buildingStructure
 //                add a dt to buildingStructure
@@ -211,6 +162,61 @@ public class Scamp {
         } 
     }
 
+    private boolean updateSleeping(float dt) {
+        if (World.THEWORLD.dayCycle.isDay()) {
+            currentState = ScampState.IDLE;
+            inHouse = false;
+            return true;
+        } else {
+            if (!inHouse) {
+                // If night, find an unoccupied house and enter it
+                for (Structure structure : World.THEWORLD.structureManager.structures) {
+                    if (structure instanceof HouseStructure && structure.getCapacity() > 0) {
+                        targetPosition = structure.x;
+                        structure.enter(this);
+                        inHouse = true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    private void updateEating(float dt) {
+        if (World.THEWORLD.scampManager.scampResources.getScampResourceCount(ScampResources.ScampResourceType.FOOD) > 0) {
+            targetPosition = position;
+
+            // Eat the food if we haven't yet
+            if (eatAccum == 0) {
+                World.THEWORLD.scampManager.scampResources.removeScampResource(ScampResources.ScampResourceType.FOOD, 1);
+            }
+
+            // Wait to finish eating before resetting state
+            eatAccum += dt;
+            if (eatAccum > EAT_TIME) {
+                eatAccum = 0;
+                hungerAmount = 0;
+                currentState = ScampState.IDLE;
+            }
+        }
+    }
+
+    private void updateBuildingHouse(float dt) {
+        if (buildingStructure == null) return;
+
+        targetPosition = buildingStructure.x;
+        // If scamp is at building site...
+        if (position == targetPosition) {
+            // Update build timer, and build if its time
+            buildAccum += dt;
+            if (buildAccum > BUILD_RATE) {
+                buildAccum = 0;
+                if (buildingStructure.build(BUILD_PERCENT)) {
+                    currentState = ScampState.IDLE;
+                }
+            }
+        }
+    }
 
     public void render(SpriteBatch batch) {
         batch.draw(texture.getTexture(),
