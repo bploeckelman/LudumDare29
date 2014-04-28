@@ -48,7 +48,8 @@ public class ScampManager {
 //    private final static float PRIORITY_RECOMPUTE_TIME = 10; // in seconds
 
     World world;
-    public Array<Scamp> scamps;
+    // use add/removeScamp(..) so scampResources are acurate
+    private Array<Scamp> scamps;
     public ScampResources scampResources;
 
     float accum = 0;
@@ -59,8 +60,8 @@ public class ScampManager {
 
     public ScampManager(World world) {
         this.world = world;
-        this.placeScamps();
         this.scampResources = new ScampResources();
+        this.placeScamps();
     }
 
     /**
@@ -70,7 +71,7 @@ public class ScampManager {
     private void placeScamps() {
         scamps = new Array<>();
         for (int i = 0; i < INITIAL_SCAMP_COUNT; i++) {
-            scamps.add(new Scamp( Assets.random.nextInt(world.gameWidth) ));
+            addScamps(new Scamp( Assets.random.nextInt(world.gameWidth) ));
         }
     }
     
@@ -103,7 +104,6 @@ public class ScampManager {
         for(Scamp scamp : scamps) {
         	if (scamp.isIdle()) GiveScampJob(scamp);
             scamp.update(dt);
-            doGather(scamp);
         }
     }
 
@@ -111,27 +111,6 @@ public class ScampManager {
         for(Scamp scamp : scamps) { scamp.render(batch); }
     }
 
-    private void doGather(Scamp scamp) {
-        if (scamp.workingResource == null) return;
-        if (scamp.isGatherReady()) {
-        	ScampResourceType type = scampResources.getType(scamp.workingResource.resourceName().toUpperCase());
-        	int numResourcesGathered = 0;
-        	if (scampResources.getScampResourceCount(type) < world.structureManager.getMaxAmount(type))
-        		numResourcesGathered = world.rManager.takeResource((int) scamp.workingResource.getX(), 1);
-            if (numResourcesGathered > 0) {
-            	world.displayResourceGather(scamp, numResourcesGathered);
-                scampResources.addScampResources(scampResources.getType(scamp.workingResource.resourceName().toUpperCase()), numResourcesGathered);
-                System.out.println("update() | scamp " + scamp.toString() + " gathered " + numResourcesGathered + " resources of type '" + scamp.workingResource.resourceName() + "'");
-            } else {
-                scamp.setWorkingResource(null);
-                scamp.setState(ScampState.IDLE);
-                scamp.setTarget(Assets.random.nextInt(World.gameWidth));
-
-            }
-            scamp.didGather();
-        }
-    }
-    
     private void GiveScampJob(Scamp scamp){
     	if (scamp.hungerAmount > 5 && scampResources.getScampResourceCount(ScampResourceType.FOOD) > 0){
     		scamp.currentState = ScampState.EATING;
@@ -307,6 +286,16 @@ public class ScampManager {
 		scamp.setTarget(resource.getX());
 		scamp.setWorkingResource(resource);
     }
+
+	public void addScamps(Scamp scamp) {
+		scamps.add(scamp);
+		scampResources.addScampResource(ScampResourceType.PEOPLE);
+	}
+	
+	public void removeScamps(Scamp scamp) {
+		scamps.removeValue(scamp,  true);
+		scampResources.removeScampResource(ScampResourceType.PEOPLE, 1);
+	}
 
 //    public void determinePriorities() {
 //        System.out.println("determinePriorities | called");
