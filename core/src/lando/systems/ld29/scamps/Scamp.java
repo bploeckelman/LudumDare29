@@ -59,6 +59,7 @@ public class Scamp {
     ScampState currentState = ScampState.IDLE;
     float hungerAmount = 0;
 
+
     public Scamp(float startingPosition) {
         this.name = Assets.randomName();
         this.position = startingPosition;
@@ -76,7 +77,10 @@ public class Scamp {
 
     public void update(float dt) {
     	hungerAmount += dt / 60; // 1 hunger a minute
-    	
+    	if (currentState == ScampState.SLEEP && World.THEWORLD.dayCycle.isDay()) {
+    		currentState = ScampState.IDLE;
+    		return;
+    	}
         // Have we reached our target yet?
         if( targetPosition == position ) {
 
@@ -130,6 +134,20 @@ public class Scamp {
     	currentState = state; 
     	}
 
+    public void setState(String text){
+    	switch (text) {
+    	case "wood" : currentState = ScampState.WOOD;
+    		break;
+    	case "stone" : currentState = ScampState.STONE;
+    	break;
+    	case "iron": currentState = ScampState.IRON;
+    	break;
+    	case "marble" : currentState = ScampState.MARBLE;
+    	break;
+    	case "gold" : currentState = ScampState.GOLD;
+    	break;
+    	}
+    }
     public void setTarget(float position) { this.targetPosition = position; }
     public void setTarget(Block block) { this.targetPosition = block.getX(); }
 

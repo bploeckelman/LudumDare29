@@ -112,7 +112,7 @@ public class ScampManager {
         if (scamp.isGatherReady()) {
             int numResourcesGathered = world.rManager.takeResource((int) scamp.workingResource.getX(), 1);
             if (numResourcesGathered > 0) {
-                scampResources.addScampResources(scampResources.getType(scamp.workingResource.resourceName()), numResourcesGathered);
+                scampResources.addScampResources(scampResources.getType(scamp.workingResource.resourceName().toUpperCase()), numResourcesGathered);
                 System.out.println("update() | scamp " + scamp.toString() + " gathered " + numResourcesGathered + " resources of type '" + scamp.workingResource.resourceName() + "'");
             } else {
                 scamp.setWorkingResource(null);
@@ -184,10 +184,14 @@ public class ScampManager {
     		costs = HouseStructure.buildCost;
     		break;
     	}
+    	
     	for(String key : costs.keySet()){
-    		if (scampResources.getScampResourceCount(key) < costs.get(key) &&
-    			world.rManager.CountofType(world.rManager.getResourceFromProduct(key))){
-    				gatherResource(scamp, key);
+    		if (scampResources.getScampResourceCount(key.toUpperCase()) < costs.get(key) &&
+    			world.rManager.CountofType(world.rManager.getResourceFromProduct(key)) > 0){
+    				gatherResource(scamp, world.rManager.getResourceFromProduct(key));
+    				scamp.setState(key);
+    				System.out.println("Looking for " + key);
+    				return true;
     		}
     	}
     	
