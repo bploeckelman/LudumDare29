@@ -27,6 +27,8 @@ public class Scamp {
     public static final float SCAMP_SPEED = 1.0f;
     public static final float GATHER_RATE = 2f; // in seconds
     public static final float EAT_TIME = 3f; // in seconds
+    public static final float BUILD_RATE = 1f; // in seconds
+    public static final float BUILD_PERCENT = 0.1f;
 
     public enum ScampState {
     	IDLE,
@@ -75,6 +77,7 @@ public class Scamp {
     float targetPosition;
     float gatherAccum;
     float eatAccum;
+    float buildAccum;
 
     boolean walkRight;
     boolean gatherReady;
@@ -107,6 +110,9 @@ public class Scamp {
 
         this.eatAccum = 0f;
         this.inHouse = false;
+
+        this.buildingStructure = null;
+        this.buildAccum = 0f;
     }
 
 
@@ -156,7 +162,27 @@ public class Scamp {
                     }
                 }
             } break;
-//            case ...:
+            case BUILDHOUSE: {
+                if (buildingStructure == null) break;
+
+                targetPosition = buildingStructure.x;
+                // If scamp is at building site...
+                if (position == targetPosition) {
+                    // Update build timer, and build if its time
+                    buildAccum += dt;
+                    if (buildAccum > BUILD_RATE) {
+                        buildAccum = 0;
+                        if (buildingStructure.build(BUILD_PERCENT)) {
+                            currentState = ScampState.IDLE;
+                        }
+                    }
+                }
+            }
+//            case BUILD_XXXX:
+//                move to building target: buildingStructure
+//                add a dt to buildingStructure
+//                when rendering it, if it is in process of being built, grow the sprite vertically based on build percentage
+//                if structure finished, go back to idle
         }
 
         // Have we reached our target yet?
@@ -165,6 +191,7 @@ public class Scamp {
             if(currentState == ScampState.STROLLING) {
                currentState = ScampState.IDLE;
             } else {
+                // TODO : MAY BE GATHERING OR BUILDING OR REFINING, so adjust accordingly
                // Update gathering timer/state
                 gatherAccum += dt;
                 if (gatherAccum > GATHER_RATE) {
