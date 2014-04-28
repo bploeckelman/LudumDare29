@@ -3,6 +3,8 @@ package lando.systems.ld29.structures;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import lando.systems.ld29.World;
 import lando.systems.ld29.core.Assets;
+import lando.systems.ld29.scamps.ScampResources;
+import lando.systems.ld29.scamps.ScampResources.ScampResourceType;
 
 public class StructureManager {
 
@@ -45,6 +47,21 @@ public class StructureManager {
         }
     }
 
+    public int getMaxAmount(ScampResourceType type){
+    	int max = 0;
+    	switch (type){
+    	case FOOD:
+    	case WOOD:
+    	case STONE:
+    	case GRAPES:
+    		max = 10;
+    		break;
+    	}
+    	
+    	max += countStructures("warehouse") * 10;
+    	return max;
+    }
+    
     public int getRandomAvilSpot(){
     	int point = Assets.random.nextInt(World.gameWidth);
     	while (structures[point] != null){

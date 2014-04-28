@@ -143,6 +143,7 @@ public class Scamp {
                 }
             }
         } else { // we are walking not working yet
+        	gatherReady = false;
         	walkRight = isWalkingRight();
             // Move you sluggard!
         	float dist= SCAMP_SPEED * dt;

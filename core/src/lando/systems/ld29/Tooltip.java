@@ -86,7 +86,7 @@ public class Tooltip {
 		} else {
 			alpha -= dt * 3;
 		}
-		alpha = Utils.clamp(alpha, 0, 1);
+		alpha = Utils.clamp(alpha, 0, .7f);
 	}
 	
 	public void render(SpriteBatch batch){

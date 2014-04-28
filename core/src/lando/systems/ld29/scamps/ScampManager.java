@@ -44,7 +44,7 @@ public class ScampManager {
 //        
 //    }
 
-    private final static int INITIAL_SCAMP_COUNT = 2;
+    private final static int INITIAL_SCAMP_COUNT = 3;
 //    private final static float DEFAULT_SCAMP_PRIORITY_SCORE = 10;
 //    private final static float PRIORITY_RECOMPUTE_TIME = 10; // in seconds
 
@@ -111,7 +111,10 @@ public class ScampManager {
     private void doGather(Scamp scamp) {
         if (scamp.workingResource == null) return;
         if (scamp.isGatherReady()) {
-            int numResourcesGathered = world.rManager.takeResource((int) scamp.workingResource.getX(), 1);
+        	ScampResourceType type = scampResources.getType(scamp.workingResource.resourceName().toUpperCase());
+        	int numResourcesGathered = 0;
+        	if (scampResources.getScampResourceCount(type) < world.structureManager.getMaxAmount(type))
+        		numResourcesGathered = world.rManager.takeResource((int) scamp.workingResource.getX(), 1);
             if (numResourcesGathered > 0) {
                 scampResources.addScampResources(scampResources.getType(scamp.workingResource.resourceName().toUpperCase()), numResourcesGathered);
                 System.out.println("update() | scamp " + scamp.toString() + " gathered " + numResourcesGathered + " resources of type '" + scamp.workingResource.resourceName() + "'");
@@ -160,16 +163,28 @@ public class ScampManager {
     	// Build Factory
     	
     	// Build Warehouse
+    	if ((1 + world.structureManager.countStructures("warehouse")) * 2 == world.structureManager.countStructures("house") ){
+	    	if (tryBuilding(scamp, "warehouse")){
+	    		return;
+	    	}
+    	}
     	
     	// Build House
-    	if (tryBuilding(scamp, "house")){
-    		return;
+    	if ((1 + world.structureManager.countStructures("warehouse")) * 2 > world.structureManager.countStructures("house") ){
+	    	if (tryBuilding(scamp, "house")){
+	    		return;
+	    	}
     	}
 
     	
     	
-    	
-    	
+    	// get grapes?
+    	if (scampResources.getScampResourceCount(ScampResourceType.GRAPES) < world.structureManager.getMaxAmount(ScampResourceType.GRAPES) &&
+    			world.rManager.CountofType("vinyard") > 0) {
+			scamp.currentState = ScampState.GRAPES;
+			gatherResource(scamp, "vinyard");
+			return;
+    	}
     	
     	
     	//Nothing else Walk Around

@@ -2,6 +2,7 @@ package lando.systems.ld29.resources;
 
 import lando.systems.ld29.Global;
 import lando.systems.ld29.blocks.Block;
+import lando.systems.ld29.core.Assets;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
@@ -27,7 +28,7 @@ public abstract class Resource {
         
         alpha = 0;
         // Generate resource count
-        this.resourceCount = (int) Math.ceil(Math.random()*10);
+        this.resourceCount = 2 + Assets.random.nextInt(8);
     }
 
     public void createSprite(TextureRegion img){
