@@ -163,6 +163,7 @@ public class Scamp implements IResourceGenerator {
             case GOLD:
             case GRAPES:
             case MARBLE:
+            case SPACEROCK:
                 updateGathering(dt);
                 break;
 

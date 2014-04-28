@@ -1,5 +1,6 @@
 package lando.systems.ld29.resources;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import lando.systems.ld29.Global;
@@ -154,6 +155,16 @@ public class ResourceManager {
 
         resources[x] = block.MakeResource();
         parentWorld.particleSystem.createFountain(xpx + (Block.BLOCK_WIDTH / 2), ypx, block.fountainColor);
+
+        return true;
+    }
+    
+    public boolean makeMeteorRes( int x){
+        int xpx = x * Block.BLOCK_WIDTH;
+        int ypx = (int) Global.GROUND_LEVEL;
+
+        resources[x] = new MeteorCrash(x);
+        parentWorld.particleSystem.createFountain(xpx + (Block.BLOCK_WIDTH / 2), ypx, Color.WHITE);
 
         return true;
     }
