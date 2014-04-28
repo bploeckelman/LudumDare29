@@ -193,6 +193,8 @@ public class Hud {
                 } else if (blockNames[i].equals("grapes")) {
                     ret = new GrapesBlock(column, -1);
 
+                } else if (blockNames[i].equals("wheat")) {
+                    ret = new WheatBlock(column, -1);
                 }
             }
         }
