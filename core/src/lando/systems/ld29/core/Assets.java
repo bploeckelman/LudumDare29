@@ -60,8 +60,10 @@ public class Assets {
     public static Sound fireworkPop;
     public static Sound babyBorn;
     public static Sound meteorCrash;
+    public static Sound launch;
 
-    //public static Music music;
+    public static Music titleMusic;
+    public static Music gameMusic;
     public static Music dayAmbient;
     public static Music nightAmbient;
     
@@ -190,7 +192,6 @@ public class Assets {
         scampNames = Gdx.files.internal("text/scamp-names.txt").readString().split("\r\n|\r|\n");
 
 
-//        sound = Gdx.audio.newSound("audio/sound.wav");
         addBlock = Gdx.audio.newSound(Gdx.files.internal("audio/add_block.wav"));
         newDay = Gdx.audio.newSound(Gdx.files.internal("audio/new_day.wav"));
         earthquake = Gdx.audio.newSound(Gdx.files.internal("audio/earthquake.wav"));
@@ -201,11 +202,17 @@ public class Assets {
         fireworkPop = Gdx.audio.newSound(Gdx.files.internal("audio/firework_pop.wav"));
         babyBorn = Gdx.audio.newSound(Gdx.files.internal("audio/baby_born.wav"));
         meteorCrash = Gdx.audio.newSound(Gdx.files.internal("audio/meteor_crash.wav"));
+        launch = Gdx.audio.newSound(Gdx.files.internal("audio/launch.wav"));
 
-//        music = Gdx.audio.newMusic("audio/music.mp3");
+        titleMusic = Gdx.audio.newMusic(Gdx.files.internal("audio/title_music.mp3"));
+        gameMusic = Gdx.audio.newMusic(Gdx.files.internal("audio/game_music.mp3"));
         dayAmbient = Gdx.audio.newMusic(Gdx.files.internal("audio/day_birds.mp3"));
         nightAmbient = Gdx.audio.newMusic(Gdx.files.internal("audio/night_frogs.mp3"));
 
+        titleMusic.setLooping(true);
+        titleMusic.setVolume(0.5f);
+        gameMusic.setLooping(true);
+        gameMusic.setVolume(0.2f);
         dayAmbient.setLooping(true);
         nightAmbient.setLooping(true);
     }
@@ -213,9 +220,6 @@ public class Assets {
     public static void dispose() {
         libgdx.dispose();
         // todo : dispose the rest of the things
-//        sound.dispose();
-        addBlock.dispose();
-//        music.dispose();
         batch.dispose();
         hudBatch.dispose();
     }

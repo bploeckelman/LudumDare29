@@ -73,6 +73,9 @@ public class World {
     	}
         
     	if (scampManager.allInShip()){
+            if (!gameWon) {
+                Assets.launch.play();
+            }
     		gameWon = true;
     		SpaceshipStructure space = (SpaceshipStructure) structureManager.findStructure("spaceship");
     		space.liftOff(dt);

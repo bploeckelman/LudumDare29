@@ -26,6 +26,7 @@ public class LudumDare29 extends Game {
         titleScreen = new TitleScreen(this);
         gameScreen  = new GameScreen(this);
         setScreen(titleScreen);
+        Assets.titleMusic.play();
     }
 
     @Override

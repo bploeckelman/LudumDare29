@@ -33,6 +33,8 @@ public class TitleScreen implements Screen {
         } else if (Gdx.input.justTouched()) {
             game.setScreen(game.gameScreen);
             Assets.dayAmbient.play();
+            Assets.titleMusic.stop();
+            Assets.gameMusic.play();
         }
 
         accum += dt;
