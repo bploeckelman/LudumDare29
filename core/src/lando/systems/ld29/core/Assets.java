@@ -76,7 +76,8 @@ public class Assets {
     			"them to harvest and build a spaceship.  You need faith to " +
     			"create blocks, and gain it from the people above.  " +
     			"You control movement with A and D " +
-    			"or move your mouse to the edge.  \n\n Click to Continue";
+    			"or move your mouse to the edge.\n\n" +
+                "....................Click to Continue.................... ";
         random = new Random();
         batch  = new SpriteBatch();
         hudBatch = new SpriteBatch();
