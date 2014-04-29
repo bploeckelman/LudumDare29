@@ -74,16 +74,60 @@ public class Player {
 	
 	float inputDelay = 0;
 	
+	public void pushBlock(Block block, int x){
+		if (inputDelay > 0) return;
+        if(null != block) {
+        	block.setNewPosition(x, 0);
+        	float cost = block.cost;
+            if (belief > cost && world.grid.pushUp(block, x)){
+            	belief -= cost;
+            	inputDelay = .5f; // Seconds until we can act again.
+            	animationTime = 0;
+            }
+        }
+	}
+	
+	public void handleKeyBlocks(){
+		Block block = null;
+		if (Gdx.input.isKeyPressed(Keys.NUM_1)) {
+			block = new DirtBlock(xTarget, 0);
+		}
+		if (Gdx.input.isKeyPressed(Keys.NUM_2)) {
+			block = new WheatBlock(xTarget, 0);
+		}
+		if (Gdx.input.isKeyPressed(Keys.NUM_3)) {
+			block = new StoneBlock(xTarget, 0);
+		}
+		if (Gdx.input.isKeyPressed(Keys.NUM_4)) {
+			block = new AcornBlock(xTarget, 0);
+		}
+		if (Gdx.input.isKeyPressed(Keys.NUM_5)) {
+			block = new GrapesBlock(xTarget, 0);
+		}
+		if (Gdx.input.isKeyPressed(Keys.NUM_6)) {
+			block = new MarbleBlock(xTarget, 0);
+		}
+		if (Gdx.input.isKeyPressed(Keys.NUM_7)) {
+			block = new IronBlock(xTarget, 0);
+		}
+		if (Gdx.input.isKeyPressed(Keys.NUM_8)) {
+			block = new GoldBlock(xTarget, 0);
+		}
+		pushBlock(block, (int) xTarget);
+	}
+	
 	public void update(float dt){
+		handleKeyBlocks();
+		
 		Vector3 hudClickPoint = GameScreen.hudCamera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
 
 		if (xPos == xTarget){
 			if (inputDelay <= 0){
-				if (Gdx.input.isKeyPressed(Keys.A) || hudClickPoint.x < 100){
+				if (Gdx.input.isKeyPressed(Keys.LEFT) || Gdx.input.isKeyPressed(Keys.A) || hudClickPoint.x < 100){
 					xTarget--;
 					animationTime = 0;
 				}
-				if (Gdx.input.isKeyPressed(Keys.D) || hudClickPoint.x > Config.window_width - 100){
+				if (Gdx.input.isKeyPressed(Keys.RIGHT) || Gdx.input.isKeyPressed(Keys.D) ||hudClickPoint.x > Config.window_width - 100){
 					xTarget++;
 					animationTime = 0;
 				}

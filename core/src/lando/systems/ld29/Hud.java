@@ -141,15 +141,7 @@ public class Hud {
             if (justClicked == false){
                 int x = (int)(player.xPos + .5f);
                 Block block = getBlockForCoords(x);
-                if(null != block) {
-                	block.setNewPosition(x, 0);
-                	float cost = block.cost;
-                    if (player.belief > cost && world.grid.pushUp(block, x)){
-                    	player.belief -= cost;
-                    	player.inputDelay = .5f; // Seconds until we can act again.
-                    	player.animationTime = 0;
-                    }
-                }
+                player.pushBlock(block, x);
                 
             }
             justClicked = true;
