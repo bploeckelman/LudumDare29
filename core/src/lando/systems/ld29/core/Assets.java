@@ -73,7 +73,7 @@ public class Assets {
     	introText = "Welcome to our LD29 (Below the Surface) Game. " +
     			"Your goal is to get these happy people off the planet.  " +
     			"Help them by raising resources through the earth for " +
-    			"them to harvest and build a spaceship.  You need belief to " +
+    			"them to harvest and build a spaceship.  You need faith to " +
     			"create blocks, and gain it from the people above.  " +
     			"You control movement with A and D " +
     			"or move your mouse to the edge.  \n\n Click to Continue";
