@@ -325,7 +325,7 @@ public class Scamp implements IResourceGenerator {
                             Assets.gatherFood.play(0.5f);
                             break;
                         default:
-                            Assets.gatherOther.play(0.5f);
+                            Assets.gatherOther.play(0.05f);
                     }
 
                     World.THEWORLD.displayResourceGather(this, numResourcesGathered);
