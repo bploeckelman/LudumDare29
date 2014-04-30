@@ -4,7 +4,8 @@ LudumDare29
 Crustacean Farm - A game made in 72 hours for Ludum Dare #29
 
 
-**[Play Now](http://games.lando.systems/ld29/)  [mirror](http://games.wxpick.com/LD29/Web/)**
+**[Play Now](http://games.lando.systems/ld29/),  [mirror](http://games.wxpick.com/LD29/Web/)**
+
 *[Ludum Dare #29 Entry Page](http://www.ludumdare.com/compo/ludum-dare-29/?action=preview&uid=18212)*
 
 
